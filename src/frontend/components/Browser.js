@@ -5,8 +5,10 @@ import "../App.css";
 /* kun tietokanta yhdistetty, korvaa package.json tiedoston "start": kohta tällä: "start": "react-scripts start", */
 
 export const SeriesBrowser = () => {
+    const [series, setSeries] = useState([]);
+
     // Testidataa, jolla testataan, miltä tuleva arkistosivu näyttäisi. Kirjat ovat sarjoittain.
-    const [series, setSeries] = useState([
+    const [SerTestingData, setSerTestingData] = useState([
         {
             "id": 1,
             "name": "Sarja X",
@@ -57,9 +59,9 @@ export const SeriesBrowser = () => {
             "name": "Tee-se-itse -sarja",
             "author": "Ville Viimeinen"
         }
-    ]);
+    ])
 
-    // Nämä kannattaisi myöhemmässä vaiheessa korvata kokonaan styled componenteilla, kun tyylistä on päätetty.
+    // Voi muuttua paljon vielä.
     const tblCell = {
         border: "1px solid black",
         textAlign: "left",
@@ -96,6 +98,17 @@ export const SeriesBrowser = () => {
         fetchSeries();
     }, []);
     */
+    
+    // Lopullinen fetch:
+    useEffect( () => {
+        const fetchSeries = async () => {
+            let response = await fetch("http://localhost:5000/api/bookseries");
+            let c = await response.json();
+            setSeries(c);
+        }
+
+        fetchSeries();
+    }, []);
 
     return (
         <div>
@@ -103,19 +116,31 @@ export const SeriesBrowser = () => {
                 <thead>
                     <tr style={{height: "35px", backgroundColor: "lavender"}}>
                         <th style={tblCellSer}>Series</th>
-                        <th style={tblCell}>Authors</th>
+                        <th style={tblCell}>Publishers</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {series.map((serie) => {
+                    {   // haettu data
+                    series.map((s, index) => {
                         return (
-                            <tr key={serie.id}>
-                                <td style={tblCell}><a href='#' style={{color: "green", textDecoration: "none"}}>+</a>  <a href='#' style={noUnderLine} onClick={(e) => e.preventDefault()}>{serie.name}</a></td>
-                                <td style={tblCell}><a href='#' style={noUnderLine} onClick={(e) => e.preventDefault()}>{serie.author}</a></td>
+                            <tr key={index}>
+                                <td style={tblCell}><a href='#' style={{color: "green", textDecoration: "none"}}>+</a>  <a href='#' style={noUnderLine} onClick={(e) => e.preventDefault()}>{s.bookseries}</a></td>
+                                <td style={tblCell}><a href='#' style={noUnderLine} onClick={(e) => e.preventDefault()}>{s.publisher}</a></td>
+                            </tr>
+                        )
+                        }) 
+                    }
+                    {/* // testidata
+                    SerTestingData.map((s, index) => {
+                        return (
+                            <tr key={index}>
+                                <td style={tblCell}><a href='#' style={{color: "green", textDecoration: "none"}}>+</a>  <a href='#' style={noUnderLine} onClick={(e) => e.preventDefault()}>{s.name}</a></td>
+                                <td style={tblCell}><a href='#' style={noUnderLine} onClick={(e) => e.preventDefault()}>{s.author}</a></td>
                             </tr>
                         )
                         })
-                    }
+                    */}
+                    
                 </tbody>
             </table>
         </div>
