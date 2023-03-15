@@ -5,8 +5,9 @@ const userControllers = require("../controllers/user-controller");
 const router = express.Router();
 
 
-//get kutsu httplle
+//get
 router.get("/", userControllers.getAllUsers);
-router.get("/:username", userControllers.getUserByName);
+router.get("/:username&:password", userControllers.getUserByName);
+
 
 module.exports = router; //vie appille
