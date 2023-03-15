@@ -1,20 +1,18 @@
-import React from "react";
+import React, {useState} from "react";
 import { Login } from "./components/Login";
 import { Register } from "./components/Register";
-import { SeriesBrowser } from "./components/Browser";
 import { Routes, Route, BrowserRouter as Router } from "react-router-dom";
-import { NotLogged } from "./pages/Home";
 import { Logged } from "./pages/UserHome";
 
 const App = () => {
+    const [user, setUser] = useState("");
+
     return (
         <Router>
             <Routes>
-                <Route path="/" element={<NotLogged />} />
-                <Route path="/login" element={<Login />} />
+                <Route path="/" element={
+                user ? <Logged user={user}/> : <Login  saveUser={setUser}/>} />
                 <Route path="/register" element={<Register />} />
-                <Route path="/userLogged" element={<Logged />} />
-                <Route path="/series" element={<SeriesBrowser />} />
             </Routes>
         </Router>
     )
