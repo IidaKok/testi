@@ -12,13 +12,18 @@ const Login = (props) => {
     const [users, setUsers] = useState([]);
     const [buttonPressed, setButtonPressed] = useState(false);
 
-
     useEffect(() => {
         console.log(query);
         const fetchUsers = async () => {
             let response = await fetch("http://localhost:5000/api/users/" + query);
-            let c = await response.json();
-            setUsers(c);
+            if(response.ok){
+                let c = await response.json();
+                setUsers(c);
+                saveUser({ username: c.username, password: c.password, email: c.email, iduser: c.iduser });
+            }
+            else {
+                console.log("jokin meni pieleen");
+            }
         }
         if (query !== '') fetchUsers();
     }, [query]);
@@ -30,9 +35,6 @@ const Login = (props) => {
         if (password !== "") q.push(password);
 
         setQuery(q.join("&"));
-
-        console.log(users.email);
-        saveUser({ username: name, password: password });
     }
 
     return (
@@ -41,7 +43,6 @@ const Login = (props) => {
                 <h1>User is not logged</h1>
 
             </div>
-            <form>
                 <h2>Login</h2>
                 <label>
                     User name:
@@ -54,7 +55,7 @@ const Login = (props) => {
                 <button onClick={() => handleFetch()}>Login</button>
 
                 <p>Don't have an account? <Link to="/register">Register</Link></p>
-            </form>
+            
 
             {buttonPressed ? <p>{users.email}</p> : null}
         </div>
