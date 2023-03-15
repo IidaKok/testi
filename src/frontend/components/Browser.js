@@ -105,6 +105,7 @@ export const SeriesBrowser = () => {
             let response = await fetch("http://localhost:5000/api/bookseries");
             let c = await response.json();
             setSeries(c);
+            console.log(series);
         }
 
         fetchSeries();
@@ -125,12 +126,11 @@ export const SeriesBrowser = () => {
                         return (
                             <tr key={index}>
                                 <td style={tblCell}><a href='#' style={{color: "green", textDecoration: "none"}}>+</a>  <a href='#' style={noUnderLine} onClick={(e) => e.preventDefault()}>{s.bookseries}</a></td>
-                                <td style={tblCell}><a href='#' style={noUnderLine} onClick={(e) => e.preventDefault()}>{s.publisher}</a></td>
+                                <td style={tblCell}><a href='#' style={noUnderLine} onClick={(e) => e.preventDefault()}>x{/*s.publisher*/}</a></td>
                             </tr>
                         )
                         }) 
-                    }
-                    {/* // testidata
+                    /* // testidata
                     SerTestingData.map((s, index) => {
                         return (
                             <tr key={index}>
