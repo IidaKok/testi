@@ -1,10 +1,11 @@
 import React from "react";
+
 import "../App.css";
 
 
 const Logged = (props) => {
 
-    const {user} = props;
+    const { user } = props;
 
     return (
         <div className="App">
