@@ -49,8 +49,8 @@ const createUser = async (req, res, next) => {
             throw err;
         }
     }
-    const { username, password, email } = req.body;
-    const createUser = new User({
+     const { username, password, email } = req.body;
+   const createUser = new User({
         username,
         password,
         email
@@ -68,20 +68,25 @@ const createUser = async (req, res, next) => {
 const getUserByName = async (req, res, next) => {
     try {
         const usernam = req.params.username;
+        const password = req.params.password;
         const result = await db.pool.query("select * from user");
 
         const user = result.find(u => {
-            return u.username === usernam;
+            return u.username === usernam && u.password === password;
         });
         
         if (!user) { //handling error
-            return next(new HttpError("Can't find username", 404));
+            return next(new HttpError("Can't find user", 404));
         }
-        res.json({ user });
+        res.json( basicDetails(user) );
     }
     catch (err){
         throw err;
     }
+}
+function basicDetails(user) {
+    const { iduser, username, password, email } = user;
+    return { iduser, username, password, email };
 }
 
 exports.getAllUsers = getAllUsers;
