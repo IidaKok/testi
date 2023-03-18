@@ -5,7 +5,6 @@ const userRoutes = require("./routes/user-routes");
 const seriesRoutes = require("./routes/series-routes");
 const bookRoutes = require("./routes/book-routes");
 const bookshelfRoutes = require("./routes/bookshelf-routes");
-const bookRoutes = require("./routes/book-routes");
 
 const app = express();
 app.use(bodyParser.json());
