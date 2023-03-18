@@ -1,0 +1,20 @@
+[
+    {
+        "iduser": 1,
+        "username": "Matti.Mainio",
+        "password": "Kissa",
+        "email": "matti@email.com"
+    },
+    {
+        "iduser": 2,
+        "username": "Liisa.Lisko",
+        "password": "Kissa",
+        "email": "liisa@email.com"
+    },
+    {
+        "iduser": 3,
+        "username": "Jeppe.Teppo",
+        "password": "Kissa",
+        "email": "markku@email.com"
+    }
+]
