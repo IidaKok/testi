@@ -50,7 +50,7 @@ const Login = (props) => {
                 </label>
                 <label>
                     Password:
-                    <input type="text" value={password} onChange={(e) => setPassword(e.target.value)}></input>
+                    <input type="password" value={password} onChange={(e) => setPassword(e.target.value)}></input>
                 </label>
                 <button onClick={() => handleFetch()}>Login</button>
 

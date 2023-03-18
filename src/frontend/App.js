@@ -5,6 +5,7 @@ import { Routes, Route, BrowserRouter as Router } from "react-router-dom";
 import { Logged } from "./pages/UserHome";
 import { SeriesBrowser } from "./components/Browser";
 import { NavBar } from "./components/NavBar";
+import { UserPage } from "./pages/UserPage";
 
 const App = () => {
     const [user, setUser] = useState("");
@@ -17,6 +18,7 @@ const App = () => {
                 user ? <Logged user={user}/> : <Login  saveUser={setUser}/>} />
                 <Route path="/register" element={<Register />} />
                 <Route path="/series" element={<SeriesBrowser />} />
+                <Route path="/userPage" element={<UserPage />} />
             </Routes>
         </Router>
     )

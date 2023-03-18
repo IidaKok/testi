@@ -6,6 +6,7 @@ export const NavBar = () => {
         <div style={{backgroundColor: "grey"}}>
             <Link to="/">Home</Link>
             <Link to="/series">Series</Link>
+            <Link to="/userPage">UserPage</Link>
         </div>
     )
 }
