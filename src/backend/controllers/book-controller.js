@@ -1,7 +1,5 @@
 const HttpError = require("../models/http-error");
-const db = require("../db");
-
-
+const db = require("../db"); 
 
 const getAllBooks = async (req, res, next) => {
     try {
@@ -11,24 +9,24 @@ const getAllBooks = async (req, res, next) => {
         throw err;
     }
 }
-
-const getBooks = async (req, res, next) => {
+const getBooksBySeriesID = async (req, res, next) => {
     try {
-        const idbook = req.params.idbook;
+        const seriesId = parseInt(req.params.idbookseries);
         const result = await db.pool.query("select * from book");
 
-        const book = result.find(b => {
-            return b.idbook == idbook;
+        const book = result.filter(b => {
+            return b.idbookseries === seriesId;
         });
-
-        if (!book) { //handling error
-            return next(new HttpError("Can't find books", 404));
+        
+        if (!book) { //handling error 
+            return next(new HttpError("Can't find book", 404));
         }
-        res.json(book);
+        res.json({ book });
     }
-    catch (err) {
+    catch (err){
         throw err;
     }
 }
-exports.getBooks = getBooks;
+
 exports.getAllBooks = getAllBooks;
+exports.getBooksBySeriesID = getBooksBySeriesID;

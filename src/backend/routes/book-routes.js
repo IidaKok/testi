@@ -1,12 +1,12 @@
 const express = require("express");
-const bookControllers = require("../controllers/book-controller");
+const userControllers = require("../controllers/book-controller");
 
 //creates route to users
 const router = express.Router();
 
 
 //get kutsu httplle
-router.get("/", bookControllers.getAllBooks);
-router.get("/:idbook", bookControllers.getBooks);
+router.get("/", userControllers.getAllBooks);
+router.get("/:idbookseries", userControllers.getBooksBySeriesID);
 
 module.exports = router; //vie appille
