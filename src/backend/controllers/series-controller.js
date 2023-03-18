@@ -11,7 +11,7 @@ const getAllSeries = async (req, res, next) => {
 }
 const getSeriesByName = async (req, res, next) => {
     try {
-        const seriesname = req.params.bookseries;
+        const seriesname = parseInt(req.params.bookseries);
         const result = await db.pool.query("select * from bookseries");
 
         const series = result.find(s => {
