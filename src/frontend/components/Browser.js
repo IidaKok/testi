@@ -1,65 +1,9 @@
-import { useState, useEffect } from 'react';
-import { Link } from "react-router-dom";
+import { useState, useEffect, useMemo } from 'react';
+import { Link, NavLink, useHistory, useParams } from "react-router-dom";
 import "../App.css";
-
-/* kun tietokanta yhdistetty, korvaa package.json tiedoston "start": kohta tällä: "start": "react-scripts start", */
 
 export const SeriesBrowser = () => {
     const [series, setSeries] = useState([]);
-
-    // Testidataa, jolla testataan, miltä tuleva arkistosivu näyttäisi. Kirjat ovat sarjoittain.
-    const [SerTestingData, setSerTestingData] = useState([
-        {
-            "id": 1,
-            "name": "Sarja X",
-            "author": "Ville Viimeinen"
-        },
-        {
-            "id": 2,
-            "name": "Lehtisarja ABC",
-            "author": "Ville Viimeinen"
-        },
-        {
-            "id": 3,
-            "name": "Sarjakuvia",
-            "author": "Maija Meikäläinen"
-        },
-        {
-            "id": 4,
-            "name": "Kuvakirjakokoelma",
-            "author": "Liisa Litmanen"
-        },
-        {
-            "id": 5,
-            "name": "Runokirjasarja",
-            "author": "Ville Viimeinen"
-        },
-        {
-            "id": 6,
-            "name": "Käsityösarja",
-            "author": "Maija Meikäläinen"
-        },
-        {
-            "id": 7,
-            "name": "Kokkikirjasarja",
-            "author": "Erkki Esimerkki"
-        },
-        {
-            "id": 8,
-            "name": "Tarinasarja",
-            "author": "Erkki Esimerkki"
-        },
-        {
-            "id": 9,
-            "name": "Tietokirjasarja",
-            "author": "Liisa Litmanen"
-        },
-        {
-            "id": 10,
-            "name": "Tee-se-itse -sarja",
-            "author": "Ville Viimeinen"
-        }
-    ])
 
     // Voi muuttua paljon vielä.
     const tblCell = {
@@ -78,38 +22,27 @@ export const SeriesBrowser = () => {
     const noUnderLine = {
         textDecoration: "none"
     };
-
     
-    // testi fetch. Luultavasti poistetaan kokonaan myöhemmin, kun tietokanta on kunnolla yhdistetty.
-    /*
-    useEffect( () => {
-        const fetchSeries = async () => {
-            let response = await fetch("http://localhost:3004/sarjat?");
-            setSeries(await response.json());
-            setSeriesTableRows(series.map((serie) => {
-                return (
-                    <tr key={serie.id}>
-                        <td style={tblCellBorder}>{serie.name}</td>
-                        <td style={tblCellBorder}>{serie.author}</td>
-                    </tr>
-                )
-            }));
-        }
-        fetchSeries();
-    }, []);
-    */
-    
-    // Lopullinen fetch:
+    // haetaan sarjat tietokannasta:
     useEffect( () => {
         const fetchSeries = async () => {
             let response = await fetch("http://localhost:5000/api/bookseries");
             let c = await response.json();
             setSeries(c);
-            console.log(series);
+            console.log("series: ", series);
         }
 
         fetchSeries();
     }, []);
+
+    /*
+    const handleClick = (serId) => {
+        history.push({
+            pathname: '/series/books',
+            state: { serId }
+        });
+    }
+    */
 
     return (
         <div>
@@ -121,28 +54,101 @@ export const SeriesBrowser = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    {   // haettu data
-                    series.map((s, index) => {
-                        return (
-                            <tr key={index}>
-                                <td style={tblCell}><a href='#' style={{color: "green", textDecoration: "none"}}>+</a>  <a href='#' style={noUnderLine} onClick={(e) => e.preventDefault()}>{s.bookseries}</a></td>
-                                <td style={tblCell}><a href='#' style={noUnderLine} onClick={(e) => e.preventDefault()}>x{/*s.publisher*/}</a></td>
-                            </tr>
-                        )
-                        }) 
-                    /* // testidata
-                    SerTestingData.map((s, index) => {
-                        return (
-                            <tr key={index}>
-                                <td style={tblCell}><a href='#' style={{color: "green", textDecoration: "none"}}>+</a>  <a href='#' style={noUnderLine} onClick={(e) => e.preventDefault()}>{s.name}</a></td>
-                                <td style={tblCell}><a href='#' style={noUnderLine} onClick={(e) => e.preventDefault()}>{s.author}</a></td>
-                            </tr>
-                        )
-                        })
-                    */}
-                    
+                    {   // haettu data. Taulukon riveinä sarjan nimi ja julkaisijan nimi.
+                        useMemo( () => series.map((s, index) => {
+                            return (
+                                <tr key={index}>
+                                    <td style={tblCell}><a href='#' style={{color: "green", textDecoration: "none"}}>+</a>  <NavLink to={'/series/books/' + s.idbookseries}>{s.bookseries}</ NavLink></td>
+                                    <td style={tblCell}><a href='#' style={noUnderLine} onClick={(e) => e.preventDefault()}>{s.publisher}</a></td>
+                                </tr>
+                            )
+                        }), [series])
+                    } 
                 </tbody>
             </table>
+        </div>
+    )
+}
+
+// Komponentti, jossa näytetään yksittäiseen sarjaan kuuluvat kirjat
+export const SeriesInfo = () => {
+    const [bookData, setBookData] = useState([]);
+    const params = useParams();
+    const {idbookseries} = params;
+
+    useEffect( () => {
+
+        const fetchBooks = async () => {
+
+            let response = await fetch("http://localhost:5000/api/book");
+            let books = await response.json();
+            let filteredBooks = books.filter((b) => b.idbookseries == idbookseries);
+
+            setBookData(filteredBooks);       
+            
+        }
+
+        fetchBooks();
+    }, []);
+
+    const renderTableRows = () => {
+        console.log("In renderTableRows: ", bookData);
+        return bookData.map((b) => (
+            <tr key={b.idbook}>
+                <td><a href='#' style={{color: "green", textDecoration: "none"}}>+</a>  <NavLink to={'/series/books/book/' + b.idbook}>{b.bookname}</ NavLink></td>
+                <td>{b.publicationyear}</td>
+            </tr>
+        ));
+    };
+    
+
+    return (
+        <div>
+            <NavLink to="/series" style={{textDecoration: "none", color: "grey"}}>← Back to series</NavLink>
+            <table>
+                <thead>
+                    <tr style={{height: "35px", backgroundColor: "lavender"}}>
+                        <th>Books</th>
+                        <th>Publication year</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {renderTableRows()}
+                </tbody>
+            </table>
+            
+        </div>
+    )
+}
+
+export const BookInfo = () => {
+    const [oneBook, setOneBook] = useState({});
+    const params = useParams();
+    const {idbook} = params;
+
+    useEffect( () => {
+
+        const fetchBook = async () => {
+            console.log(idbook);
+            let response = await fetch("http://localhost:5000/api/book");
+            let books = await response.json();
+            let findBook = books.find((b) => b.idbook == idbook);
+            console.log(findBook);
+            setOneBook(findBook);      
+            
+        }
+
+        fetchBook();
+    }, []);
+
+    return (
+        <div>
+            <NavLink to={"/series/books/" + oneBook.idbookseries} style={{textDecoration: "none", color: "grey"}}>← Back to books</NavLink>
+            <h3>{oneBook.bookname}</h3>
+            <p>{oneBook.publicationyear}</p>
+            <p>Author: {oneBook.writer}</p>
+            <p>Description: {oneBook.description}</p>
+            <button>Add to your library</button>
         </div>
     )
 }

@@ -1,9 +1,9 @@
 import React, {useState} from "react";
 import { Login } from "./components/Login";
 import { Register } from "./components/Register";
-import { Routes, Route, BrowserRouter as Router } from "react-router-dom";
+import { Routes, Route, BrowserRouter as Router} from "react-router-dom";
 import { Logged } from "./pages/UserHome";
-import { SeriesBrowser } from "./components/Browser";
+import { SeriesBrowser, SeriesInfo, BookInfo } from "./components/Browser";
 import { NavBar } from "./components/NavBar";
 
 const App = () => {
@@ -17,6 +17,8 @@ const App = () => {
                 user ? <Logged user={user}/> : <Login  saveUser={setUser}/>} />
                 <Route path="/register" element={<Register />} />
                 <Route path="/series" element={<SeriesBrowser />} />
+                <Route path="/series/books/:idbookseries" element={<SeriesInfo />} />
+                <Route path="/series/books/book/:idbook" element={<BookInfo />} />
             </Routes>
         </Router>
     )

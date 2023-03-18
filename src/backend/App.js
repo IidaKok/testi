@@ -3,6 +3,7 @@ const bodyParser = require("body-parser");
 
 const userRoutes = require("./routes/user-routes");
 const seriesRoutes = require("./routes/series-routes");
+const bookRoutes = require("./routes/book-routes");
 
 const app = express();
 app.use(bodyParser.json());
@@ -20,6 +21,7 @@ app.use(function(req, res, next) {
 
 app.use("/api/users", userRoutes);
 app.use("/api/bookseries", seriesRoutes);
+app.use("/api/book", bookRoutes);
 app.use((error, req, res, next) => {
     if (res.headerSent) {
         return next(error);
