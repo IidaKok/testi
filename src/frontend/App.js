@@ -9,6 +9,11 @@ import { NavBar } from "./components/NavBar";
 const App = () => {
     const [user, setUser] = useState("");
 
+    const handleAddBook = (event) => {
+        event.preventDefault();
+        
+    }
+
     return (
         <Router>
             {user ? <NavBar/> : null}
@@ -17,8 +22,8 @@ const App = () => {
                 user ? <Logged user={user}/> : <Login  saveUser={setUser}/>} />
                 <Route path="/register" element={<Register />} />
                 <Route path="/series" element={<SeriesBrowser />} />
-                <Route path="/series/books/:idbookseries" element={<SeriesInfo />} />
-                <Route path="/series/books/book/:idbook" element={<BookInfo />} />
+                <Route path="/series/books/:idbookseries" element={<SeriesInfo handleAddBook={handleAddBook} />} />
+                <Route path="/series/books/book/:idbook" element={<BookInfo handleAddBook={handleAddBook} />} />
             </Routes>
         </Router>
     )

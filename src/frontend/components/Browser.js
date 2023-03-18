@@ -58,7 +58,7 @@ export const SeriesBrowser = () => {
                         useMemo( () => series.map((s, index) => {
                             return (
                                 <tr key={index}>
-                                    <td style={tblCell}><a href='#' style={{color: "green", textDecoration: "none"}}>+</a>  <NavLink to={'/series/books/' + s.idbookseries}>{s.bookseries}</ NavLink></td>
+                                    <td style={tblCell}><button style={{color: "green"}}>+</button>  <NavLink to={'/series/books/' + s.idbookseries}>{s.bookseries}</ NavLink></td>
                                     <td style={tblCell}><a href='#' style={noUnderLine} onClick={(e) => e.preventDefault()}>{s.publisher}</a></td>
                                 </tr>
                             )
@@ -71,7 +71,8 @@ export const SeriesBrowser = () => {
 }
 
 // Komponentti, jossa näytetään yksittäiseen sarjaan kuuluvat kirjat
-export const SeriesInfo = () => {
+export const SeriesInfo = (props) => {
+    const { handleAddBook } = props;
     const [bookData, setBookData] = useState([]);
     const params = useParams();
     const {idbookseries} = params;
@@ -95,7 +96,7 @@ export const SeriesInfo = () => {
         console.log("In renderTableRows: ", bookData);
         return bookData.map((b) => (
             <tr key={b.idbook}>
-                <td><a href='#' style={{color: "green", textDecoration: "none"}}>+</a>  <NavLink to={'/series/books/book/' + b.idbook}>{b.bookname}</ NavLink></td>
+                <td><button style={{color: "green"}}>+</button> <NavLink to={'/series/books/book/' + b.idbook}>{b.bookname}</ NavLink></td>
                 <td>{b.publicationyear}</td>
             </tr>
         ));
@@ -121,7 +122,8 @@ export const SeriesInfo = () => {
     )
 }
 
-export const BookInfo = () => {
+export const BookInfo = (props) => {
+    const {handleAddBook} = props;
     const [oneBook, setOneBook] = useState({});
     const params = useParams();
     const {idbook} = params;
@@ -148,7 +150,7 @@ export const BookInfo = () => {
             <p>{oneBook.publicationyear}</p>
             <p>Author: {oneBook.writer}</p>
             <p>Description: {oneBook.description}</p>
-            <button>Add to your library</button>
+            <button onClick={(e) => handleAddBook(e)}>Add to your library</button>
         </div>
     )
 }
