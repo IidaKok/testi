@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import "../App.css";
+import "../Loginstyle.css";
 
 const Login = (props) => {
 
@@ -17,7 +17,7 @@ const Login = (props) => {
         console.log(query);
         const fetchUsers = async () => {
             let response = await fetch("http://localhost:5000/api/users/" + query);
-            if(response.ok){
+            if (response.ok) {
                 let c = await response.json();
                 setUsers(c);
                 saveUser({ username: c.username, password: c.password, email: c.email, iduser: c.iduser });
@@ -39,12 +39,9 @@ const Login = (props) => {
     }
 
     return (
-        <div className="App">
-            <div>
-                <h1>User is not logged</h1>
-
-            </div>
-                <h2>Login</h2>
+        <div className="Forms">
+            <h2>Login</h2>
+            <div className="Container">
                 <label>
                     User name:
                     <input type="text" value={name} onChange={(e) => setName(e.target.value)}></input>
@@ -55,10 +52,13 @@ const Login = (props) => {
                 </label>
                 <button onClick={() => handleFetch()}>Login</button>
 
-                <p>Don't have an account? <Link to="/register">Register</Link></p>
-            
                 <p>{errorMessage}</p>
-            {buttonPressed ? <p>{users.email}</p> : null}
+            </div>
+
+            <div className="Container">
+            <p>Don't have an account? <Link to="/register">Register</Link></p>
+
+            </div>
         </div>
     )
 }

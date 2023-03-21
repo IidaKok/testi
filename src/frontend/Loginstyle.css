@@ -1,0 +1,26 @@
+
+.Forms {
+    background-color: rgb(196, 233, 196);
+    text-align: center;
+    height: 100%;
+    width: 50%;
+    margin: auto;
+    padding: 30px;
+    margin-top: 10px;
+  }
+  .Container {
+    text-align: left;
+    padding: 20px 50px;
+    width: 70%;
+    background-color: aliceblue;
+    margin: auto;
+  }
+  input[type=text] {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0px;
+    display: inline-block;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+  }
+  
