@@ -45,13 +45,19 @@ const createUser = async (req, res, next) => {
     const username = req.body.username;
     const password = req.body.password;
     const email = req.body.email;
+
     try {
+        const users = await db.pool.query("select * from user where username = '"+username+"'");
+        const user = users.find(u => {
+            return u.username === username;
+        });
+
+        if (user) { //handling error
+            console.log("Username is already taken");
+            return next(new HttpError("Username is already taken", 404));
+        }
         const response = db.pool.query("INSERT INTO user (iduser, username, password, email) VALUES ("+ iduser+",'"+username+"','"+password+"','"+email+"')");
         res.send(response);
-        /* if (!response) {
-             return next(new HttpError("Can't create user", 404));
-         }*/
-        
         console.log("Tämä lähetettiin");
         console.log(iduser, username, password, email);
     }
@@ -60,12 +66,25 @@ const createUser = async (req, res, next) => {
     }
 
 }
+/*
+const findByUsername = async (req, res, next) => {
+    try {
+        const result = await db.pool.query("select * from user");
+        res.send(result);
+        if (!result) { //handling error
+            return next(new HttpError("Can't find user by username", 404));
+        }
+    }
+    catch (err) {
+        throw err;
+    }
+}*/
 const getAllUsers = async (req, res, next) => {
     try {
         const result = await db.pool.query("select * from user");
         res.send(result);
         if (!result) { //handling error
-            return next(new HttpError("Ei onnaa", 404));
+            return next(new HttpError("Can't find users", 404));
         }
     }
     catch (err) {
