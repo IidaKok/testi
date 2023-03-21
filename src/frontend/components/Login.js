@@ -11,6 +11,7 @@ const Login = (props) => {
     const [query, setQuery] = useState("");
     const [users, setUsers] = useState([]);
     const [buttonPressed, setButtonPressed] = useState(false);
+    const [errorMessage, setErrorMessage] = useState("");
 
     useEffect(() => {
         console.log(query);
@@ -22,7 +23,7 @@ const Login = (props) => {
                 saveUser({ username: c.username, password: c.password, email: c.email, iduser: c.iduser });
             }
             else {
-                console.log("jokin meni pieleen");
+                setErrorMessage("Username or password is incorrect. Try again");
             }
         }
         if (query !== '') fetchUsers();
@@ -56,7 +57,7 @@ const Login = (props) => {
 
                 <p>Don't have an account? <Link to="/register">Register</Link></p>
             
-
+                <p>{errorMessage}</p>
             {buttonPressed ? <p>{users.email}</p> : null}
         </div>
     )

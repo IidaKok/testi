@@ -6,9 +6,10 @@ const router = express.Router();
 
 //get
 router.get("/", userControllers.getAllUsers);
-router.post("/post/", userControllers.createUser);
-//router.route("/").get(userControllers.getAllUsers).post(userControllers.createUser);
 router.get("/:username&:password", userControllers.getUserByName);
 
 
-module.exports = router; //vie appille
+//post
+router.post("/post/", userControllers.createUser);
+
+module.exports = router;

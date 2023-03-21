@@ -9,7 +9,6 @@ const app = express();
 app.use(bodyParser.urlencoded({ extended: true}));
 app.use(bodyParser.json());
 
-
 //allows cors
 app.use(function(req, res, next) {
     res.setHeader("Access-Control-Allow-Origin", "*");
@@ -25,9 +24,6 @@ app.use(function(req, res, next) {
 app.use("/api/users", userRoutes);
 app.use("/api/bookseries", seriesRoutes);
 app.use("/api/bookshelf", bookshelfRoutes);
-//app.post("/", userController);
-
-
 
 app.use((error, req, res, next) => {
     if (res.headerSent) {
@@ -36,6 +32,5 @@ app.use((error, req, res, next) => {
     res.status(error.code || 500);
     res.json({ message: error.message || "unknown error" });
 })
-
 
 app.listen(5000);
