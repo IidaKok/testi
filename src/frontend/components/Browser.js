@@ -59,7 +59,7 @@ export const SeriesBrowser = () => {
                             return (
                                 <tr key={index}>
                                     <td style={tblCell}><button style={{color: "green"}}>+</button>  <NavLink to={'/series/books/' + s.idbookseries}>{s.bookseries}</ NavLink></td>
-                                    <td style={tblCell}><a href='#' style={noUnderLine} onClick={(e) => e.preventDefault()}>{s.publisher}</a></td>
+                                    <td style={tblCell}>{s.publisher}</td>
                                 </tr>
                             )
                         }), [series])
