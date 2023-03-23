@@ -1,10 +1,10 @@
 const { DataTypes } = require("sequelize");
-const sequelize = require("../database/connection");
+const sequelize = require("../db");
 
 const BookCopy = sequelize.define(
   "BookCopy",
   {
-    id: {
+    idbookcopy: {
       type: DataTypes.INTEGER,
       allowNull: false,
       autoIncrement: true,
@@ -27,7 +27,7 @@ const BookCopy = sequelize.define(
       allowNull: false,
     },
     purchaseprice: {
-      type: DataTypes.FLOAT,
+      type: DataTypes.DECIMAL,
       allowNull: true,
     },
     purchasedate: {
@@ -35,7 +35,7 @@ const BookCopy = sequelize.define(
       allowNull: true,
     },
     condition: {
-      type: DataTypes.STRING,
+      type: DataTypes.INTEGER,
       allowNull: true,
     },
     description: {
@@ -47,7 +47,7 @@ const BookCopy = sequelize.define(
       allowNull: true,
     },
     soldprice: {
-      type: DataTypes.FLOAT,
+      type: DataTypes.DECIMAL,
       allowNull: true,
     },
     idbookseries: {

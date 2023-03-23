@@ -1,8 +1,9 @@
+import { async } from 'q';
 import { useState, useEffect, useMemo } from 'react';
 import { Link, NavLink, useHistory, useParams } from "react-router-dom";
 import "../App.css";
 
-export const SeriesBrowser = () => {
+export const SeriesBrowser = (props) => {
     const [series, setSeries] = useState([]);
 
     // Voi muuttua paljon vielä.
@@ -72,10 +73,10 @@ export const SeriesBrowser = () => {
 
 // Komponentti, jossa näytetään yksittäiseen sarjaan kuuluvat kirjat
 export const SeriesInfo = (props) => {
-    const { handleAddBook } = props;
     const [bookData, setBookData] = useState([]);
     const params = useParams();
     const {idbookseries} = params;
+    const [bookToAdd, setBookToAdd] = useState();
 
     useEffect( () => {
 
@@ -92,11 +93,16 @@ export const SeriesInfo = (props) => {
         fetchBooks();
     }, []);
 
+    const handleAddBook = (bookId) => {
+
+        
+    }
+
     const renderTableRows = () => {
         console.log("In renderTableRows: ", bookData);
         return bookData.map((b) => (
             <tr key={b.idbook}>
-                <td><button style={{color: "green"}}>+</button> <NavLink to={'/series/books/book/' + b.idbook}>{b.bookname}</ NavLink></td>
+                <td><button style={{color: "green"}} onClick={(e) => {e.preventDefault(); handleAddBook(b.idbook)}}>+</button> <NavLink to={'/series/books/book/' + b.idbook}>{b.bookname}</ NavLink></td>
                 <td>{b.publicationyear}</td>
             </tr>
         ));
@@ -123,10 +129,16 @@ export const SeriesInfo = (props) => {
 }
 
 export const BookInfo = (props) => {
-    const {handleAddBook} = props;
     const [oneBook, setOneBook] = useState({});
     const params = useParams();
     const {idbook} = params;
+
+    const [allBooks, setAllBooks] = useState([]);
+    const [bookToAdd, setBookToAdd] = useState({});
+    const [bookshelf, setBookshelf] = useState(null);
+    const user = props.user;
+
+    const [addClicked, setAddClicked] = useState(false);
 
     useEffect( () => {
 
@@ -134,6 +146,7 @@ export const BookInfo = (props) => {
             console.log(idbook);
             let response = await fetch("http://localhost:5000/api/book");
             let books = await response.json();
+            setAllBooks(books);
             let findBook = books.find((b) => b.idbook == idbook);
             console.log(findBook);
             setOneBook(findBook);      
@@ -143,6 +156,46 @@ export const BookInfo = (props) => {
         fetchBook();
     }, []);
 
+    useEffect(() => {
+
+        const fetchBookshelf = async () => {
+            let response = await fetch("http://localhost:5000/api/bookshelf");
+            let bookshelfs = await response.json();
+            let userBookshelf = bookshelfs.find((b) => b.iduser == user.iduser);
+            setBookshelf(userBookshelf);
+        }
+        if (bookshelf == null) fetchBookshelf();
+
+
+        const insertBook = async (bookId) => {
+            let findBook = allBooks.find((b) => b.idbook == bookId);
+            const r = await fetch("http://localhost:5000/api/bookcopy", {
+                method: "POST",
+                headers: {
+                "Content-type": "application/json",
+                },
+                body: JSON.stringify({
+                bookname: findBook.bookname,
+                publicationyear: findBook.publicationyear,
+                idbook: findBook.idbook,
+                purchaseprice: null, // default arvo
+                purchasedate: null, // default arvo
+                condition: null, // default arvo
+                description: findBook.description,
+                solddate: null, // default arvo
+                soldprice: null, // default arvo
+                idbookseries: findBook.idbookseries,
+                idbookshelf: bookshelf.idbookshelf,
+                }),
+            });
+            console.log("INSERT:", r);
+            // setQuery(doSearchQuery(nimi, osoite, tyyppi_id));
+            insertBook();
+
+        };
+
+    }, [addClicked])
+
     return (
         <div>
             <NavLink to={"/series/books/" + oneBook.idbookseries} style={{textDecoration: "none", color: "grey"}}>← Back to books</NavLink>
@@ -150,7 +203,7 @@ export const BookInfo = (props) => {
             <p>{oneBook.publicationyear}</p>
             <p>Author: {oneBook.writer}</p>
             <p>Description: {oneBook.description}</p>
-            <button onClick={(e) => handleAddBook(e)}>Add to your library</button>
+            <button onClick={(e) => {e.preventDefault(); setAddClicked(true)}}>Add to your library</button>
         </div>
     )
 }

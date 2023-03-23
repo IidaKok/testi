@@ -30,8 +30,23 @@ const getBookCopiesByID = async (req, res, next) => {
 }
 
 const createBookCopy = async (req, res, next) => {
-    const {bookname, edition, publicationyear, idbook, purchaseprice, purchasedate, condition, description, solddate, soldprice, idbookseries, idbookshelf} = req.body;
-    const createdBookCopy = {
+    const {
+      bookname,
+      edition,
+      publicationyear,
+      idbook,
+      purchaseprice,
+      purchasedate,
+      condition,
+      description,
+      solddate,
+      soldprice,
+      idbookseries,
+      idbookshelf,
+    } = req.body;
+  
+    try {
+      const createdBookCopy = await BookCopy.create({
         bookname,
         edition,
         publicationyear,
@@ -43,21 +58,17 @@ const createBookCopy = async (req, res, next) => {
         solddate,
         soldprice,
         idbookseries,
-        idbookshelf
-    };
-    try {
-        await createdBookCopy.save();
+        idbookshelf,
+      });
+      res.status(201).json(createdBookCopy);
     } catch (err) {
-        const error = HttpError(
-            'Creating copy failed, please try again!',
-            500
-        );
-        return next(error);
+      const error = new HttpError(
+        "Creating copy failed, please try again!",
+        500
+      );
+      return next(error);
     }
-    res
-    .status(201)
-    .json(createdBookCopy);
-};
+  };
 
 exports.getAllBookCopies = getAllBookCopies;
 exports.getBookCopiesByID = getBookCopiesByID;
