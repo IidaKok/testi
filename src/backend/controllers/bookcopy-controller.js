@@ -1,4 +1,5 @@
 const HttpError = require("../models/http-error");
+const BookCopy = require("../models/bookcopy");
 const db = require("../db");
 
 const getAllBookCopies = async (req, res, next) => {
@@ -28,5 +29,36 @@ const getBookCopiesByID = async (req, res, next) => {
     }
 }
 
+const createBookCopy = async (req, res, next) => {
+    const {bookname, edition, publicationyear, idbook, purchaseprice, purchasedate, condition, description, solddate, soldprice, idbookseries, idbookshelf} = req.body;
+    const createdBookCopy = {
+        bookname,
+        edition,
+        publicationyear,
+        idbook,
+        purchaseprice,
+        purchasedate,
+        condition,
+        description,
+        solddate,
+        soldprice,
+        idbookseries,
+        idbookshelf
+    };
+    try {
+        await createdBookCopy.save();
+    } catch (err) {
+        const error = HttpError(
+            'Creating copy failed, please try again!',
+            500
+        );
+        return next(error);
+    }
+    res
+    .status(201)
+    .json(createdBookCopy);
+};
+
 exports.getAllBookCopies = getAllBookCopies;
 exports.getBookCopiesByID = getBookCopiesByID;
+exports.createBookCopy = createBookCopy;
