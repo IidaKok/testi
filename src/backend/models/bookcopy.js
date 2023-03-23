@@ -1,9 +1,8 @@
-const { Model, DataTypes } = require('sequelize');
-const sequelize = require('../config/database');
+const { DataTypes } = require("sequelize");
+const sequelize = require("../database/connection");
 
-class BookCopy extends Model {}
-
-BookCopy.init(
+const BookCopy = sequelize.define(
+  "BookCopy",
   {
     id: {
       type: DataTypes.INTEGER,
@@ -17,11 +16,11 @@ BookCopy.init(
     },
     edition: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: true,
     },
     publicationyear: {
       type: DataTypes.INTEGER,
-      allowNull: false,
+      allowNull: true,
     },
     idbook: {
       type: DataTypes.INTEGER,
@@ -29,22 +28,22 @@ BookCopy.init(
     },
     purchaseprice: {
       type: DataTypes.FLOAT,
-      allowNull: false,
+      allowNull: true,
     },
     purchasedate: {
-      type: DataTypes.DATEONLY,
-      allowNull: false,
+      type: DataTypes.DATE,
+      allowNull: true,
     },
     condition: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: true,
     },
     description: {
       type: DataTypes.STRING,
       allowNull: true,
     },
     solddate: {
-      type: DataTypes.DATEONLY,
+      type: DataTypes.DATE,
       allowNull: true,
     },
     soldprice: {
@@ -53,16 +52,16 @@ BookCopy.init(
     },
     idbookseries: {
       type: DataTypes.INTEGER,
-      allowNull: false,
+      allowNull: true,
     },
     idbookshelf: {
       type: DataTypes.INTEGER,
-      allowNull: false,
+      allowNull: true,
     },
   },
   {
-    sequelize,
-    modelName: 'bookcopy',
+    tableName: "bookcopies",
+    timestamps: false,
   }
 );
 
