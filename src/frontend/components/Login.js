@@ -42,14 +42,11 @@ const Login = (props) => {
         <div className="Forms">
             <h2>Login</h2>
             <div className="Container">
-                <label>
-                    User name:
-                    <input type="text" value={name} onChange={(e) => setName(e.target.value)}></input>
-                </label>
-                <label>
-                    Password:
-                    <input type="text" value={password} onChange={(e) => setPassword(e.target.value)}></input>
-                </label>
+                
+                    <input type="text" value={name} onChange={(e) => setName(e.target.value)} placeholder="Username..." required></input>
+               
+                    <input type="text" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Password..." required></input>
+                
                 <button onClick={() => handleFetch()}>Login</button>
 
                 <p>{errorMessage}</p>
