@@ -4,30 +4,25 @@ const db = require("../db");
 
 const getAllBookCopies = async (req, res, next) => {
     try {
-        const result = await db.pool.query("select * from bookcopy");
-        res.send(result);
+        const bookCopies = await BookCopy.findAll();
+        res.json({ bookCopies });
     } catch (err) {
-        throw err;
+        return next(new HttpError("Something went wrong, could not get book copies.", 500));
     }
-}
+};
+
 const getBookCopiesByID = async (req, res, next) => {
+    const copyId = parseInt(req.params.idbookcopy);
     try {
-        const copyId = parseInt(req.params.idbookcopy);
-        const result = await db.pool.query("select * from bookcopy");
-
-        const bookcopy = result.filter(b => {
-            return b.idbookcopy === copyId;
-        });
-
-        if (!bookcopy) { //handling error 
-            return next(new HttpError("Can't find book", 404));
+        const bookCopy = await BookCopy.findByPk(copyId);
+        if (!bookCopy) {
+            return next(new HttpError("Can't find book copy with the provided ID", 404));
         }
-        res.json({ bookcopy });
+        res.json({ bookCopy });
+    } catch (err) {
+        return next(new HttpError("Something went wrong, could not get book copy.", 500));
     }
-    catch (err) {
-        throw err;
-    }
-}
+};
 
 const createBookCopy = async (req, res, next) => {
     const {

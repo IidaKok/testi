@@ -1,6 +1,7 @@
 // Use the MariaDB Node.js Connector
 const mariadb = require("mariadb");
- 
+const Sequelize = require('sequelize');
+
 // Create a connection pool
 const pool = 
   mariadb.createPool({
@@ -15,3 +16,10 @@ const pool =
 module.exports = Object.freeze({
   pool: pool
 });
+
+const sequelize = new Sequelize('mydb', 'root', 'Ruutti', {
+  host: '127.0.0.1',
+  dialect: 'mariadb', 
+});
+
+module.exports = sequelize;

@@ -52,11 +52,11 @@ const BookCopy = sequelize.define(
     },
     idbookseries: {
       type: DataTypes.INTEGER,
-      allowNull: true,
+      allowNull: false,
     },
     idbookshelf: {
       type: DataTypes.INTEGER,
-      allowNull: true,
+      allowNull: false,
     },
   },
   {
