@@ -35,6 +35,7 @@ app.use((error, req, res, next) => {
     res.json({ message: error.message || "unknown error" });
 })
 
+/*
 app.post("/bookcopy", (req, res) => {
     const q = "INSERT INTO bookcopy (`bookname`, `edition`, `publicationyear`, `purchaseprice`, `purchasedate`, `condition`, `description`, `solddate`, `soldprice`) VALUES (?)";
     const values = [
@@ -54,5 +55,6 @@ app.post("/bookcopy", (req, res) => {
         return res.json("Book has been created successfully")
     });
 });
+*/
 
 app.listen(5000);

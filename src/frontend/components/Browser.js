@@ -128,13 +128,14 @@ export const SeriesInfo = (props) => {
     )
 }
 
+/*
 export const BookInfo = (props) => {
     const [oneBook, setOneBook] = useState({});
     const params = useParams();
     const {idbook} = params;
 
     const [allBooks, setAllBooks] = useState([]);
-    const [bookToAdd, setBookToAdd] = useState({});
+    // const [bookToAdd, setBookToAdd] = useState({});
     const [bookshelf, setBookshelf] = useState(null);
     const user = props.user;
 
@@ -189,8 +190,9 @@ export const BookInfo = (props) => {
                 }),
             });
             console.log("INSERT:", r);
+            if (setAddClicked) insertBook();
             // setQuery(doSearchQuery(nimi, osoite, tyyppi_id));
-            insertBook();
+            setAddClicked(false);
 
         };
 
@@ -204,6 +206,80 @@ export const BookInfo = (props) => {
             <p>Author: {oneBook.writer}</p>
             <p>Description: {oneBook.description}</p>
             <button onClick={(e) => {e.preventDefault(); setAddClicked(true)}}>Add to your library</button>
+        </div>
+    )
+}
+*/
+
+export const BookInfo = (props) => {
+    const [oneBook, setOneBook] = useState({});
+    const params = useParams();
+    const {idbook} = params;
+
+    const [allBooks, setAllBooks] = useState([]);
+    const [bookshelf, setBookshelf] = useState(null);
+    const user = props.user;
+
+    const [addClicked, setAddClicked] = useState(false);
+
+    useEffect(() => {
+        const fetchBook = async () => {
+            let response = await fetch("http://localhost:5000/api/book");
+            let books = await response.json();
+            setAllBooks(books);
+            let findBook = books.find((b) => b.idbook == idbook);
+            setOneBook(findBook);      
+        }
+        fetchBook();
+    }, [idbook]);
+
+    useEffect(() => {
+        const fetchBookshelf = async () => {
+            let response = await fetch("http://localhost:5000/api/bookshelf");
+            let bookshelfs = await response.json();
+            let userBookshelf = bookshelfs.find((b) => b.iduser == user.iduser);
+            setBookshelf(userBookshelf);
+        }
+        if (bookshelf == null) fetchBookshelf();
+    }, [bookshelf, user.iduser]);
+
+    const insertBook = async (bookId) => {
+        let findBook = allBooks.find((b) => b.idbook == bookId);
+        if (bookshelf !== null) {
+            const r = await fetch("http://localhost:5000/api/bookcopy", {
+                method: "POST",
+                headers: {
+                    "Content-type": "application/json",
+                },
+                body: JSON.stringify({
+                    bookname: findBook.bookname,
+                    edition: null, // default arvo
+                    publicationyear: findBook.publicationyear,
+                    idbook: findBook.idbook,
+                    purchaseprice: null, // default arvo
+                    purchasedate: null, // default arvo
+                    condition: null, // default arvo
+                    description: findBook.description,
+                    solddate: null, // default arvo
+                    soldprice: null, // default arvo
+                    idbookseries: findBook.idbookseries,
+                    idbookshelf: bookshelf.idbookshelf,
+                }),
+            });
+            console.log("INSERT:", r);
+        }
+        setAddClicked(false);
+    };
+
+    return (
+        <div>
+            <NavLink to={"/series/books/" + oneBook.idbookseries} style={{textDecoration: "none", color: "grey"}}>← Back to books</NavLink>
+            <h3>{oneBook.bookname}</h3>
+            <p>{oneBook.publicationyear}</p>
+            <p>Author: {oneBook.writer}</p>
+            <p>Description: {oneBook.description}</p>
+            <button onClick={(e) => {e.preventDefault(); setAddClicked(true)}}>Add to your library</button>
+            {addClicked && <button onClick={() => insertBook(oneBook.idbook)}>Confirm</button>}
         </div>
     )
 }

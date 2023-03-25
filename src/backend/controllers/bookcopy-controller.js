@@ -47,7 +47,7 @@ const createBookCopy = async (req, res, next) => {
   
     try {
       await db.pool.query(
-        "INSERT INTO bookcopy (bookname, edition, publicationyear, idbook, purchaseprice, purchasedate, condition, description, solddate, soldprice, idbookseries, idbookshelf) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+        "INSERT INTO bookcopy (bookname, edition, publicationyear, idbook, purchaseprice, purchasedate, `condition`, description, solddate, soldprice, idbookseries, idbookshelf) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
         [
           bookname,
           edition,
