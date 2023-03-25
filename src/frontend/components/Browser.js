@@ -78,12 +78,18 @@ export const SeriesInfo = (props) => {
     const {idbookseries} = params;
     const [bookToAdd, setBookToAdd] = useState();
 
+    const [allBooks, setAllBooks] = useState([]);
+    const user = props.user;
+    const [bookshelf, setBookshelf] = useState(null);
+    const [addClicked, setAddClicked] = useState(false);
+
     useEffect( () => {
 
         const fetchBooks = async () => {
 
             let response = await fetch("http://localhost:5000/api/book");
             let books = await response.json();
+            setAllBooks(books);
             let filteredBooks = books.filter((b) => b.idbookseries == idbookseries);
 
             setBookData(filteredBooks);       
@@ -93,16 +99,58 @@ export const SeriesInfo = (props) => {
         fetchBooks();
     }, []);
 
-    const handleAddBook = (bookId) => {
 
-        
-    }
+    useEffect(() => {
+        const fetchBookshelf = async () => {
+            let response = await fetch("http://localhost:5000/api/bookshelf");
+            let bookshelfs = await response.json();
+            let userBookshelf = bookshelfs.find((b) => b.iduser == user.iduser);
+            setBookshelf(userBookshelf);
+        }
+        if (bookshelf == null) fetchBookshelf();
+    }, [bookshelf, user.iduser]);
+
+    const insertBook = async (bookId) => {
+        let findBook = allBooks.find((b) => b.idbook == bookId);
+        if (bookshelf !== null) {
+            const r = await fetch("http://localhost:5000/api/bookcopy", {
+                method: "POST",
+                headers: {
+                    "Content-type": "application/json",
+                },
+                body: JSON.stringify({
+                    bookname: findBook.bookname,
+                    edition: null, // default arvo
+                    publicationyear: findBook.publicationyear,
+                    idbook: findBook.idbook,
+                    purchaseprice: null, // default arvo
+                    purchasedate: null, // default arvo
+                    condition: null, // default arvo
+                    description: findBook.description,
+                    solddate: null, // default arvo
+                    soldprice: null, // default arvo
+                    idbookseries: findBook.idbookseries,
+                    idbookshelf: bookshelf.idbookshelf,
+                }),
+            });
+            console.log("INSERT:", r);
+        }
+        setAddClicked(false);
+        setBookToAdd(null);
+    };
+
 
     const renderTableRows = () => {
         console.log("In renderTableRows: ", bookData);
         return bookData.map((b) => (
             <tr key={b.idbook}>
-                <td><button style={{color: "green"}} onClick={(e) => {e.preventDefault(); handleAddBook(b.idbook)}}>+</button> <NavLink to={'/series/books/book/' + b.idbook}>{b.bookname}</ NavLink></td>
+                <td>
+                    {bookToAdd === b.idbook ?
+                        <button onClick={() => insertBook(b.idbook)}>Confirm</button> :
+                        <button style={{color: "green"}} onClick={() => setBookToAdd(b.idbook)}>+</button>
+                    }
+                    <NavLink to={'/series/books/book/' + b.idbook}>{b.bookname}</ NavLink>
+                </td>
                 <td>{b.publicationyear}</td>
             </tr>
         ));
@@ -127,89 +175,6 @@ export const SeriesInfo = (props) => {
         </div>
     )
 }
-
-/*
-export const BookInfo = (props) => {
-    const [oneBook, setOneBook] = useState({});
-    const params = useParams();
-    const {idbook} = params;
-
-    const [allBooks, setAllBooks] = useState([]);
-    // const [bookToAdd, setBookToAdd] = useState({});
-    const [bookshelf, setBookshelf] = useState(null);
-    const user = props.user;
-
-    const [addClicked, setAddClicked] = useState(false);
-
-    useEffect( () => {
-
-        const fetchBook = async () => {
-            console.log(idbook);
-            let response = await fetch("http://localhost:5000/api/book");
-            let books = await response.json();
-            setAllBooks(books);
-            let findBook = books.find((b) => b.idbook == idbook);
-            console.log(findBook);
-            setOneBook(findBook);      
-            
-        }
-
-        fetchBook();
-    }, []);
-
-    useEffect(() => {
-
-        const fetchBookshelf = async () => {
-            let response = await fetch("http://localhost:5000/api/bookshelf");
-            let bookshelfs = await response.json();
-            let userBookshelf = bookshelfs.find((b) => b.iduser == user.iduser);
-            setBookshelf(userBookshelf);
-        }
-        if (bookshelf == null) fetchBookshelf();
-
-
-        const insertBook = async (bookId) => {
-            let findBook = allBooks.find((b) => b.idbook == bookId);
-            const r = await fetch("http://localhost:5000/api/bookcopy", {
-                method: "POST",
-                headers: {
-                "Content-type": "application/json",
-                },
-                body: JSON.stringify({
-                bookname: findBook.bookname,
-                publicationyear: findBook.publicationyear,
-                idbook: findBook.idbook,
-                purchaseprice: null, // default arvo
-                purchasedate: null, // default arvo
-                condition: null, // default arvo
-                description: findBook.description,
-                solddate: null, // default arvo
-                soldprice: null, // default arvo
-                idbookseries: findBook.idbookseries,
-                idbookshelf: bookshelf.idbookshelf,
-                }),
-            });
-            console.log("INSERT:", r);
-            if (setAddClicked) insertBook();
-            // setQuery(doSearchQuery(nimi, osoite, tyyppi_id));
-            setAddClicked(false);
-
-        };
-
-    }, [addClicked])
-
-    return (
-        <div>
-            <NavLink to={"/series/books/" + oneBook.idbookseries} style={{textDecoration: "none", color: "grey"}}>← Back to books</NavLink>
-            <h3>{oneBook.bookname}</h3>
-            <p>{oneBook.publicationyear}</p>
-            <p>Author: {oneBook.writer}</p>
-            <p>Description: {oneBook.description}</p>
-            <button onClick={(e) => {e.preventDefault(); setAddClicked(true)}}>Add to your library</button>
-        </div>
-    )
-}
-*/
 
 export const BookInfo = (props) => {
     const [oneBook, setOneBook] = useState({});
