@@ -8,27 +8,43 @@ const createUser = async (req, res, next) => {
     const username = req.body.username;
     const password = req.body.password;
     const email = req.body.email;
+    let error = [];
+    let msg1 = "Username is already taken";
+    let msg2 = "The email address is already subscribed. Please try to use another one or simply Log in";
+    
 
     try {
         //checks if the username is taken
-        const users = await db.pool.query("select * from user where username = '"+username+"'");
-        const user = users.find(u => {
+        const userByName = await db.pool.query("select * from user where username = '" + username + "'");
+        const usern = userByName.find(u => {
             return u.username === username;
         });
+        //checks if the email is taken
+        const userByEmail = await db.pool.query("select * from user where email = '" + email + "'");
+        const usere = userByEmail.find(u => {
+            return u.email === email;
+        });
 
-        //if username is taken returns error
-        if (user) { 
-            console.log("Username is already taken");
-            return next(new HttpError("Username is already taken", 404));
+
+        if (!usern && !usere) {
+            //sends the user's information to the database
+            const response = db.pool.query("INSERT INTO user (iduser, username, password, email) VALUES (" + iduser + ",'" + username + "','" + password + "','" + email + "')");
+            res.send(response);
+
+
+            console.log("This was sent");
+            console.log(iduser, username, password, email);
         }
-
-        //sends the user's information to the database
-        const response = db.pool.query("INSERT INTO user (iduser, username, password, email) VALUES ("+ iduser+",'"+username+"','"+password+"','"+email+"')");
-        res.send(response);
-
-
-        console.log("This was sent");
-        console.log(iduser, username, password, email);
+        else { 
+            //if username or email is taken returns error
+            if (usern) {
+                error.push(msg1);
+            }
+            if (usere) {
+                error.push(msg2);
+            }
+            return next(new HttpError(error, 400));
+        }
     }
     catch (err) {
         throw err;
@@ -51,8 +67,9 @@ const getAllUsers = async (req, res, next) => {
     }
 }
 
+
 //gets user from the database based on username and password
-const getUserByName = async (req, res, next) => {
+const getUserByNameAndPassword = async (req, res, next) => {
     try {
         const usernam = req.params.username;
         const password = req.params.password;
@@ -79,5 +96,5 @@ function basicDetails(user) {
 }
 
 exports.getAllUsers = getAllUsers;
-exports.getUserByName = getUserByName;
+exports.getUserByNameAndPassword = getUserByNameAndPassword;
 exports.createUser = createUser;

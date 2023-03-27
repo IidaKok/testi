@@ -20,7 +20,11 @@
     padding: 12px 20px;
     margin: 8px 0px;
     display: inline-block;
-    border: 1px solid #ccc;
     box-sizing: border-box;
   }
-  
+  .valid {
+    border: 2px solid #ccc;
+  }
+  .invalid {
+    border: 2px solid red;
+  }
