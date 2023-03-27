@@ -1,3 +1,95 @@
 .App {
   text-align: center;
 }
+
+/* User Page CSS */
+.user-page {
+    height: 80vh;
+    padding: 0px 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+.outer-user-page {
+    display: flex;
+}
+.inner-user-page {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+}
+.add-user-btn {
+    width: auto;
+    min-width: 280px;
+    color: #565656;
+    padding: 12px;
+    font-size: 14px;
+    font-weight: bold;
+    border: solid 2px #1189de;
+    border-radius: 40px;
+    background: #ffff;
+    cursor: pointer;
+    margin: 4px 2px;
+}
+.add-bookcopy-form {
+    text-align: center;
+}
+img {
+    width: 200px;
+    height: 300px;
+    object-fit: cover;
+    background-color: dimgrey;
+}
+.delete {
+    border: none;
+    padding: 3px 6px;
+    background-color: white;
+    cursor: pointer;
+    border: 1px solid rgb(245, 191, 191);
+    color: rgb(242, 100, 100);
+}
+.update {
+    border: none;
+    padding: 3px 6px;
+    background-color: white;
+    cursor: pointer;
+    border: 1px solid rgb(204, 204, 243);
+    color: rgb(139, 139, 234);
+}
+.add-bookcopy-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+.user-input {
+    width: 250px;
+    padding: 10px;
+    border: 1px solid gray;
+}
+.formAddBtn {
+    border: none;
+    width: 250px;
+    padding: 10px;
+    border: 1px solid gray;
+    background-color: rgb(12 180 87);
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+}
+.formCancelBtn {
+    border: none;
+    width: 250px;
+    padding: 10px;
+    border: 1px solid gray;
+    background-color: rgb(225 28 28);
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+}
+/* ^^ User Page CSS ^^ */

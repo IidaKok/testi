@@ -1,7 +1,15 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\src",
+    "\\src\\backend",
+    "\\src\\backend\\controllers",
+    "\\src\\backend\\models",
+    "\\src\\backend\\routes",
+    "\\src\\frontend",
+    "\\src\\frontend\\components",
+    "\\src\\frontend\\pages"
   ],
-  "SelectedNode": "\\README.md",
+  "SelectedNode": "\\src\\frontend",
   "PreviewInSolutionExplorer": false
 }

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import "../Loginstyle.css";
+import "../Loginstyle.css";
 
 const Login = (props) => {
 
@@ -29,7 +30,9 @@ const Login = (props) => {
         if (query !== '') fetchUsers();
     }, [query]);
 
-    const handleFetch = () => {
+
+    const handleSubmit = (event) => {
+        event.preventDefault();
         setButtonPressed(true);
         let q = [];
         if (name !== "") q.push(name);
@@ -42,18 +45,16 @@ const Login = (props) => {
         <div className="Forms">
             <h2>Login</h2>
             <div className="Container">
-                
-                    <input type="text" value={name} onChange={(e) => setName(e.target.value)} placeholder="Username..." required></input>
-               
-                    <input type="text" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Password..." required></input>
-                
-                <button onClick={() => handleFetch()}>Login</button>
-
-                <p>{errorMessage}</p>
+                <form onSubmit={(e) => handleSubmit(e)}>
+                    <input type="text" value={name} onChange={(e) => setName(e.target.value)} placeholder="Username..."/>
+                    <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Password..."/>
+                    <p>{errorMessage}</p>
+                    <input type="submit" value="Login" />
+                </form>
             </div>
 
             <div className="Container">
-            <p>Don't have an account? <Link to="/register">Register</Link></p>
+                <p>Don't have an account? <Link to="/register">Register</Link></p>
 
             </div>
         </div>
