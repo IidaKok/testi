@@ -7,6 +7,7 @@ const Logged = (props) => {
 
     const { user } = props;
     const [shelf, setShelf] = useState([]);
+    const [msg, setMsg] = useState("");
 
 
     useEffect(() => {
@@ -17,7 +18,7 @@ const Logged = (props) => {
                 setShelf(c);
             }
             else {
-                console.log("jokin meni pieleen");
+                setMsg("Welcome new user");
             }
         }
         fetchBooks();
@@ -26,7 +27,8 @@ const Logged = (props) => {
     return (
         <div className="App">
             <h1>Welcome</h1>
-            <p>{user.username}</p>
+            <p>{msg} {user.username}</p>
+           
 
             <table>
                 <thead>

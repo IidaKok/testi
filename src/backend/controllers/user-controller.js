@@ -76,7 +76,7 @@ const getUserByNameAndPassword = async (req, res, next) => {
         //checks if the user exists
         const user = result.find(u => {
             return u.username === usernam && u.password === password;
-        });
+        }); 
 
         //if user doesn't exists, error is returned
         if (!user) {
