@@ -3,23 +3,28 @@ const bodyParser = require("body-parser");
 
 const userRoutes = require("./routes/user-routes");
 const seriesRoutes = require("./routes/series-routes");
+const bookshelfRoutes = require("./routes/bookshelf-routes");
 
 const app = express();
+app.use(bodyParser.urlencoded({ extended: true}));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
 
 //allows cors
 app.use(function(req, res, next) {
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header(
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    res.setHeader(
       "Access-Control-Allow-Headers",
-      "Origin, X-Requested-With, Content-Type, Accept"
+      "Origin, X-Requested-With, Content-Type, Accept, Authorization"
     );
+    res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
+    res.setHeader("Content-Type", "application/json");
     next();
   });
 
 app.use("/api/users", userRoutes);
 app.use("/api/bookseries", seriesRoutes);
+app.use("/api/bookshelf", bookshelfRoutes);
+
 app.use((error, req, res, next) => {
     if (res.headerSent) {
         return next(error);
