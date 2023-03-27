@@ -1,30 +1,46 @@
-
 .Forms {
-    background-color: rgb(196, 233, 196);
-    text-align: center;
-    height: 100%;
-    width: 50%;
-    margin: auto;
-    padding: 30px;
-    margin-top: 10px;
-  }
-  .Container {
-    text-align: left;
-    padding: 20px 50px;
-    width: 70%;
-    background-color: aliceblue;
-    margin: auto;
-  }
-  input[type=text], input[type=password] {
-    width: 100%;
-    padding: 12px 20px;
-    margin: 8px 0px;
-    display: inline-block;
-    box-sizing: border-box;
-  }
-  .valid {
-    border: 2px solid #ccc;
-  }
-  .invalid {
-    border: 2px solid red;
-  }
+  background-color: rgb(196, 233, 196);
+  text-align: center;
+  height: 100%;
+  width: 50%;
+  margin: auto;
+  padding: 30px;
+  margin-top: 10px;
+}
+
+.Container {
+  text-align: left;
+  padding: 20px 50px;
+  width: 70%;
+  background-color: aliceblue;
+  margin: auto;
+}
+
+input[type=text],
+input[type=password] {
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0px;
+  display: inline-block;
+  box-sizing: border-box;
+  border: 2px solid #ccc;
+  -webkit-transition: 0.5s;
+  transition: 0.5s;
+  outline: none;
+}
+
+input[type=text]:focus,
+input[type=password]:focus {
+  border: 2px solid #373838;
+}
+
+
+input[type=text].invalid,
+input[type=password].invalid {
+  border: 2px solid red;
+}
+
+input[type=text]:focus.invalid,
+input[type=password]:focus.invalid {
+  border: 2px solid red;
+}

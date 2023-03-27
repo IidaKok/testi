@@ -43,7 +43,6 @@ const Register = () => {
             email: userToBeInserted.email
           }),
         })
-
           .then((res) => res.json())
           .then((data) => {
             console.log("data message: ", data.message);
@@ -68,14 +67,13 @@ const Register = () => {
               }
             }
           });
+
+          console.log("INSERT:", r);
       }
       catch (error) {
         console.log(error);
       }
       setuserToBeInserted(null);
-
-      //console.log("INSERT:", r);
-      console.log("asiakasToBeInserted", userToBeInserted);
     };
     if (userToBeInserted != null) insertUser();
   }, [userToBeInserted]);
