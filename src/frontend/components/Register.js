@@ -75,9 +75,9 @@ const Register = () => {
     if (userToBeInserted != null) insertUser();
   }, [userToBeInserted]);
 
-  /* if(regSuccess){
+  if(regSuccess){
     navigate("/");
-  }*/
+  }
 
   //password validation
   useEffect(() => {
