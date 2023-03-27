@@ -45,39 +45,39 @@ const Register = () => {
         })
           .then((res) => res.json())
           .then((data) => {
-            console.log("data message: ", data.message);
+            if (data.message === undefined) {
+              console.log("INSERT:", userToBeInserted);
+              setuserToBeInserted(null);
+              setRegSuccess(true);
+              return;
+            }
             let msg = data.message;
-            console.log(msg.includes("Username"));
-
+            console.log("Message: ", msg);
             if (msg.includes("email") && msg.includes("Username")) {
-              console.log("Message: ", msg);
-
               var m = msg.split(",");
               setErrorMessage(m[0]);
               setErrorMessage2(m[1]);
             }
             else {
               if (msg.includes("email")) {
-                setErrorMessage("");
                 setErrorMessage2(msg);
               }
               else if (msg.includes("Username")) {
-                setErrorMessage2("");
                 setErrorMessage(msg);
               }
             }
           });
-
-          console.log("INSERT:", r);
       }
       catch (error) {
         console.log(error);
       }
-      setuserToBeInserted(null);
     };
     if (userToBeInserted != null) insertUser();
   }, [userToBeInserted]);
 
+  /* if(regSuccess){
+    navigate("/");
+  }*/
 
   //password validation
   useEffect(() => {
@@ -97,11 +97,11 @@ const Register = () => {
   //password validation
   useEffect(() => {
     if (password.length < 5) setValidPassword(true);
+    else setValidPassword(false);
+    
     if (password !== passwordAgain) setPassMatch(true);
     if (password === passwordAgain) setPassMatch(false);
-    else {
-      setValidPassword(false);
-    }
+    
   }, [password]);
 
   //email validation
@@ -114,7 +114,8 @@ const Register = () => {
     event.preventDefault();
     setButtonPressed(true);
 
-
+    setErrorMessage("");
+    setErrorMessage2("");
     if (!validName && !validPassword && !validEmail) {
       setuserToBeInserted({ iduser: iduser, username: username, password: password, email: email });
 
@@ -126,7 +127,7 @@ const Register = () => {
       setButtonPressed(false);
     }
     else {
-      console.log("true joten EI lähetetä")
+      console.log("Inputs are not valid");
     };
   }
   //show password
@@ -177,12 +178,12 @@ const Register = () => {
 class Error extends Component {
   constructor(props) {
     super(props);
-    this.state = { message: null, style: "", value: props.value };
+    this.state = { message: null,  value: props.value };
 
     this.componentDidMount = this.componentDidMount.bind(this);
   }
   componentDidMount() {
-    this.setState({ message: this.state.value + " is too short", style: "invalid" });
+    this.setState({ message: this.state.value + " is too short" });
   }
   render() {
     return (

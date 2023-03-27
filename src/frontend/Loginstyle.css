@@ -17,7 +17,8 @@
 }
 
 input[type=text],
-input[type=password] {
+input[type=password],
+input[type=email] {
   width: 100%;
   padding: 12px 20px;
   margin: 8px 0px;
@@ -30,17 +31,17 @@ input[type=password] {
 }
 
 input[type=text]:focus,
-input[type=password]:focus {
+input[type=password]:focus,
+input[type=email]:focus {
   border: 2px solid #373838;
 }
 
 
 input[type=text].invalid,
-input[type=password].invalid {
-  border: 2px solid red;
-}
-
+input[type=password].invalid,
+input[type=email].invalid,
 input[type=text]:focus.invalid,
-input[type=password]:focus.invalid {
+input[type=password]:focus.invalid
+input[type=email]:focus.invalid {
   border: 2px solid red;
 }

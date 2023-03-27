@@ -25,18 +25,8 @@ const createUser = async (req, res, next) => {
             return u.email === email;
         });
 
-
-        if (!usern && !usere) {
-            //sends the user's information to the database
-            const response = db.pool.query("INSERT INTO user (iduser, username, password, email) VALUES (" + iduser + ",'" + username + "','" + password + "','" + email + "')");
-            res.send(response);
-
-
-            console.log("This was sent");
-            console.log(iduser, username, password, email);
-        }
-        else { 
-            //if username or email is taken returns error
+        //if username or email is taken returns error
+        if (usern || usere) {
             if (usern) {
                 error.push(msg1);
             }
@@ -45,6 +35,14 @@ const createUser = async (req, res, next) => {
             }
             return next(new HttpError(error, 400));
         }
+
+        //sends the user's information to the database
+        const response = db.pool.query("INSERT INTO user (iduser, username, password, email) VALUES (" + iduser + ",'" + username + "','" + password + "','" + email + "')");
+        res.send(response);
+
+
+        console.log("This was sent");
+        console.log(iduser, username, password, email);
     }
     catch (err) {
         throw err;
