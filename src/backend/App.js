@@ -50,7 +50,7 @@ app.post("/bookcopy", (req, res) => {
         req.body.solddate,
         req.body.soldprice,
     ];
-
+console.log(values);
     db.query(q, [values], (err, data) => {
         if (err) return res.json(err);
         return res.json("Book has been created successfully")
