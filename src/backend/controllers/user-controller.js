@@ -4,14 +4,14 @@ const db = require("../db");
 //creates new user
 const createUser = async (req, res, next) => {
 
-    const iduser = req.body.iduser;
+    //const iduser = req.body.iduser;
     const username = req.body.username;
     const password = req.body.password;
     const email = req.body.email;
     let error = [];
     let msg1 = "Username is already taken";
     let msg2 = "The email address is already subscribed. Please try to use another one or simply Log in";
-    
+
 
     try {
         //checks if the username is taken
@@ -37,12 +37,12 @@ const createUser = async (req, res, next) => {
         }
 
         //sends the user's information to the database
-        const response = db.pool.query("INSERT INTO user (iduser, username, password, email) VALUES (" + iduser + ",'" + username + "','" + password + "','" + email + "')");
+        const response = db.pool.query("INSERT INTO user (username, password, email) VALUES ('" +username + "','" + password + "','" + email + "')");
         res.send(response);
 
 
         console.log("This was sent");
-        console.log(iduser, username, password, email);
+        console.log( username, password, email);
     }
     catch (err) {
         throw err;
@@ -64,23 +64,31 @@ const getAllUsers = async (req, res, next) => {
         throw err;
     }
 }
-
-
 //gets user from the database based on username and password
 const getUserByNameAndPassword = async (req, res, next) => {
     try {
-        const usernam = req.params.username;
+        const username = req.params.username;
         const password = req.params.password;
+
+        //checks username
+        const result1 = await db.pool.query("select * from user where username = '" + username + "'");
+        const userByName = result1.find(u => {
+            return u.username === username;
+        });
+
+        //if username doesn't exists, error is returned
+        if (!userByName) {
+            return next(new HttpError("Username is incorrect. Try again", 404));
+        }
+
+        //checks is the password correct
         const result = await db.pool.query("select * from user");
-
-        //checks if the user exists
         const user = result.find(u => {
-            return u.username === usernam && u.password === password;
-        }); 
+            return u.username === username && u.password === password;
+        });
 
-        //if user doesn't exists, error is returned
         if (!user) {
-            return next(new HttpError("Can't find user", 404));
+            return next(new HttpError("Password is incorrect. Try again", 404));
         }
         res.json(basicDetails(user));
     }
@@ -88,6 +96,9 @@ const getUserByNameAndPassword = async (req, res, next) => {
         throw err;
     }
 }
+/*const user = result.find(u => {
+            return u.username === usernam && u.password === password;
+        });*/
 function basicDetails(user) {
     const { iduser, username, password, email } = user;
     return { iduser, username, password, email };
