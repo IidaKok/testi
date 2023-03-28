@@ -9,4 +9,7 @@ const router = express.Router();
 router.get("/", userControllers.getAllSeries);
 router.get("/:idbookseries", userControllers.getSeriesByName);
 
+//post
+router.post("/post/", userControllers.createSeries);
+
 module.exports = router; //vie appille

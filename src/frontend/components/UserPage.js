@@ -17,7 +17,7 @@ const UserPage = () => {
 
     return (
         <div>
-            <h1 className="h1user"> User Library </h1>
+            <h1 id="h1user"> User Library </h1>
             <div className="user-page">
                 {bookcopy.map(book => (
                     <div className="inner-user-page" key={book.idbookcopy}>
@@ -34,8 +34,10 @@ const UserPage = () => {
                     </div>
                     ))}
             </div>
+            <div className="user-page-btn" style={{ textAlign: 'center' }}>
             <Link to="/addBook"><button className="add-user-btn">Add a new book to your library</button></Link>
-            <Link to="/addSeries"><button className="add-user-btn">Add book series to your library</button></Link>
+            <Link to="/addSeries"><button className="add-user-btn">Add a new custom series to your library</button></Link>
+            </div>
         </div>
     )
 }

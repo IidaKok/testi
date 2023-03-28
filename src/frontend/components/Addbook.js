@@ -1,6 +1,8 @@
 import React from 'react'
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
+import "../App.css";
+
 
 const Addbook = (props) => {
     const [bookcopy, setBookcopy] = useState(null);
@@ -75,17 +77,17 @@ const Addbook = (props) => {
     return (
         <div className="add-bookcopy-form">
             <h1>Add New Book</h1>
-            <input className="user-input" type="text" placeholder="bookname" onChange= { handleChange } name="bookname"/>
-            <input className="user-input" type="number" placeholder="edition" onChange= { handleChange } name="edition"/>
-            <input className="user-input" type="number" min="1500" max="2050" placeholder="publicationyear" onChange= { handleChange }  name="publicationyear"/>
-            <input className="user-input" type="number" placeholder="purchaseprice" onChange= { handleChange }  name="purchaseprice"/>
-            <input className="user-input" type="number" placeholder="condition" onChange= { handleChange }  name="condition"/>
-            <input className="user-input" type="text" placeholder="description" onChange= { handleChange }  name="description"/>
-            <input className="user-input" type="number" placeholder="soldprice" onChange= { handleChange } name="soldprice"/>
+            <input id ="user-input" type="text" placeholder="bookname" onChange= { handleChange } name="bookname"/>
+            <input id ="user-input" type="number" placeholder="edition" onChange= { handleChange } name="edition"/>
+            <input id ="user-input" type="number" placeholder="publicationyear" onChange= { handleChange }  name="publicationyear"/>
+            <input id ="user-input" type="number" placeholder="purchaseprice" onChange= { handleChange }  name="purchaseprice"/>
+            <input id ="user-input" type="number" placeholder="condition" onChange= { handleChange }  name="condition"/>
+            <input id ="user-input" type="text" placeholder="description" onChange= { handleChange }  name="description"/>
+            <input id ="user-input" type="number" placeholder="soldprice" onChange= { handleChange } name="soldprice"/>
             <p>Purchasedate</p>
-            <input className="user-input" type="date" placeholder="purchasedate" onChange= { handleChange }  name="purchasedate"/>
+            <input id ="user-input" type="date" placeholder="purchasedate" onChange= { handleChange }  name="purchasedate"/>
             <p>Solddate</p>
-            <input className="user-input" type="date" placeholder="solddate" onChange={handleChange} name="solddate" />
+            <input id ="user-input" type="date" placeholder="solddate" onChange={handleChange} name="solddate" />
             <button className="formAddBtn" onClick={handleClick}>Add</button>
             <button className="formCancelBtn" onClick={handleCancel}>Cancel</button>
         </div>
