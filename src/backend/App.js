@@ -37,24 +37,4 @@ app.use((error, req, res, next) => {
     res.json({ message: error.message || "unknown error" });
 })
 
-app.post("/bookcopy", (req, res) => {
-    const q = "INSERT INTO bookcopy (`bookname`, `edition`, `publicationyear`, `purchaseprice`, `purchasedate`, `condition`, `description`, `solddate`, `soldprice`) VALUES (?)";
-    const values = [
-        req.body.bookname,
-        req.body.edition,
-        req.body.publicationyear,
-        req.body.purchaseprice,
-        req.body.purchasedate,
-        req.body.condition,
-        req.body.description,
-        req.body.solddate,
-        req.body.soldprice,
-    ];
-
-    db.query(q, [values], (err, data) => {
-        if (err) return res.json(err);
-        return res.json("Book has been created successfully")
-    });
-});
-
 app.listen(5000);

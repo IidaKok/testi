@@ -28,7 +28,7 @@ const App = () => {
                 <Route path="/series/books/:idbookseries" element={<SeriesInfo handleAddBook={handleAddBook} />} />
                 <Route path="/series/books/book/:idbook" element={<BookInfo handleAddBook={handleAddBook} />} />
                 <Route path="/userPage" element={<UserPage />} />
-                <Route path="/Addbook" element={<Addbook />} />
+                <Route path="/Addbook" element={<Addbook user={user}/>} />
                 <Route path="/Addseries" element={<Addseries />} />
             </Routes>
         </Router>

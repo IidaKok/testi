@@ -10,6 +10,6 @@
     "\\src\\frontend\\components",
     "\\src\\frontend\\pages"
   ],
-  "SelectedNode": "\\src\\frontend",
+  "SelectedNode": "\\src\\backend\\controllers\\bookcopy-controller.js",
   "PreviewInSolutionExplorer": false
 }

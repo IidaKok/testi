@@ -1,22 +1,19 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import "../App.css";
-import axios from 'axios';
 
 const UserPage = () => {
     const [bookcopy, setBookcopy] = useState([]);
 
     useEffect(() => {
         const fetchAllUserBooks = async () => {
-            try {
-                const res = await axios.get("http://localhost:5000/api/bookcopy/")
-                setBookcopy(res.data);
-            } catch (err) {
-                console.log(err)
-            }
+            let response = await fetch("http://localhost:5000/api/bookcopy/");
+            let c = await response.json();
+            setBookcopy(c);
         }
+
         fetchAllUserBooks()
-    }, [])
+    }, []);
 
     return (
         <div>
@@ -34,7 +31,6 @@ const UserPage = () => {
                         <p>Soldprice: {book.soldprice}</p>
                         <button className="delete">Delete</button>
                         <button className="update">Update</button>
-
                     </div>
                     ))}
             </div>

@@ -9,4 +9,7 @@ const router = express.Router();
 router.get("/", userControllers.getAllBookCopies);
 router.get("/:idbookcopy", userControllers.getBookCopiesByID);
 
+//post
+router.post("/post/", userControllers.createUserBook);
+
 module.exports = router; //vie appille
