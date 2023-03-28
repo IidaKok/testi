@@ -1,4 +1,3 @@
-import { async } from 'q';
 import { useState, useEffect, useMemo } from 'react';
 import { Link, NavLink, useHistory, useParams } from "react-router-dom";
 import "../App.css";
@@ -36,15 +35,6 @@ export const SeriesBrowser = (props) => {
         fetchSeries();
     }, []);
 
-    /*
-    const handleClick = (serId) => {
-        history.push({
-            pathname: '/series/books',
-            state: { serId }
-        });
-    }
-    */
-
     return (
         <div>
             <table >
@@ -81,7 +71,7 @@ export const SeriesInfo = (props) => {
     const [allBooks, setAllBooks] = useState([]);
     const user = props.user;
     const [bookshelf, setBookshelf] = useState(null);
-    const [addClicked, setAddClicked] = useState(false);
+
 
     useEffect( () => {
 
@@ -135,7 +125,6 @@ export const SeriesInfo = (props) => {
             });
             console.log("INSERT:", r);
         }
-        setAddClicked(false);
         setBookToAdd(null);
     };
 
@@ -186,6 +175,9 @@ export const BookInfo = (props) => {
     const user = props.user;
 
     const [addClicked, setAddClicked] = useState(false);
+    const [quickAddBook, setQuickAddBook] = useState({});
+
+    const [modalOpen, setModalOpen] = useState(false);
 
     useEffect(() => {
         const fetchBook = async () => {
@@ -193,7 +185,17 @@ export const BookInfo = (props) => {
             let books = await response.json();
             setAllBooks(books);
             let findBook = books.find((b) => b.idbook == idbook);
-            setOneBook(findBook);      
+            setOneBook(findBook);
+            setQuickAddBook({
+                id: findBook.idbook,
+                edition: null,
+                purchaseprice: null,
+                purchasedate: null,
+                condition: null,
+                solddate: null,
+                soldprice: null,
+            });   
+            console.log(quickAddBook);   
         }
         fetchBook();
     }, [idbook]);
@@ -201,15 +203,15 @@ export const BookInfo = (props) => {
     useEffect(() => {
         const fetchBookshelf = async () => {
             let response = await fetch("http://localhost:5000/api/bookshelf");
-            let bookshelfs = await response.json();
-            let userBookshelf = bookshelfs.find((b) => b.iduser == user.iduser);
+            let bookshelves = await response.json();
+            let userBookshelf = bookshelves.find((b) => b.iduser == user.iduser);
             setBookshelf(userBookshelf);
         }
         if (bookshelf == null) fetchBookshelf();
     }, [bookshelf, user.iduser]);
 
-    const insertBook = async (bookId) => {
-        let findBook = allBooks.find((b) => b.idbook == bookId);
+    const insertBook = async (book) => {
+        let findBook = allBooks.find((b) => b.idbook == book.id);
         if (bookshelf !== null) {
             const r = await fetch("http://localhost:5000/api/bookcopy", {
                 method: "POST",
@@ -218,15 +220,15 @@ export const BookInfo = (props) => {
                 },
                 body: JSON.stringify({
                     bookname: findBook.bookname,
-                    edition: null, // default arvo
+                    edition: book.edition, // default arvo
                     publicationyear: findBook.publicationyear,
                     idbook: findBook.idbook,
-                    purchaseprice: null, // default arvo
-                    purchasedate: null, // default arvo
-                    condition: null, // default arvo
+                    purchaseprice: book.purchaseprice, // default arvo
+                    purchasedate: book.purchasedate, // default arvo
+                    condition: book.condition, // default arvo
                     description: findBook.description,
-                    solddate: null, // default arvo
-                    soldprice: null, // default arvo
+                    solddate: book.solddate, // default arvo
+                    soldprice: book.soldprice, // default arvo
                     idbookseries: findBook.idbookseries,
                     idbookshelf: bookshelf.idbookshelf,
                 }),
@@ -236,6 +238,14 @@ export const BookInfo = (props) => {
         setAddClicked(false);
     };
 
+    const openModal = () => {
+        setModalOpen(true);
+    }
+
+    const closeModal = () => {
+        setModalOpen(false);
+    }
+
     return (
         <div>
             <NavLink to={"/series/books/" + oneBook.idbookseries} style={{textDecoration: "none", color: "grey"}}>← Back to books</NavLink>
@@ -243,8 +253,78 @@ export const BookInfo = (props) => {
             <p>{oneBook.publicationyear}</p>
             <p>Author: {oneBook.writer}</p>
             <p>Description: {oneBook.description}</p>
-            <button onClick={(e) => {e.preventDefault(); setAddClicked(true)}}>Add to your library</button>
-            {addClicked && <button onClick={() => insertBook(oneBook.idbook)}>Confirm</button>}
+            <button onClick={(e) => {e.preventDefault(); setAddClicked(true)}}>Quick add</button> 
+            {addClicked && <button onClick={() => insertBook(quickAddBook)}>Confirm</button>}
+            
+            <button onClick={openModal}>Add with information</button>
+            {modalOpen && <AddBookModal closeModal={closeModal} insertBook={insertBook} id={oneBook.idbook} />}
         </div>
     )
 }
+
+const AddBookModal = ({ closeModal, insertBook, id }) => {
+    const [edition, setEdition] = useState();
+    const [purchaseprice, setPurchaseprice] = useState();
+    const [purchasedate, setPurchasedate] = useState();
+    const [condition, setCondition] = useState();
+    const [solddate, setSolddate] = useState();
+    const [soldprice, setSoldprice] = useState();
+
+    const handleAdd = (event) => {
+        event.preventDefault();
+        const newCopy = {
+            id: id,
+            edition: parseInt(edition),
+            purchaseprice: parseFloat(purchaseprice),
+            purchasedate: purchasedate,
+            condition: parseInt(condition),
+            solddate: solddate,
+            soldprice: parseFloat(soldprice),
+        };
+        console.log(newCopy);
+        insertBook(newCopy);
+        closeModal();
+    };
+
+    return (
+        <div className="modal-overlay">
+            <div className="modal-content">
+                <h2>Add Book with Information</h2>
+                <form>
+                    <label>
+                        Edition:
+                        <input type="number" value={edition} onChange={(e) => setEdition(e.target.value)}></input>
+                    </label>
+                    <label>
+                        Purchase price:
+                        <input type="text" value={purchaseprice} onChange={(e) => setPurchaseprice(e.target.value)}></input>
+                    </label>
+                    <label>
+                        Purchase date:
+                        <input type="date" value={purchasedate} onChange={(e) => setPurchasedate(e.target.value)}></input>
+                    </label>
+                    <label>
+                        Condition:
+                        <select value={condition} onChange={(e) => setCondition(e.target.value)}>
+                            <option>1</option>
+                            <option>2</option>
+                            <option>3</option>
+                            <option>4</option>
+                            <option>5</option>
+                        </select>
+                    </label>
+                    <label>
+                        Sold on:
+                        <input type="date" value={solddate} onChange={(e) => setSolddate(e.target.value)}></input>
+                    </label>
+                    <label>
+                        Sold price:
+                        <input type="text" value={soldprice} onChange={(e) => setSoldprice(e.target.value)}></input>
+                    </label>
+                    <button onClick={(e) => handleAdd(e)}>Add Book</button>
+                </form>
+                <button onClick={closeModal}>Cancel</button>
+            </div>
+        </div>
+    );
+};
