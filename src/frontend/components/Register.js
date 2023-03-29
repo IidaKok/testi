@@ -106,21 +106,39 @@ const Register = () => {
     
   }, [username]);
 
+  let passMissing = [];
+  const [pm, setPm] = useState("");
   //password validation
   useEffect(() => {
-    
-    if (password.length < 5) {
-      setValidPassword(true);
-    }
-    else setValidPassword(false);
+    const lowerCase = /[a-z]/g;
+    const upperCase = /[A-Z]/g;
+    const numbers = /[1-9]/g;
+    setPm("");
 
+    if(password.length < 5 || !password.match(lowerCase) || !password.match(upperCase) || !password.match(numbers)){
+      setValidPassword(true);
+      /*if (password.length < 5) {
+        passMissing.push(" at least 5 characters");
+      }
+      if (!password.match(lowerCase)) {
+        passMissing.push(" a lowercase letter");
+      }
+      if (!password.match(upperCase)) {
+        passMissing.push(" an uppercase letter");
+      }
+      setPm(passMissing);
+      console.log(pm);
+*/   
+    }
+    else {
+      setValidPassword(false); 
+      console.log("ehdot täyttyy");
+    }
+    
     if (password !== passwordAgain) setPassMatch(true);
     if (password === passwordAgain) setPassMatch(false);
 
   }, [password]);
-
-
-  
 
   //email validation
   useEffect(() => {
@@ -128,24 +146,18 @@ const Register = () => {
 
     if (email.length < 5 || !email.match(isValidEmail)) {
       setValidEmail(true);
-      console.log("email ei ole validi");
     }
     else {
       setValidEmail(false);
-      console.log("email on validi");
     }
   }, [email]);
-
-
-   
-
 
   const handleSubmit = (event) => {
     event.preventDefault();
     setButtonPressed(true);
 
     setErrors({nameError: "", emailError: "", invalidName: false, invalidEmail: false });
-
+    
     setErrMsg(false);
 
     if (!validName && !validPassword && !validEmail){
@@ -155,6 +167,8 @@ const Register = () => {
     else {
       console.log("Inputs are not valid");
     };
+
+    console.log(validPassword);
   }
   //show password
   const showPassword = (e) => {
@@ -170,13 +184,17 @@ const Register = () => {
         <form onSubmit={(e) => handleSubmit(e)}>
 
           <input type="text" value={username} className={validName && buttonPressed || errors.invalidName ? "invalid" : "valid"} onChange={(e) => setUsername(e.target.value)} placeholder="Username..." />
-          {validName && buttonPressed ? <Error value="Username"/> : ""}
+          {validName && buttonPressed ? <Error value="Username" text="at least 5 characters"/> : ""}
           <p>{errors.nameError}</p>
 
-          <input type={type} value={password} className={validPassword && buttonPressed || passMatch ? "invalid" : "valid"} onChange={(e) => setPassword(e.target.value)} placeholder="Password..." />
-          {validPassword && buttonPressed ? <Error value="Password"/> : ""}
 
-          <input type={type} value={passwordAgain} className={errors.passwordMatch ? "invalid" : "valid"} onChange={(e) => setPasswordAgain(e.target.value)} placeholder="Password again..." />
+          <OverlayTrigger overlay={(<Tooltip style={{backgroundColor: "lightgrey"}}>Password must contain<br/>at least 5 characters,<br/>a lowercase letter,<br/>an uppercase letter and a number</Tooltip>)} placement="right">
+          <input type={type} value={password} className={validPassword && buttonPressed || passMatch ? "invalid" : "valid"} onChange={(e) => setPassword(e.target.value)} placeholder="Password..." />
+          </OverlayTrigger>
+          {validPassword && buttonPressed ? <Error value="Password" text=" at least 5 characters, a lowercase letter, an uppercase letter and a number"/> : ""}
+          
+
+          <input type={type} value={passwordAgain} className={passMatch ? "invalid" : "valid"} onChange={(e) => setPasswordAgain(e.target.value)} placeholder="Password again..." />
           {passMatch ? <p>Passwords don't match</p> : ""}
 
           <input type="checkbox" onChange={(e) => showPassword(e.target.checked)} />
@@ -197,21 +215,4 @@ const Register = () => {
     </div>
   )
 }
-/*
-class Error extends Component {
-  constructor(props) {
-    super(props);
-    this.state = { message: null,  value: props.value };
-
-    this.componentDidMount = this.componentDidMount.bind(this);
-  }
-  componentDidMount() {
-    this.setState({ message: this.state.value + " is too short" });
-  }
-  render() {
-    return (
-      <p>{this.state.message}</p>
-    )
-  }
-}*/
 export { Register }
