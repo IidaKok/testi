@@ -4,6 +4,11 @@ import "../App.css";
 
 export const SeriesBrowser = (props) => {
     const [series, setSeries] = useState([]);
+    const [bookToAdd, setBookToAdd] = useState();
+
+    const [allBooks, setAllBooks] = useState([]);
+    const user = props.user;
+    const [bookshelf, setBookshelf] = useState(null);
 
     // Voi muuttua paljon vielä.
     const tblCell = {
@@ -23,7 +28,7 @@ export const SeriesBrowser = (props) => {
         textDecoration: "none"
     };
     
-    // haetaan sarjat tietokannasta:
+    // haetaan sarjat ja kirjat tietokannasta:
     useEffect( () => {
         const fetchSeries = async () => {
             let response = await fetch("http://localhost:5000/api/bookseries");
@@ -31,9 +36,66 @@ export const SeriesBrowser = (props) => {
             setSeries(c);
             console.log("series: ", series);
         }
+        const fetchBooks = async () => {
+            let response = await fetch("http://localhost:5000/api/book");
+            let books = await response.json();
+            setAllBooks(books);       
+        }
 
+        fetchBooks();
         fetchSeries();
     }, []);
+
+    useEffect(() => {
+        const fetchBookshelf = async () => {
+            let response = await fetch("http://localhost:5000/api/bookshelf");
+            let bookshelfs = await response.json();
+            let userBookshelf = bookshelfs.find((b) => b.iduser == user.iduser);
+            setBookshelf(userBookshelf);
+        }
+        if (bookshelf == null) fetchBookshelf();
+    }, [bookshelf, user.iduser]);
+
+    useEffect(() => {
+        const insertBooksToBookshelf = async () => {
+            if (bookToAdd !== null && bookshelf !== null) {
+                const filteredBooks = allBooks.filter(b => b.idbookseries === bookToAdd);
+                const bookCopyPromises = filteredBooks.map(book => {
+                    return fetch("http://localhost:5000/api/bookcopy", {
+                        method: "POST",
+                        headers: {
+                            "Content-type": "application/json",
+                        },
+                        body: JSON.stringify({
+                            bookname: book.bookname,
+                            edition: null, // default arvo
+                            publicationyear: book.publicationyear,
+                            idbook: book.idbook,
+                            purchaseprice: null, // default arvo
+                            purchasedate: null, // default arvo
+                            condition: null, // default arvo
+                            description: book.description,
+                            solddate: null, // default arvo
+                            soldprice: null, // default arvo
+                            idbookseries: book.idbookseries,
+                            idbookshelf: bookshelf.idbookshelf,
+                        }),
+                    });
+                });
+
+                Promise.all(bookCopyPromises)
+                    .then(responses => {
+                        console.log("Inserted book copies: ", responses);
+                        setBookToAdd(null);
+                    })
+                    .catch(error => {
+                        console.error(error);
+                    });
+            }
+        };
+
+        insertBooksToBookshelf();
+    }, [bookToAdd, allBooks, bookshelf]);
 
     return (
         <div>
@@ -49,7 +111,7 @@ export const SeriesBrowser = (props) => {
                         useMemo( () => series.map((s, index) => {
                             return (
                                 <tr key={index}>
-                                    <td style={tblCell}><button style={{color: "green"}}>+</button>  <NavLink to={'/series/books/' + s.idbookseries}>{s.bookseries}</ NavLink></td>
+                                    <td style={tblCell}><button style={{color: "green"}} onClick={() => setBookToAdd(s.idbookseries)}>+</button>  <NavLink to={'/series/books/' + s.idbookseries}>{s.bookseries}</ NavLink></td>
                                     <td style={tblCell}>{s.publisher}</td>
                                 </tr>
                             )
