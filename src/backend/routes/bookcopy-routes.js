@@ -12,6 +12,6 @@ router.get("/:idbookcopy", bookcopyControllers.getBookCopiesByID);
 router.post("/", bookcopyControllers.createBookCopy);
 
 //post
-router.post("/post/", userControllers.createUserBook);
+router.post("/post/", bookcopyControllers.createUserBook);
 
 module.exports = router; //vie appille
