@@ -160,7 +160,7 @@ const Register = () => {
     
     setErrMsg(false);
 
-    if (!validName && !validPassword && !validEmail){
+    if (!validName && !validPassword && !validEmail && ! passMatch){
       setuserToBeInserted({ username: username, password: password, email: email });
       setButtonPressed(false);
     }
@@ -197,7 +197,7 @@ const Register = () => {
           <input type={type} value={passwordAgain} className={passMatch ? "invalid" : "valid"} onChange={(e) => setPasswordAgain(e.target.value)} placeholder="Password again..." />
           {passMatch ? <p>Passwords don't match</p> : ""}
 
-          <input type="checkbox" onChange={(e) => showPassword(e.target.checked)} />
+          <input type="checkbox" onChange={(e) => showPassword(e.target.checked)}/><label>Show Password</label>
             <input type="text" value={email} className={validEmail && buttonPressed || errors.invalidEmail ? "invalid" : "valid"} onChange={(e) => setEmail(e.target.value)} placeholder="Email..." />
           {validEmail && buttonPressed ? <Error value="Email"/> : ""}
           <p>{errors.emailError}</p>
