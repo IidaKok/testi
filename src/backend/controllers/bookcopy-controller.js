@@ -8,7 +8,8 @@ const getAllBookCopies = async (req, res, next) => {
     } catch (err) {
         throw err;
     }
-}
+};
+
 const getBookCopiesByID = async (req, res, next) => {
     try {
         const copyId = parseInt(req.params.idbookcopy);
@@ -45,6 +46,51 @@ const getBookCopiesByShelfID = async (req, res, next) => {
         throw err;
     }
 }
+const createBookCopy = async (req, res, next) => {
+  const {
+    bookname,
+    edition,
+    publicationyear,
+    idbook,
+    purchaseprice,
+    purchasedate,
+    condition,
+    description,
+    solddate,
+    soldprice,
+    idbookseries,
+    idbookshelf,
+  } = req.body;
+
+  try {
+    await db.pool.query(
+      "INSERT INTO bookcopy (bookname, edition, publicationyear, idbook, purchaseprice, purchasedate, `condition`, description, solddate, soldprice, idbookseries, idbookshelf) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+      [
+        bookname,
+        edition,
+        publicationyear,
+        idbook,
+        purchaseprice,
+        purchasedate,
+        condition,
+        description,
+        solddate,
+        soldprice,
+        idbookseries,
+        idbookshelf,
+      ]
+    );
+
+    res.status(201).json({ message: "Book copy created successfully" });
+  } catch (err) {
+    console.log(err);
+    const error = new HttpError(
+      "Creating copy failed, please try again!",
+      500
+    );
+    return next(error);
+  }
+};
 //creates new book
 const createUserBook = async (req, res, next) => {
 
@@ -76,3 +122,4 @@ const createUserBook = async (req, res, next) => {
 exports.getAllBookCopies = getAllBookCopies;
 exports.getBookCopiesByID = getBookCopiesByID;
 exports.createUserBook = createUserBook;
+exports.createBookCopy = createBookCopy;

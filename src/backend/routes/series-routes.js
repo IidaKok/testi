@@ -1,13 +1,12 @@
 const express = require("express");
-const userControllers = require("../controllers/series-controller");
+const seriesControllers = require("../controllers/series-controller");
 
 //creates route to users
 const router = express.Router();
 
-
 //get kutsu httplle
-router.get("/", userControllers.getAllSeries);
-router.get("/:idbookseries", userControllers.getSeriesByName);
+router.get("/", seriesControllers.getAllSeries);
+router.get("/:idbookseries", seriesControllers.getSeriesByName);
 
 //post
 router.post("/post/", userControllers.createSeries);

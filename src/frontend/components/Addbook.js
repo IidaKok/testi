@@ -1,3 +1,5 @@
+/* väliaikaisesti kommentoitu
+
 import React from 'react'
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
@@ -95,3 +97,5 @@ const Addbook = (props) => {
 }
 
 export { Addbook }
+
+*/

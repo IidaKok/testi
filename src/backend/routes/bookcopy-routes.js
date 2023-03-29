@@ -1,13 +1,15 @@
 const express = require("express");
-const userControllers = require("../controllers/bookcopy-controller");
+const bookcopyControllers = require("../controllers/bookcopy-controller");
 
 //creates route to users
 const router = express.Router();
 
-
 //get kutsu httplle
-router.get("/", userControllers.getAllBookCopies);
-router.get("/:idbookcopy", userControllers.getBookCopiesByID);
+router.get("/", bookcopyControllers.getAllBookCopies);
+router.get("/:idbookcopy", bookcopyControllers.getBookCopiesByID);
+
+//post kutsu httplle
+router.post("/", bookcopyControllers.createBookCopy);
 
 //post
 router.post("/post/", userControllers.createUserBook);
