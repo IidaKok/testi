@@ -2,6 +2,8 @@ import { useState, useEffect, useMemo } from 'react';
 import { Link, NavLink, useHistory, useParams } from "react-router-dom";
 import "../App.css";
 
+import { BrowserAddSeries } from './BrowserAddSeries';
+
 export const SeriesBrowser = (props) => {
     const [series, setSeries] = useState([]);
     const [bookToAdd, setBookToAdd] = useState();
@@ -9,6 +11,16 @@ export const SeriesBrowser = (props) => {
     const [allBooks, setAllBooks] = useState([]);
     const user = props.user;
     const [bookshelf, setBookshelf] = useState(null);
+
+    const [modalOpen, setModalOpen] = useState(false);
+
+    const openAddModal = () => {
+        setModalOpen(true);
+    }
+
+    const closeAddModal = () => {
+        setModalOpen(false);
+    }
 
     // Voi muuttua paljon vielä.
     const tblCell = {
@@ -97,8 +109,12 @@ export const SeriesBrowser = (props) => {
         insertBooksToBookshelf();
     }, [bookToAdd, allBooks, bookshelf]);
 
+
     return (
         <div>
+            <p>Can't find your series? Add it here: </p>
+            <button onClick={openAddModal}>Add your series!</button>
+            { modalOpen && <BrowserAddSeries closeAddModal={closeAddModal} /> }
             <table >
                 <thead>
                     <tr style={{height: "35px", backgroundColor: "lavender"}}>
@@ -385,7 +401,7 @@ const AddBookModal = ({ closeModal, insertBook, id }) => {
                     </label>
                     <button onClick={(e) => handleAdd(e)}>Add Book</button>
                 </form>
-                <button onClick={closeModal}>Cancel</button>
+                <button onClick={closeModal()}>Cancel</button>
             </div>
         </div>
     );
