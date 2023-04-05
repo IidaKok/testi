@@ -2,27 +2,31 @@ import { useState, useEffect, useMemo } from 'react';
 import { Link, NavLink, useHistory, useParams } from "react-router-dom";
 import "../App.css";
 
-export const BrowserAddSeries = ({ closeAddModal }) => {
-    const [bookseries, setBookSeries] = useState("");
-    const [publisher, setPublisher] = useState("");
-    const [description, setDescription] = useState("");
-    const [classification, setClassification] = useState("");
+export const BrowserAddBook = ({ closeAddModal, seriesid }) => {
+    const [bookname, setBookName] = useState();
+    const [publicationyear, setPublicationYear] = useState();
+    const [description, setDescription] = useState();
+    const idbookseries = seriesid;
+    const [seriesnumber, setSeriesNumber] = useState();
+    const [writer, setWriter] = useState();
 
     const handleAdd = async (event) => {
         event.preventDefault();
-        console.log(bookseries, publisher, description, classification);
+        console.log(bookname, publicationyear, description, idbookseries, seriesnumber, writer);
 
         try {
-            const response = await fetch("http://localhost:5000/api/bookseries", {
+            const response = await fetch("http://localhost:5000/api/book", {
                 method: "POST",
                 headers: {
                     "Content-type": "application/json",
                 },
                 body: JSON.stringify({
-                    bookseries: bookseries,
-                    publisher: publisher,
+                    bookname: bookname,
+                    publicationyear: publicationyear,
                     description: description,
-                    classification: classification,
+                    idbookseries: idbookseries,
+                    seriesnumber: seriesnumber,
+                    writer: writer,
                 }),
             });
 
@@ -48,20 +52,24 @@ export const BrowserAddSeries = ({ closeAddModal }) => {
             <div className="modal-content">
                 <form>
                     <label>
-                        Series name:
-                        <input type="text" value={bookseries} onChange={(e) => setBookSeries(e.target.value)} />
+                        Name:
+                        <input type="text" onChange={(e) => setBookName(e.target.value)}></input>
                     </label>
                     <label>
-                        Publisher:
-                        <input type="text" value={publisher} onChange={(e) => setPublisher(e.target.value)} />
+                        Publication Year:
+                        <input type="number" onChange={(e) => setPublicationYear(e.target.value)}></input>
                     </label>
                     <label>
                         Description:
-                        <input type="text" value={description} onChange={(e) => setDescription(e.target.value)} />
+                        <input type="text" onChange={(e) => setDescription(e.target.value)}></input>
                     </label>
                     <label>
-                        Classification:
-                        <input type="text" value={classification} onChange={(e) => setClassification(e.target.value)} />
+                        Series Number:
+                        <input type="number" onChange={(e) => setSeriesNumber(e.target.value)}></input>
+                    </label>
+                    <label>
+                        Writer:
+                        <input type="text" onChange={(e) => setWriter(e.target.value)}></input>
                     </label>
                     <button onClick={(e) => handleAdd(e)}>Add</button>
                 </form>

@@ -27,6 +27,40 @@ const getBooksBySeriesID = async (req, res, next) => {
         throw err;
     }
 }
+const createBook = async (req, res, next) => {
+    const {
+        bookname,
+        publicationyear,
+        description,
+        idbookseries,
+        seriesnumber,
+        writer,
+    } = req.body;
+
+    try {
+        await db.pool.query(
+            "INSERT INTO book (bookname, publicationyear, description, idbookseries, seriesnumber, writer) VALUES (?, ?, ?, ?, ?, ?)",
+            [
+                bookname,
+                publicationyear,
+                description,
+                idbookseries,
+                seriesnumber,
+                writer,
+            ]
+        );
+
+        res.status(201).json({ message: "Book created successfully" });
+    } catch (err) {
+        console.log(err);
+        const error = new HttpError(
+            "Creating book failed, please try again!",
+            500
+        );
+        return next(error);
+    }
+};
 
 exports.getAllBooks = getAllBooks;
 exports.getBooksBySeriesID = getBooksBySeriesID;
+exports.createBook = createBook;

@@ -3,6 +3,7 @@ import { Link, NavLink, useHistory, useParams } from "react-router-dom";
 import "../App.css";
 
 import { BrowserAddSeries } from './BrowserAddSeries';
+import { BrowserAddBook } from './BrowserAddBook';
 
 export const SeriesBrowser = (props) => {
     const [series, setSeries] = useState([]);
@@ -56,7 +57,7 @@ export const SeriesBrowser = (props) => {
 
         fetchBooks();
         fetchSeries();
-    }, []);
+    }, [modalOpen]);
 
     useEffect(() => {
         const fetchBookshelf = async () => {
@@ -150,6 +151,16 @@ export const SeriesInfo = (props) => {
     const user = props.user;
     const [bookshelf, setBookshelf] = useState(null);
 
+    const [modalOpen, setModalOpen] = useState(false);
+
+    const openAddModal = () => {
+        setModalOpen(true);
+    }
+
+    const closeAddModal = () => {
+        setModalOpen(false);
+    }
+
 
     useEffect( () => {
 
@@ -165,7 +176,7 @@ export const SeriesInfo = (props) => {
         }
 
         fetchBooks();
-    }, []);
+    }, [modalOpen]);
 
 
     useEffect(() => {
@@ -239,7 +250,8 @@ export const SeriesInfo = (props) => {
                 </tbody>
             </table>
             <p>Add new books to the series here:</p>
-            <button>New book</button>
+            <button onClick={openAddModal}>New book</button>
+            { modalOpen && <BrowserAddBook closeAddModal={closeAddModal} seriesid={idbookseries}/> }
         </div>
     )
 }
