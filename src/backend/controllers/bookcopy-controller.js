@@ -10,37 +10,16 @@ const getAllBookCopies = async (req, res, next) => {
     }
 };
 
-const getBookCopiesByID = async (req, res, next) => {
-    try {
-        const copyId = parseInt(req.params.idbookcopy);
-        const result = await db.pool.query("select * from bookcopy");
-
-        const bookcopy = result.filter(b => {
-            return b.idbookcopy === copyId;
-        });
-
-        if (!bookcopy) { //handling error 
-            return next(new HttpError("Can't find book", 404));
-        }
-        res.json({ bookcopy });
-    }
-    catch (err) {
-        throw err;
-    }
-}
 const getBookCopiesByShelfID = async (req, res, next) => {
     try {
-        const copyId = parseInt(req.params.idbookcopy);
-        const result = await db.pool.query("select * from bookcopy");
+        const idbookshelf = req.params.idbookshelf;
+        const result = await db.pool.query("select * from bookcopy where idbookshelf = ?", [idbookshelf]);
 
-        const bookcopy = result.filter(b => {
-            return b.idbookcopy === copyId;
-        });
-
-        if (!bookcopy) { //handling error 
-            return next(new HttpError("Can't find book", 404));
+        if (result.length === 0) { //handling error
+            return next(new HttpError("Can't find bookshelf", 404));
         }
-        res.json({ bookcopy });
+
+        res.json(result);
     }
     catch (err) {
         throw err;
@@ -119,7 +98,25 @@ const createUserBook = async (req, res, next) => {
     }
 
 }
+
+const updateBookCopy = (req, res) => {
+    const idbookcopy = req.params.id;
+    const { bookname, edition, publicationyear, purchaseprice, purchasedate, condition, description, solddate, soldprice } = req.body;
+
+    const query = 'UPDATE bookcopy SET bookname=?, `edition`=?, publicationyear=?, purchaseprice=?, purchasedate=?, condition=?, description=?, solddate=?, soldprice=? WHERE idbookcopy=?';
+    const values = [bookname, edition, publicationyear, purchaseprice, purchasedate, condition, description, solddate, soldprice];
+
+    db.query(query, values, (err, result) => {
+        if (err) {
+            return res.status(500).json({ error: 'Unable to update book copy.' });
+        }
+
+        return res.status(200).json({ message: 'Book copy updated successfully.' });
+    });
+};
+
+exports.updateBookCopy = updateBookCopy;
 exports.getAllBookCopies = getAllBookCopies;
-exports.getBookCopiesByID = getBookCopiesByID;
+exports.getBookCopiesByShelfID = getBookCopiesByShelfID;
 exports.createUserBook = createUserBook;
 exports.createBookCopy = createBookCopy;

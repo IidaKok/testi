@@ -6,12 +6,14 @@ const router = express.Router();
 
 //get kutsu httplle
 router.get("/", bookcopyControllers.getAllBookCopies);
-router.get("/:idbookcopy", bookcopyControllers.getBookCopiesByID);
+router.get("/:idbookshelf", bookcopyControllers.getBookCopiesByShelfID);
 
 //post kutsu httplle
 router.post("/", bookcopyControllers.createBookCopy);
 
 //post
 router.post("/post/", bookcopyControllers.createUserBook);
+
+router.put('/bookcopy/:idbookcopy', bookcopyControllers.updateBookCopy);
 
 module.exports = router; //vie appille

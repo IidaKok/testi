@@ -1,6 +1,7 @@
 {
   "ExpandedNodes": [
     "",
+    "\\public",
     "\\src",
     "\\src\\backend",
     "\\src\\backend\\controllers",
