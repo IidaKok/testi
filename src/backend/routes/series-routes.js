@@ -9,6 +9,6 @@ router.get("/", seriesControllers.getAllSeries);
 router.get("/:idbookseries", seriesControllers.getSeriesByName);
 
 //post
-router.post("/post/", seriesControllers.createSeries);
+router.post("/", seriesControllers.createSeries);
 
 module.exports = router; //vie appille

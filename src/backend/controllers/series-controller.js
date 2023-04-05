@@ -35,28 +35,28 @@ const createSeries = async (req, res, next) => {
         publisher,
         description,
         classification,
-      } = req.body;
-    
-      try {
+    } = req.body;
+
+    try {
         await db.pool.query(
-          "INSERT INTO bookseries (bookseries, publisher, description, classification) VALUES (?, ?, ?, ?)",
-          [
-            bookseries,
-            publisher,
-            description,
-            classification,
-          ]
+            "INSERT INTO bookseries (`bookseries`, publisher, description, classification) VALUES (?, ?, ?, ?)",
+            [
+                bookseries,
+                publisher,
+                description,
+                classification,
+            ]
         );
-    
+
         res.status(201).json({ message: "Bookseries created successfully" });
-      } catch (err) {
+    } catch (err) {
         console.log(err);
         const error = new HttpError(
-          "Creating bookseries failed, please try again!",
-          500
+            "Creating bookseries failed, please try again!",
+            500
         );
         return next(error);
-      }
+    }
 }
 exports.getAllSeries = getAllSeries;
 exports.getSeriesByName = getSeriesByName;
