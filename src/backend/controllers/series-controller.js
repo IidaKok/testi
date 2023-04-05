@@ -58,6 +58,37 @@ const createSeries = async (req, res, next) => {
         return next(error);
     }
 }
+
+const updateSeries = async (req, res, next) => {
+    const { idbookseries } = req.params;
+    const { bookseries, publisher, description, classification } = req.body;
+
+    try {
+        const result = await db.pool.query(
+            "UPDATE bookseries SET `bookseries`=?, publisher=?, description=?, classification=? WHERE idbookseries=?",
+            [bookseries, publisher, description, classification, idbookseries]
+        );
+
+        if (result.affectedRows === 0) {
+            const error = new HttpError(
+                "Could not find a bookseries with the given id.",
+                404
+            );
+            return next(error);
+        }
+
+        res.status(200).json({ message: "Bookseries updated successfully" });
+    } catch (err) {
+        console.log(err);
+        const error = new HttpError(
+            "Updating bookseries failed, please try again!",
+            500
+        );
+        return next(error);
+    }
+};
+  
 exports.getAllSeries = getAllSeries;
 exports.getSeriesByName = getSeriesByName;
 exports.createSeries = createSeries;
+exports.updateSeries = updateSeries;
