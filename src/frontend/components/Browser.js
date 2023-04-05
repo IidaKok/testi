@@ -2,6 +2,8 @@ import { useState, useEffect, useMemo } from 'react';
 import { Link, NavLink, useHistory, useParams } from "react-router-dom";
 import "../App.css";
 
+import { BrowserAddSeries } from './BrowserAddSeries';
+
 export const SeriesBrowser = (props) => {
     const [series, setSeries] = useState([]);
     const [bookToAdd, setBookToAdd] = useState();
@@ -9,6 +11,16 @@ export const SeriesBrowser = (props) => {
     const [allBooks, setAllBooks] = useState([]);
     const user = props.user;
     const [bookshelf, setBookshelf] = useState(null);
+
+    const [modalOpen, setModalOpen] = useState(false);
+
+    const openAddModal = () => {
+        setModalOpen(true);
+    }
+
+    const closeAddModal = () => {
+        setModalOpen(false);
+    }
 
     // Voi muuttua paljon vielä.
     const tblCell = {
@@ -97,6 +109,7 @@ export const SeriesBrowser = (props) => {
         insertBooksToBookshelf();
     }, [bookToAdd, allBooks, bookshelf]);
 
+
     return (
         <div>
             <table >
@@ -119,6 +132,9 @@ export const SeriesBrowser = (props) => {
                     } 
                 </tbody>
             </table>
+            <p>Can't find your series? Add it here: </p>
+            <button onClick={openAddModal}>Add your series!</button>
+            { modalOpen && <BrowserAddSeries closeAddModal={closeAddModal} /> }
         </div>
     )
 }
@@ -222,7 +238,8 @@ export const SeriesInfo = (props) => {
                     {renderTableRows()}
                 </tbody>
             </table>
-            
+            <p>Add new books to the series here:</p>
+            <button>New book</button>
         </div>
     )
 }
