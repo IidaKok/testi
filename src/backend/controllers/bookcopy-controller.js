@@ -26,25 +26,7 @@ const getBookCopiesByShelfID = async (req, res, next) => {
     }
 }
 const createBookCopy = async (req, res, next) => {
-  const {
-    bookname,
-    edition,
-    publicationyear,
-    idbook,
-    purchaseprice,
-    purchasedate,
-    condition,
-    description,
-    solddate,
-    soldprice,
-    idbookseries,
-    idbookshelf,
-  } = req.body;
-
-  try {
-    await db.pool.query(
-      "INSERT INTO bookcopy (bookname, edition, publicationyear, idbook, purchaseprice, purchasedate, `condition`, description, solddate, soldprice, idbookseries, idbookshelf) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
-      [
+    const {
         bookname,
         edition,
         publicationyear,
@@ -57,18 +39,36 @@ const createBookCopy = async (req, res, next) => {
         soldprice,
         idbookseries,
         idbookshelf,
-      ]
-    );
+    } = req.body;
 
-    res.status(201).json({ message: "Book copy created successfully" });
-  } catch (err) {
-    console.log(err);
-    const error = new HttpError(
-      "Creating copy failed, please try again!",
-      500
-    );
-    return next(error);
-  }
+    try {
+        await db.pool.query(
+            "INSERT INTO bookcopy (bookname, edition, publicationyear, idbook, purchaseprice, purchasedate, `condition`, description, solddate, soldprice, idbookseries, idbookshelf) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+            [
+                bookname,
+                edition,
+                publicationyear,
+                idbook,
+                purchaseprice,
+                purchasedate,
+                condition,
+                description,
+                solddate,
+                soldprice,
+                idbookseries,
+                idbookshelf,
+            ]
+        );
+
+        res.status(201).json({ message: "Book copy created successfully" });
+    } catch (err) {
+        console.log(err);
+        const error = new HttpError(
+            "Creating copy failed, please try again!",
+            500
+        );
+        return next(error);
+    }
 };
 //creates new book
 const createUserBook = async (req, res, next) => {
