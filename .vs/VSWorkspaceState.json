@@ -1,6 +1,5 @@
 {
   "ExpandedNodes": [
-    "",
     "\\src",
     "\\src\\backend",
     "\\src\\backend\\controllers",
@@ -10,6 +9,5 @@
     "\\src\\frontend\\components",
     "\\src\\frontend\\pages"
   ],
-  "SelectedNode": "\\src\\backend\\controllers\\bookcopy-controller.js",
   "PreviewInSolutionExplorer": false
 }
