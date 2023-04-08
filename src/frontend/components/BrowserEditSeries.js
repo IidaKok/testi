@@ -1,6 +1,6 @@
 import { useState, useEffect, useMemo } from 'react';
 import { Link, NavLink, useHistory, useParams } from "react-router-dom";
-import "../App.css";
+// import "../App.css";
 
 export const BrowserEditSeries = ({ closeEditModal, seriesToEdit }) => {
     const [bookseries, setBookSeries] = useState(seriesToEdit.bookseries);
