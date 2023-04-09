@@ -40,7 +40,6 @@ const createUser = async (req, res, next) => {
         const response = db.pool.query("INSERT INTO user (username, password, email) VALUES ('" +username + "','" + password + "','" + email + "')");
         res.send(response);
 
-
         console.log("This was sent");
         console.log( username, password, email);
     }
@@ -73,7 +72,7 @@ const getUserByNameAndPassword = async (req, res, next) => {
         //checks username
         const result1 = await db.pool.query("select * from user where username = '" + username + "'");
         const userByName = result1.find(u => {
-            return u.username === username;
+            return u.username === username; 
         });
 
         //if username doesn't exists, error is returned
@@ -104,7 +103,31 @@ function basicDetails(user) {
     const { iduser, username, password, email } = user;
     return { iduser, username, password, email };
 }
+const deleteUser = async (req, res, next) => {
+    const username = req.params.username;
+    let user;
+    try {
+        user = await db.pool.query("select * from user  where username = '" + username + "'");
+        res.status(200);
+        if(user){
+            try {
+                await db.pool.query("delete from user  where username = '" + username + "'");
+            }
+            catch (err){
+                return next(new HttpError("Deleting user failed", 500));
+            }
+        }
+        else {
+            return next(new HttpError("Can't find user", 404));
+        } 
+    }
+    catch (err) {
+        throw err;
+    }
+    
+}
 
 exports.getAllUsers = getAllUsers;
 exports.getUserByNameAndPassword = getUserByNameAndPassword;
 exports.createUser = createUser;
+exports.deleteUser = deleteUser;
