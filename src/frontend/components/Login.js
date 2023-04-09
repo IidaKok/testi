@@ -24,11 +24,12 @@ const Login = (props) => {
             await fetch("http://localhost:5000/api/users/" + query)
                 .then((res) => res.json())
                 .then((data) => {
+                    console.log(data.message);
                     if (data.message === undefined) {
                         saveUser({ username: data.username, password: data.password, email: data.email, iduser: data.iduser });
                         setInvalidName(false);
                         setInvalidPassword(false);
-                        return;
+                        return null;
                     }
                     let msg = data.message;
                     console.log("Message: ", msg);
@@ -76,10 +77,10 @@ const Login = (props) => {
             <div className="Container">
                 <form onSubmit={(e) => handleSubmit(e)}>
                     <input type="text" value={name} className={invalidName ? "invalid" : "valid"} onChange={(e) => setName(e.target.value)} placeholder="Username..." />
-                    <p>{errorMessage}</p>
+                    <p data-testid="nameError">{errorMessage}</p>
                     <input type="password" value={password} className={invalidPassword ? "invalid" : "valid"} onChange={(e) => setPassword(e.target.value)} placeholder="Password..." />
-                    <p>{errorMessage2}</p>
-                    <input type="submit" value="Login" />
+                    <p data-testid="passError">{errorMessage2}</p>
+                    <input data-testid="logBtn" type="submit" value="Login" />
                 </form>
             </div>
 

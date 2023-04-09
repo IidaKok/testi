@@ -90,6 +90,7 @@ const getUserByNameAndPassword = async (req, res, next) => {
         if (!user) {
             return next(new HttpError("Password is incorrect. Try again", 404));
         }
+        //res.status(200).json(basicDetails(user));
         res.json(basicDetails(user));
     }
     catch (err) {
