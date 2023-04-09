@@ -72,50 +72,118 @@ const createBookCopy = async (req, res, next) => {
 };
 //creates new book
 const createUserBook = async (req, res, next) => {
+    const {
+        bookname,
+        edition,
+        publicationyear,
+        purchaseprice,
+        purchasedate,
+        condition,
+        description,
+        solddate,
+        soldprice,
+        idbookshelf,
+    } = req.body;
 
-    const idbookcopy = req.body.idbookcopy;
-    const bookname = req.body.bookname;
-    const edition = req.body.edition;
-    const publicationyear = req.body.publicationyear;
-    const purchaseprice = req.body.purchaseprice;
-    const purchasedate = req.body.purchasedate;
-    const condition = req.body.condition;
-    const description = req.body.description;
-    const solddate = req.body.solddate;
-    const soldprice = req.body.soldprice;
-    const idbookshelf = req.body.idbookshelf;
+    const values = [
+        bookname || null,
+        edition || null,
+        publicationyear || null,
+        purchaseprice || null,
+        purchasedate || null,
+        condition || null,
+        description || null,
+        solddate || null,
+        soldprice || null,
+        idbookshelf || null,
+    ];
+
+    const insertSql = `
+    INSERT INTO bookcopy 
+      (bookname, edition, publicationyear, purchaseprice, purchasedate, \`condition\`, description, solddate, soldprice, idbookshelf)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+  `;
+
+    const selectSql = `
+    SELECT *
+    FROM bookcopy
+    WHERE idbookcopy = LAST_INSERT_ID()
+  `;
 
     try {
-        //sends the books information to the database
-        const response = db.pool.query("INSERT INTO bookcopy (`bookname`, `edition`, `publicationyear`, `purchaseprice`, `purchasedate`, `condition`, `description`, `solddate`, `soldprice`, `idbookshelf`) VALUES ('" + bookname + "','" + edition + "','" + publicationyear + "','" + purchaseprice + "','" + purchasedate + "','" + condition + "','" + description + "','" + solddate + "','" + soldprice + "','" + idbookshelf + "')");
-        res.send(response);
+        const insertResponse = await db.pool.query(insertSql, values);
+        const [bookcopy] = await db.pool.query(selectSql);
+        res.json({ message: "Bookcopy added to database", bookcopy });
+        console.log("Bookcopy added to database");
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ message: "Server error" });
+    }
+};
 
-        console.log("This was sent");
-        console.log(bookname, edition, publicationyear, purchaseprice, purchasedate, condition, description, solddate, soldprice, idbookshelf);
+const deleteBookcopy = async (req, res, next) => {
+    const idbookcopy = req.params.idbookcopy;
+    try {
+        // deletes the bookcopy with the given id from the database
+        const response = await db.pool.query("DELETE FROM bookcopy WHERE idbookcopy = " + idbookcopy);
+        if (response.affectedRows == 0) {
+            res.status(404).json({ message: "Bookcopy not found" });
+        } else {
+            res.json({ message: "Bookcopy with idbookcopy = " + idbookcopy + " was deleted from the database" });
+            console.log("Bookcopy with idbookcopy = " + idbookcopy + " was deleted from the database");
+        }
     }
     catch (err) {
         throw err;
     }
-
 }
 
-const updateBookCopy = (req, res) => {
-    const idbookcopy = req.params.id;
-    const { bookname, edition, publicationyear, purchaseprice, purchasedate, condition, description, solddate, soldprice } = req.body;
-
-    const query = 'UPDATE bookcopy SET bookname=?, `edition`=?, publicationyear=?, purchaseprice=?, purchasedate=?, condition=?, description=?, solddate=?, soldprice=? WHERE idbookcopy=?';
-    const values = [bookname, edition, publicationyear, purchaseprice, purchasedate, condition, description, solddate, soldprice];
-
-    db.query(query, values, (err, result) => {
-        if (err) {
-            return res.status(500).json({ error: 'Unable to update book copy.' });
+const updateBookcopy = async (req, res, next) => {
+    const idbookcopy = req.params.idbookcopy;
+    const {
+        bookname,
+        edition,
+        publicationyear,
+        purchaseprice,
+        purchasedate,
+        condition,
+        description,
+        solddate,
+        soldprice,
+    } = req.body;
+    const values = [bookname || null, edition || null, publicationyear || null, purchaseprice || null, purchasedate || null, condition || null, description || null, solddate || null, soldprice || null, idbookcopy,];
+    const sql = `
+    UPDATE bookcopy 
+    SET 
+      bookname = IFNULL(?, bookname), 
+      edition = IFNULL(?, edition), 
+      publicationyear = IFNULL(?, publicationyear), 
+      purchaseprice = IFNULL(?, purchaseprice), 
+      purchasedate = IFNULL(?, purchasedate), 
+      \`condition\` = IFNULL(?, \`condition\`), 
+      description = IFNULL(?, description), 
+      solddate = IFNULL(?, solddate), 
+      soldprice = IFNULL(?, soldprice) 
+    WHERE idbookcopy = ?
+  `;
+    try {
+        const response = await db.pool.query(sql, values);
+        if (response.affectedRows == 0) {
+            res.status(404).json({ message: "Bookcopy not found" });
+        } else {
+            res.json({
+                message: `Bookcopy with idbookcopy = ${idbookcopy} was updated in the database`,
+            });
+            console.log(`Bookcopy with idbookcopy = ${idbookcopy} was updated in the database`);
         }
-
-        return res.status(200).json({ message: 'Book copy updated successfully.' });
-    });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ message: "Server error" });
+    }
 };
 
-exports.updateBookCopy = updateBookCopy;
+exports.updateBookcopy = updateBookcopy;
+exports.deleteBookcopy = deleteBookcopy;
 exports.getAllBookCopies = getAllBookCopies;
 exports.getBookCopiesByShelfID = getBookCopiesByShelfID;
 exports.createUserBook = createUserBook;

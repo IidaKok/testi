@@ -26,7 +26,7 @@ const App = () => {
                 <Route path="/userPage" element={<UserPage user={user}/>} />
                 <Route path="/Addbook" element={<Addbook user={user}/>} />
                 <Route path="/Addseries" element={<Addseries />} />
-                <Route path="/update/:idbookshelf" element={<Update />}/>
+                <Route path="/update/:idbookshelf" element={<Update user={user}/>}/>
             </Routes>
         </Router>
     )
