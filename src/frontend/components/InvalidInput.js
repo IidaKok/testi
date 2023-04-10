@@ -4,7 +4,7 @@ import React, { Component } from "react";
 export class Error extends Component {
     constructor(props) {
         super(props);
-        this.state = { message: null, value: props.value, text: props.text };
+        this.state = { message: null, value: props.value, text: props.text, id: props.id };
 
         this.componentDidMount = this.componentDidMount.bind(this);
     }
@@ -22,7 +22,7 @@ export class Error extends Component {
     }
     render() {
         return (
-            <p>{this.state.message}</p>
+            <p data-testid={this.state.id}>{this.state.message}</p>
         )
     }
 }
