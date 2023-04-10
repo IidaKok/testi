@@ -75,7 +75,7 @@ const Addbook = (props) => {
                 }),
             }).then((res) => res.json());
             */
-            const response = await fetch("http://localhost:5000/api/bookcopy/post/", {
+            await fetch("http://localhost:5000/api/bookcopy/post/", {
                 method: "POST",
                 headers: {
                     "Content-type": "application/json",
@@ -106,9 +106,6 @@ const Addbook = (props) => {
                         setBookcopy(null);
                     }
                 });
-            const data = await response.json(); // parse the response body as JSON
-            const idbookcopy = data.idbookcopy; // extract the generated idbookcopy value from the response
-            console.log(`Generated idbookcopy: ${idbookcopy}`);
             navigate("/userPage");
         } catch (err) {
             console.log(err);
