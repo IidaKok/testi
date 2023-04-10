@@ -26,7 +26,7 @@ const Logged = (props) => {
 
     return (
         <div className="App">
-            <h1>Welcome</h1>
+            <h1 data-testid="home-heading">Welcome</h1>
             <p>{msg} {user.username}</p>
            
 

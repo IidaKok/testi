@@ -1,44 +1,13 @@
-import { fireEvent, render, screen, within } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
-import { Login } from "./frontend/components/Login";
+import { fireEvent, render, screen, within } from '@testing-library/react';
+import userEvent from '@testing-library/user-event'
+import { Login } from './frontend/components/Login';
 import { Register } from "./frontend/components/Register";
 import { BrowserRouter } from "react-router-dom";
+const request = require("supertest");
+const baseURL = "http://localhost:5000";
+
 import "@testing-library/jest-dom/extend-expect";
-import React from "react";
-import { mockFetch } from "./mockFetch";
 
-const fakeUser = {
-    id: 1,
-    username: "testuser1",
-    password: "Testuser1",
-    email: "testuser1@email.com",
-};
-/*
-const FAKE_USERS = [{
-    "id": 1,
-    "username": "testuser1",
-    "password": "Testuser1",
-    "email": "testuser1@email.com",
-}, {
-    "id": 2,
-    "username": "testuser2",
-    "password": "Testuser2",
-    "email": "testuser2@email.com",
-}];
-global.fetch = jest.fn(() => Promise.resolve({
-    json: () => Promise.resolve(FAKE_USERS)
-}));
-
-const getUsers = await fetch(`http://localhost:5000/api/users/${user.username}&${user.password}`);
-const user = await getUsers.json();
-*//*
-beforeEach(() => {
-    jest.spyOn(window, "fetch").mockImplementation();
-})
-
-afterEach(() => {
-    jest.restoreAllMocks()
-});*/
 
 describe("T1 Login", () => {
     test("login: incorrect input values", async () => {
@@ -71,7 +40,7 @@ describe("T1 Login", () => {
         userEvent.clear(passwordInput);
     })
     describe("Test fake users", () => {
-        test("no username found", async () => {
+        test("user not found", async () => {
             render(<Login />, { wrapper: BrowserRouter });
             let nameInput = screen.getByPlaceholderText(/Username/);
             let passwordInput = screen.getByPlaceholderText(/Password/);
@@ -81,38 +50,33 @@ describe("T1 Login", () => {
             const loginBtn = screen.getByTestId("logBtn");
             fireEvent.click(loginBtn);
 
-            
-            expect(nameInput.value).not.toBe(fakeUser.username);
+            const response = await request(baseURL).get(`/api/users/${nameInput.value}&${passwordInput.value}`);
+            expect(response.statusCode).toBe(404);
 
-           /* let nameErr = screen.getByTestId("nameError");
-            let passErr = screen.getByTestId("passError");
 
-            expect(nameErr.textContent).toBe("Username is incorrect. Try again");
-            expect(passErr.textContent).toBe("");*/
+            userEvent.clear(nameInput);
+            userEvent.clear(passwordInput);
         })
-        test("username found", async () => {
+        test("user found", async () => {
             render(<Login />, { wrapper: BrowserRouter });
             let nameInput = screen.getByPlaceholderText(/Username/);
             let passwordInput = screen.getByPlaceholderText(/Password/);
 
-            userEvent.type(nameInput, "testuser1");
+            userEvent.type(nameInput, "Matti.Mainio");
             userEvent.type(passwordInput, "Kissa");
             const loginBtn = screen.getByTestId("logBtn");
             fireEvent.click(loginBtn);
 
-            expect(nameInput.value).toBe(fakeUser.username);
+            const response = await request(baseURL).get(`/api/users/${nameInput.value}&${passwordInput.value}`);
+            expect(response.statusCode).toBe(200);
 
-           /* let nameErr = screen.getByTestId("nameError");
-            let passErr = screen.getByTestId("passError");
-
-            expect(nameErr.textContent).toBe("");
-            expect(passErr.textContent).toBe("");*/
+           
         })
     })
 })
 
-describe("T2 Register", () => {
-    test("Register: incorrect input values", async () => {
+describe.only("T2 Register", () => {
+    test("Register: all inputs are null", async () => {
         render(<Register />, { wrapper: BrowserRouter });
         let nameInput = screen.getByPlaceholderText(/Username/);
         let passwordInput = screen.getByTestId("password1");
@@ -134,10 +98,8 @@ describe("T2 Register", () => {
         expect(passErr).toBeInTheDocument();
         expect(emailErr).toBeInTheDocument();
     })
-    describe("Register: One correct input", () => {
-
-
-        test("Username correct", async () => {
+    describe("Register: one correct input", () => {
+        test("Username input not null", async () => {
             render(<Register />, { wrapper: BrowserRouter });
             let nameInput = screen.getByPlaceholderText(/Username/);
             let passwordInput = screen.getByTestId("password1");
@@ -160,7 +122,7 @@ describe("T2 Register", () => {
             expect(emailErr).toBeInTheDocument();
             userEvent.clear(nameInput);
         })
-        test("Password correct", async () => {
+        test("Password input not null", async () => {
             render(<Register />, { wrapper: BrowserRouter });
             let nameInput = screen.getByPlaceholderText(/Username/);
             let passwordInput = screen.getByTestId("password1");
@@ -183,7 +145,7 @@ describe("T2 Register", () => {
             expect(emailErr).toBeInTheDocument();
             userEvent.clear(passwordInput);
         })
-        test("Email correct", async () => {
+        test("Email input not null", async () => {
             render(<Register />, { wrapper: BrowserRouter });
             let nameInput = screen.getByPlaceholderText(/Username/);
             let passwordInput = screen.getByTestId("password1");
@@ -209,7 +171,7 @@ describe("T2 Register", () => {
     })
 
     describe("Register: two correct inputs", () => {
-        test("Username and password correct", async () => {
+        test("Username and password inputs not null", async () => {
             render(<Register />, { wrapper: BrowserRouter });
             let nameInput = screen.getByPlaceholderText(/Username/);
             let passwordInput = screen.getByTestId("password1");
@@ -234,7 +196,7 @@ describe("T2 Register", () => {
             userEvent.clear(nameInput);
             userEvent.clear(passwordInput);
         })
-        test("Username and email correct", async () => {
+        test("Username and email inputs not null", async () => {
             render(<Register />, { wrapper: BrowserRouter });
             let nameInput = screen.getByPlaceholderText(/Username/);
             let passwordInput = screen.getByTestId("password1");
@@ -259,7 +221,7 @@ describe("T2 Register", () => {
             userEvent.clear(nameInput);
             userEvent.clear(emailInput);
         })
-        test("Email and password correct", async () => {
+        test("Email and password inputs not null", async () => {
             render(<Register />, { wrapper: BrowserRouter });
             let nameInput = screen.getByPlaceholderText(/Username/);
             let passwordInput = screen.getByTestId("password1");
@@ -309,7 +271,7 @@ describe("T2 Register", () => {
             userEvent.clear(password1Input);
             userEvent.clear(password2Input);
         })
-        test("Paswords show", async () => {
+        test("Show passwords", async () => {
             render(<Register />, { wrapper: BrowserRouter });
             let password1Input = screen.getByTestId("password1");
             let password2Input = screen.getByTestId("password2");
@@ -333,4 +295,88 @@ describe("T2 Register", () => {
             expect(password2Input.type).toBe("password");
         })
     })
+    describe("Register inputs are not null", () => {
+        let name;
+        afterAll(async () => {await request(baseURL).delete(`/api/users/delete/${name}`)}, 10000)
+        test("Username already exists", async () => {
+            render(<Register />, { wrapper: BrowserRouter });
+            let nameInput = screen.getByPlaceholderText(/Username/);
+            let passwordInput = screen.getByTestId("password1");
+            let emailInput = screen.getByPlaceholderText(/Email/);
+
+            //username already exists
+            userEvent.type(nameInput, "Matti.Mainio");
+            userEvent.type(passwordInput, "Miumau5");
+            userEvent.type(emailInput, "miumau4343@email.com");
+            const registerBtn = screen.getByTestId("regBtn");
+            fireEvent.click(registerBtn);
+
+            const user = {
+                username: nameInput.value,
+                password: passwordInput.value,
+                email: emailInput.value,
+            }
+
+            const response = await request(baseURL).post("/api/users/post/").send(user);
+            expect(response.statusCode).toBe(400);
+
+            userEvent.clear(nameInput);
+            userEvent.clear(passwordInput);
+            userEvent.clear(emailInput);
+        })
+        test("Email already exists", async () => {
+            render(<Register />, { wrapper: BrowserRouter });
+            let nameInput = screen.getByPlaceholderText(/Username/);
+            let passwordInput = screen.getByTestId("password1");
+            let emailInput = screen.getByPlaceholderText(/Email/);
+
+            userEvent.type(nameInput, "Vertti.Vainaa");
+            userEvent.type(passwordInput, "Miumau5");
+            userEvent.type(emailInput, "matti@email.com");
+            const registerBtn = screen.getByTestId("regBtn");
+            fireEvent.click(registerBtn);
+
+            const user = {
+                username: nameInput.value,
+                password: passwordInput.value,
+                email: emailInput.value,
+            }
+            const response = await request(baseURL).post("/api/users/post/").send(user);
+            expect(response.statusCode).toBe(400);
+
+            userEvent.clear(nameInput);
+            userEvent.clear(passwordInput);
+            userEvent.clear(emailInput);  
+        })
+        test("Email already exists", async () => {
+            render(<Register />, { wrapper: BrowserRouter });
+            let nameInput = screen.getByPlaceholderText(/Username/);
+            let passwordInput = screen.getByTestId("password1");
+            let emailInput = screen.getByPlaceholderText(/Email/);
+
+            userEvent.type(nameInput, "Vertti.Vainaa");
+            userEvent.type(passwordInput, "Miumau5");
+            userEvent.type(emailInput, "vertti@email.com");
+            const registerBtn = screen.getByTestId("regBtn");
+            fireEvent.click(registerBtn);
+
+            name = nameInput.value;
+            
+
+
+            const user = {
+                username: nameInput.value,
+                password: passwordInput.value,
+                email: emailInput.value,
+            }
+            const response = await request(baseURL).post("/api/users/post/").send(user);
+            expect(response.statusCode).toBe(200);
+            
+
+            userEvent.clear(nameInput);
+            userEvent.clear(passwordInput);
+            userEvent.clear(emailInput);  
+        })
+    })
 })
+
