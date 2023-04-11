@@ -24,7 +24,7 @@ const Login = (props) => {
             await fetch("http://localhost:5000/api/users/" + query)
                 .then((res) => res.json())
                 .then((data) => {
-                    console.log(data.message);
+                    //console.log(data.message);
                     if (data.message === undefined) {
                         saveUser({ username: data.username, password: data.password, email: data.email, iduser: data.iduser });
                         setInvalidName(false);
@@ -32,7 +32,7 @@ const Login = (props) => {
                         return null;
                     }
                     let msg = data.message;
-                    console.log("Message: ", msg);
+                    //console.log("Message: ", msg);
                     
                     if (msg.includes("Password")) {
                         setErrorMessage2(msg);

@@ -3,11 +3,25 @@ import userEvent from '@testing-library/user-event'
 import { Login } from './frontend/components/Login';
 import { Register } from "./frontend/components/Register";
 import { BrowserRouter } from "react-router-dom";
+import { act } from 'react-dom/test-utils';
+import ReactDOM from "react-dom/test-utils";
+import React from 'react';
 const request = require("supertest");
 const baseURL = "http://localhost:5000";
 
 import "@testing-library/jest-dom/extend-expect";
 
+
+/*
+beforeEach(() => {
+    overlay = document.createElement("");
+  document.body.appendChild(overlay);
+});
+
+afterEach(() => {
+  document.body.removeChild(container);
+  container = null;
+});*/
 
 describe("T1 Login", () => {
     test("login: incorrect input values", async () => {
@@ -53,7 +67,6 @@ describe("T1 Login", () => {
             const response = await request(baseURL).get(`/api/users/${nameInput.value}&${passwordInput.value}`);
             expect(response.statusCode).toBe(404);
 
-
             userEvent.clear(nameInput);
             userEvent.clear(passwordInput);
         })
@@ -70,12 +83,12 @@ describe("T1 Login", () => {
             const response = await request(baseURL).get(`/api/users/${nameInput.value}&${passwordInput.value}`);
             expect(response.statusCode).toBe(200);
 
-           
+
         })
     })
 })
 
-describe.only("T2 Register", () => {
+describe("T2 Register", () => {
     test("Register: all inputs are null", async () => {
         render(<Register />, { wrapper: BrowserRouter });
         let nameInput = screen.getByPlaceholderText(/Username/);
@@ -296,8 +309,7 @@ describe.only("T2 Register", () => {
         })
     })
     describe("Register inputs are not null", () => {
-        let name;
-        afterAll(async () => {await request(baseURL).delete(`/api/users/delete/${name}`)}, 10000)
+
         test("Username already exists", async () => {
             render(<Register />, { wrapper: BrowserRouter });
             let nameInput = screen.getByPlaceholderText(/Username/);
@@ -320,6 +332,10 @@ describe.only("T2 Register", () => {
             const response = await request(baseURL).post("/api/users/post/").send(user);
             expect(response.statusCode).toBe(400);
 
+            /* await act(async () => {await new Promise((r) => setTimeout(r, 4000))})
+             let nameErr = screen.getByTestId("nameError");
+             expect(nameErr.textContent).toBe("Username is already taken");*/
+
             userEvent.clear(nameInput);
             userEvent.clear(passwordInput);
             userEvent.clear(emailInput);
@@ -333,8 +349,14 @@ describe.only("T2 Register", () => {
             userEvent.type(nameInput, "Vertti.Vainaa");
             userEvent.type(passwordInput, "Miumau5");
             userEvent.type(emailInput, "matti@email.com");
+
             const registerBtn = screen.getByTestId("regBtn");
+
             fireEvent.click(registerBtn);
+
+            await act(async () => {
+                await new Promise((r) => setTimeout(r, 2000))
+            })
 
             const user = {
                 username: nameInput.value,
@@ -346,9 +368,12 @@ describe.only("T2 Register", () => {
 
             userEvent.clear(nameInput);
             userEvent.clear(passwordInput);
-            userEvent.clear(emailInput);  
+            userEvent.clear(emailInput);
         })
-        test("Email already exists", async () => {
+
+    })
+    describe.only("Register inputs are not null", () => {
+        test("Register success", async () => {
             render(<Register />, { wrapper: BrowserRouter });
             let nameInput = screen.getByPlaceholderText(/Username/);
             let passwordInput = screen.getByTestId("password1");
@@ -360,10 +385,6 @@ describe.only("T2 Register", () => {
             const registerBtn = screen.getByTestId("regBtn");
             fireEvent.click(registerBtn);
 
-            name = nameInput.value;
-            
-
-
             const user = {
                 username: nameInput.value,
                 password: passwordInput.value,
@@ -371,11 +392,15 @@ describe.only("T2 Register", () => {
             }
             const response = await request(baseURL).post("/api/users/post/").send(user);
             expect(response.statusCode).toBe(200);
-            
+
+            act(async () => {
+                await request(baseURL).delete(`/api/users/delete/${user.username}`);
+            })
+
 
             userEvent.clear(nameInput);
             userEvent.clear(passwordInput);
-            userEvent.clear(emailInput);  
+            userEvent.clear(emailInput);
         })
     })
 })

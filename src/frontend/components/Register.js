@@ -52,7 +52,6 @@ const Register = () => {
           .then((res) => res.json())
           .then((data) => {
             if (data.message === undefined) {
-              console.log("INSERT:", userToBeInserted);
               setuserToBeInserted(null);
               setRegSuccess(true);
               setUsername("");
@@ -63,7 +62,6 @@ const Register = () => {
             }
             setErrMsg(true);
             let msg = data.message;
-            console.log("Message: ", msg);
             if (msg.includes("email") && msg.includes("Username")) {
               var m = msg.split(",");
               setErrors({nameError: m[0], emailError: m[1], invalidName: true, invalidEmail: true });
@@ -131,8 +129,7 @@ const Register = () => {
 */   
     }
     else {
-      setValidPassword(false); 
-      console.log("ehdot täyttyy");
+      setValidPassword(false);
     }
     
     if (password !== passwordAgain) setPassMatch(true);
@@ -167,8 +164,6 @@ const Register = () => {
     else {
       console.log("Inputs are not valid");
     };
-
-    console.log(validPassword);
   }
   //show password
   const showPassword = (e) => {
@@ -177,6 +172,9 @@ const Register = () => {
     }
     else setType("Password");
   }
+  /*<OverlayTrigger overlay={(<Tooltip style={{backgroundColor: "lightgrey"}}>Password must contain<br/>at least 5 characters,<br/>a lowercase letter,<br/>an uppercase letter and a number</Tooltip>)} placement="right">
+          <input data-testid="password1" type={type} value={password} className={validPassword && buttonPressed || passMatch ? "invalid" : "valid"} onChange={(e) => setPassword(e.target.value)} placeholder="Password..." />
+          </OverlayTrigger>*/
   return (
     <div className="Forms">
       <h2>Register</h2>
