@@ -25,36 +25,14 @@ const Addbook = (props) => {
         setBookcopy(prev => ({ ...prev, [e.target.name]: e.target.value }))
     };
 
-
     const handleClick = async (e) => {
         e.preventDefault();
-
-        // Check if all required fields have a value
-        const requiredFields = [
-            "bookname",
-            "edition",
-            "publicationyear",
-            "purchaseprice",
-            "purchasedate",
-            "condition",
-            "description",
-            "soldprice",
-        ];
-        const missingFields = requiredFields.filter(
-            (field) => !bookcopy[field]
-        );
-        if (missingFields.length > 0) {
-            alert(
-                `Please fill in the following fields: ${missingFields.join(", ")}`
-            );
-            return;
-        }
 
         // Validate input
         const errors = {};
 
         if (!/^\d+$/.test(bookcopy.edition) || bookcopy.edition.length > 9) {
-            errors.edition = "Edition should be a number with no more than 4 digits";
+            errors.edition = "Edition should be a number with no less than 1 & no more than 9 digits";
         }
 
 
@@ -84,6 +62,19 @@ const Addbook = (props) => {
         }
 
         try {
+            /*
+            await fetch(`http://localhost:5000/api/photo/post/`, {
+                method: "POST",
+                headers: {
+                    "Content-type": "application/json",
+                },
+                body: JSON.stringify({
+                    idbookcopy: bookcopy.idbookcopy,
+                    photoname: bookcopy.photoname,
+                    pagenumber: bookcopy.pagenumber,
+                }),
+            }).then((res) => res.json());
+            */
             await fetch("http://localhost:5000/api/bookcopy/post/", {
                 method: "POST",
                 headers: {
@@ -103,16 +94,22 @@ const Addbook = (props) => {
                     idbookshelf: shelf.idbookshelf,
                 }),
             })
-                .then((res) => res.json())
+                .then((res) => {
+                    if (!res.ok) {
+                        throw Error(res.statusText);
+                    }
+                    return res.json();
+                })
                 .then((data) => {
                     if (data.message === undefined) {
                         console.log("INSERT:", bookcopy);
                         setBookcopy(null);
-                        navigate("/userPage");
                     }
                 });
+            navigate("/userPage");
         } catch (err) {
             console.log(err);
+            alert("An error occurred while submitting the form.");
         }
     };
     const handleCancel = (e) => {
@@ -122,13 +119,14 @@ const Addbook = (props) => {
     return (
         <div className="add-bookcopy-form">
             <h1>Add New Book</h1>
-            <input id="user-input" type="text" placeholder="bookname" onChange={handleChange} name="bookname" />
-            <input id="user-input" type="number" placeholder="edition" onChange={handleChange} name="edition" onKeyPress={(event) => {
+            <p>* = Required</p>
+            <input id="user-input" type="text" placeholder="bookname*" onChange={handleChange} name="bookname" />
+            <input id="user-input" type="number" placeholder="edition*" onChange={handleChange} name="edition" onKeyPress={(event) => {
                 if (!/[0-9]/.test(event.key)) {
                     event.preventDefault();
                 }
             }} />
-            <input id="user-input" type="number" placeholder="publicationyear" onChange={handleChange} name="publicationyear" onKeyPress={(event) => {
+            <input id="user-input" type="number" placeholder="publicationyear*" onChange={handleChange} name="publicationyear" onKeyPress={(event) => {
                 if (!/[0-9]/.test(event.key)) {
                     event.preventDefault();
                 }

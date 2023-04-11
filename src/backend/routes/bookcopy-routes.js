@@ -14,6 +14,10 @@ router.post("/", bookcopyControllers.createBookCopy);
 //post
 router.post("/post/", bookcopyControllers.createUserBook);
 
-router.put('/bookcopy/:idbookcopy', bookcopyControllers.updateBookCopy);
+//delete
+router.delete('/:idbookcopy', bookcopyControllers.deleteBookcopy);
+
+//update
+router.put('/:idbookcopy', bookcopyControllers.updateBookcopy);
 
 module.exports = router; //vie appille

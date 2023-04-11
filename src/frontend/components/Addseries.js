@@ -32,7 +32,7 @@ const Addseries = () => {
         }
 
         try {
-            await fetch('http://localhost:5000/api/bookseries/post/', {
+            const response = await fetch('http://localhost:5000/api/bookseries/post/', {
                 method: 'POST',
                 headers: {
                     'Content-type': 'application/json',
@@ -43,23 +43,21 @@ const Addseries = () => {
                     description: bookseries.description,
                     classification: bookseries.classification,
                 }),
-            })
-                .then((res) => res.json())
-                .then((data) => {
-                    if (data.message === undefined) {
-                        console.log('INSERT:', bookseries);
-                        setBookseries({
-                            bookseries: '',
-                            publisher: '',
-                            description: '',
-                            classification: '',
-                        });
-                        return;
-                    }
-                });
+            });
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            console.log('INSERT:', bookseries);
+            setBookseries({
+                bookseries: '',
+                publisher: '',
+                description: '',
+                classification: '',
+            });
             navigate('/userPage');
         } catch (err) {
             console.log(err);
+            alert('Error: ' + err.message);
         }
     };
 

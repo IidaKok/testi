@@ -10,6 +10,7 @@ router.get("/:idbookseries", seriesControllers.getSeriesByName);
 
 //post
 router.post("/", seriesControllers.createSeries);
+router.post("/post/", seriesControllers.createSeries);
 
 //patch
 router.patch("/:idbookseries", seriesControllers.updateSeries)
