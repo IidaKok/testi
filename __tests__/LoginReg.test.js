@@ -1,7 +1,7 @@
 import { fireEvent, render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event'
-import { Login } from './frontend/components/Login';
-import { Register } from "./frontend/components/Register";
+import { Login } from '../src/frontend/components/Login';
+import { Register } from "../src/frontend/components/Register";
 import { BrowserRouter } from "react-router-dom";
 import { act } from 'react-dom/test-utils';
 import React from 'react';
@@ -17,6 +17,7 @@ describe("T1 Login", () => {
 
         //all inputs are empty
         userEvent.type(nameInput, "");
+        
         userEvent.type(passwordInput, "");
         const loginBtn = screen.getByTestId("logBtn");
         fireEvent.click(loginBtn);
