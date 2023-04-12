@@ -12,4 +12,7 @@ router.get("/:username&:password", userControllers.getUserByNameAndPassword);
 //post
 router.post("/post/", userControllers.createUser);
 
+//delete
+router.delete("/delete/:username", userControllers.deleteUser);
+
 module.exports = router; 

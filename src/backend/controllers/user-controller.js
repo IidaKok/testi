@@ -103,7 +103,31 @@ function basicDetails(user) {
     const { iduser, username, password, email } = user;
     return { iduser, username, password, email };
 }
+const deleteUser = async (req, res, next) => {
+    const username = req.params.username;
+    let user;
+    try {
+        user = await db.pool.query("select * from user  where username = '" + username + "'");
+        res.status(200);
+        if(user){
+            try {
+                await db.pool.query("delete from user  where username = '" + username + "'");
+            }
+            catch (err){
+                return next(new HttpError("Deleting user failed", 500));
+            }
+        }
+        else {
+            return next(new HttpError("Can't find user", 404));
+        } 
+    }
+    catch (err) {
+        throw err;
+    }
+    
+}
 
 exports.getAllUsers = getAllUsers;
 exports.getUserByNameAndPassword = getUserByNameAndPassword;
 exports.createUser = createUser;
+exports.deleteUser = deleteUser;
