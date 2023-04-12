@@ -1,10 +1,12 @@
 import React from 'react'
 import { useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 import "../App.css";
 
 
 const Addbook = (props) => {
     const [bookcopy, setBookcopy] = useState(null);
+    const navigate = useNavigate();
     const { user } = props;
     const [shelf, setShelf] = useState([]);
 
@@ -29,13 +31,10 @@ const Addbook = (props) => {
         // Validate input
         const errors = {};
 
-        if (!/^.+$/.test(bookcopy.bookname)) {
-            errors.bookname = "Bookname can't be empty";
-        }
-
         if (!/^\d+$/.test(bookcopy.edition) || bookcopy.edition.length > 9) {
             errors.edition = "Edition should be a number with no less than 1 & no more than 9 digits";
         }
+
 
         if (
             !/^\d{4}$/.test(bookcopy.publicationyear) ||
@@ -107,14 +106,14 @@ const Addbook = (props) => {
                         setBookcopy(null);
                     }
                 });
-            window.location.href = '/userPage';
+            navigate("/userPage");
         } catch (err) {
             console.log(err);
             alert("An error occurred while submitting the form.");
         }
     };
     const handleCancel = (e) => {
-        window.location.href = '/userPage';
+        navigate("/userPage")
     }
 
     return (

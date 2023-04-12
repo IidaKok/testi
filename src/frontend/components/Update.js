@@ -1,10 +1,11 @@
 import React from 'react'
 import { useState, useEffect } from 'react'
-import { useLocation } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import "../App.css";
 
 const Update = (props) => {
     const [bookcopy, setBookcopy] = useState({});
+    const navigate = useNavigate();
     const { user } = props;
     const location = useLocation();
     const bookId = location.pathname.split("/")[2];
@@ -33,7 +34,7 @@ const Update = (props) => {
                     photoname: bookcopy.photoname,
                     pagenumber: bookcopy.pagenumber,
                 }),
-                    }).then((res) => res.json());
+            }).then((res) => res.json());
             // Update the bookcopy record
             await fetch(`http://localhost:5000/api/bookcopy/${bookId}`, {
                 method: "PUT",
@@ -60,14 +61,14 @@ const Update = (props) => {
                     }
                 });
 
-            window.location.href = '/userPage';
+            navigate("/userPage");
         } catch (err) {
             console.log(err);
         }
     };
 
     const handleCancel = (e) => {
-        window.location.href = '/userPage';
+        navigate("/userPage")
     }
 
     return (

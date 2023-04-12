@@ -1,5 +1,6 @@
 import React from 'react';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import '../App.css';
 
 const Addseries = () => {
@@ -9,6 +10,7 @@ const Addseries = () => {
         description: '',
         classification: '',
     });
+    const navigate = useNavigate();
 
     const handleClick = async (e) => {
         e.preventDefault();
@@ -52,7 +54,7 @@ const Addseries = () => {
                 description: '',
                 classification: '',
             });
-            window.location.href = '/userPage';
+            navigate('/userPage');
         } catch (err) {
             console.log(err);
             alert('Error: ' + err.message);
@@ -64,7 +66,7 @@ const Addseries = () => {
     };
 
     const handleCancel = (e) => {
-        window.location.href = '/userPage';
+        navigate('/userPage');
     };
 
     return (

@@ -4,13 +4,14 @@ import { Addbook } from '../components/Addbook';
 import { Update } from '../components/Update';
 import { Addseries } from '../components/Addseries';
 import { BrowserRouter as Router } from 'react-router-dom';
+import { BrowserRouter } from 'react-router-dom'; // Add this import statement
 import { useLocation } from 'react-router-dom';
 
 describe('Addbook component', () => {
     const mockUser = { iduser: 1 };
 
     test('should render the form with the correct inputs', () => {
-        render(<Addbook user={mockUser} />);
+        render(<Addbook user={mockUser} />, { wrapper: BrowserRouter });
         expect(screen.getByPlaceholderText('bookname*')).toBeInTheDocument();
         expect(screen.getByPlaceholderText('edition*')).toBeInTheDocument();
         expect(screen.getByPlaceholderText('publicationyear*')).toBeInTheDocument();
@@ -24,7 +25,7 @@ describe('Addbook component', () => {
     });
 
     test('should handle input changes correctly', () => {
-        render(<Addbook user={mockUser} />);
+        render(<Addbook user={mockUser} />, { wrapper: BrowserRouter });
         const bookNameInput = screen.getByPlaceholderText('bookname*');
         fireEvent.change(bookNameInput, { target: { value: 'Test Book' } });
         expect(bookNameInput).toHaveValue('Test Book');
@@ -72,7 +73,7 @@ describe('Addseries component', () => {
     const mockUser = { iduser: 1 };
 
     test('should render the form with the correct inputs', () => {
-        render(<Addseries user={mockUser} />);
+        render(<Addseries user={mockUser} />, { wrapper: BrowserRouter });
         expect(screen.getByPlaceholderText('Bookseries')).toBeInTheDocument();
         expect(screen.getByPlaceholderText('Publisher')).toBeInTheDocument();
         expect(screen.getByPlaceholderText('Description')).toBeInTheDocument();
@@ -82,7 +83,7 @@ describe('Addseries component', () => {
     });
 
     test('should handle input changes correctly', () => {
-        render(<Addseries user={mockUser} />);
+        render(<Addseries user={mockUser} />, { wrapper: BrowserRouter });
         const bookSeriesInput = screen.getByPlaceholderText('Bookseries');
         fireEvent.change(bookSeriesInput, { target: { value: 'ListofBooks' } });
         expect(bookSeriesInput).toHaveValue('ListofBooks');
@@ -134,7 +135,7 @@ describe('Update component', () => {
     });
 
     test('should handle input changes correctly', () => {
-        render(<Update user={mockUser} />);
+        render(<Update user={mockUser} />, { wrapper: BrowserRouter });
         const bookNameInput = screen.getByPlaceholderText('bookname');
         fireEvent.change(bookNameInput, { target: { value: 'Test Book' } });
         expect(bookNameInput).toHaveValue('Test Book');
