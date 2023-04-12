@@ -1,11 +1,10 @@
 import React from 'react'
 import { useState, useEffect } from 'react'
-import { useLocation, useNavigate } from 'react-router-dom'
+import { useLocation } from 'react-router-dom'
 import "../App.css";
 
 const Update = (props) => {
     const [bookcopy, setBookcopy] = useState({});
-    const navigate = useNavigate();
     const { user } = props;
     const location = useLocation();
     const bookId = location.pathname.split("/")[2];
@@ -61,14 +60,14 @@ const Update = (props) => {
                     }
                 });
 
-            navigate("/userPage");
+            window.location.href = '/userPage';
         } catch (err) {
             console.log(err);
         }
     };
 
     const handleCancel = (e) => {
-        navigate("/userPage")
+        window.location.href = '/userPage';
     }
 
     return (
