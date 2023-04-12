@@ -59,7 +59,7 @@ const Register = () => {
               setPassword("");
               setPasswordAgain("");
               setEmail("");
-              return;
+              return data.json();
             }
             setErrMsg(true);
             let msg = data.message;
