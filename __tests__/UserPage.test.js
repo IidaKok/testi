@@ -1,8 +1,8 @@
 import { render, fireEvent, waitFor, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import { Addbook } from '../components/Addbook';
-import { Update } from '../components/Update';
-import { Addseries } from '../components/Addseries';
+import { Addbook } from '../src/frontend/components/Addbook';
+import { Update } from '../src/frontend/components/Update';
+import { Addseries } from '../src/frontend/components/Addseries';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { BrowserRouter } from 'react-router-dom'; // Add this import statement
 import { useLocation } from 'react-router-dom';
