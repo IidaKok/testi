@@ -1,6 +1,7 @@
 import { useState, useEffect, useMemo } from 'react';
 import { Link, NavLink, useHistory, useParams } from "react-router-dom";
-import "../App.css";
+// import "../App.css";
+import React, { Component } from "react";
 
 import { BrowserAddSeries } from './BrowserAddSeries';
 import { BrowserAddBook } from './BrowserAddBook';
@@ -52,9 +53,9 @@ export const SeriesBrowser = (props) => {
     const noUnderLine = {
         textDecoration: "none"
     };
-    
+
     // haetaan sarjat ja kirjat tietokannasta:
-    useEffect( () => {
+    useEffect(() => {
         const fetchSeries = async () => {
             let response = await fetch("http://localhost:5000/api/bookseries");
             let c = await response.json();
@@ -64,7 +65,7 @@ export const SeriesBrowser = (props) => {
         const fetchBooks = async () => {
             let response = await fetch("http://localhost:5000/api/book");
             let books = await response.json();
-            setAllBooks(books);       
+            setAllBooks(books);
         }
 
         fetchBooks();
@@ -127,7 +128,7 @@ export const SeriesBrowser = (props) => {
         <div>
             <table >
                 <thead>
-                    <tr style={{height: "35px", backgroundColor: "lavender"}}>
+                    <tr style={{ height: "35px", backgroundColor: "lavender" }}>
                         <th style={tblCellSer}>Series</th>
                         <th style={tblCell}>Publishers</th>
                         <th style={tblCell}>Edit</th>
@@ -135,22 +136,22 @@ export const SeriesBrowser = (props) => {
                 </thead>
                 <tbody>
                     {   // haettu data. Taulukon riveinä sarjan nimi ja julkaisijan nimi.
-                        useMemo( () => series.map((s, index) => {
+                        useMemo(() => series.map((s, index) => {
                             return (
                                 <tr key={index}>
-                                    <td style={tblCell}><button style={{color: "green"}} onClick={() => setBookToAdd(s.idbookseries)}>+</button>  <NavLink to={'/series/books/' + s.idbookseries}>{s.bookseries}</ NavLink></td>
+                                    <td style={tblCell}><button style={{ color: "green" }} onClick={() => setBookToAdd(s.idbookseries)} data-testid="add-books">+</button>  <NavLink to={'/series/books/' + s.idbookseries}>{s.bookseries}</ NavLink></td>
                                     <td style={tblCell}>{s.publisher}</td>
-                                    <td style={tblCell}><button onClick={() => openEditModal(s)}>Edit</button></td>
+                                    <td style={tblCell}><button onClick={() => openEditModal(s)} data-testid="edit-series">Edit</button></td>
                                 </tr>
                             )
                         }), [series])
-                    } 
+                    }
                 </tbody>
             </table>
             <p>Can't find your series? Add it here: </p>
-            <button onClick={openAddModal}>Add series</button>
-            { modalOpen && <BrowserAddSeries closeAddModal={closeAddModal} /> }
-            { openEdit && <BrowserEditSeries closeEditModal={closeEditModal} seriesToEdit={seriesToEdit} />}
+            <button onClick={openAddModal} data-testid="add-series">Add series</button>
+            {modalOpen && <BrowserAddSeries closeAddModal={closeAddModal} />}
+            {openEdit && <BrowserEditSeries closeEditModal={closeEditModal} seriesToEdit={seriesToEdit} />}
         </div>
     )
 }
@@ -159,7 +160,7 @@ export const SeriesBrowser = (props) => {
 export const SeriesInfo = (props) => {
     const [bookData, setBookData] = useState([]);
     const params = useParams();
-    const {idbookseries} = params;
+    const { idbookseries } = params;
     const [bookToAdd, setBookToAdd] = useState();
     const [thisSeries, setThisSeries] = useState({});
 
@@ -205,8 +206,8 @@ export const SeriesInfo = (props) => {
             setAllBooks(books);
             let filteredBooks = books.filter((b) => b.idbookseries == idbookseries);
 
-            setBookData(filteredBooks);       
-            
+            setBookData(filteredBooks);
+
         }
 
         fetchBooks();
@@ -258,8 +259,8 @@ export const SeriesInfo = (props) => {
             <tr key={b.idbook}>
                 <td>
                     {bookToAdd === b.idbook ?
-                        <button onClick={() => insertBook(b.idbook)}>Confirm</button> :
-                        <button style={{color: "green"}} onClick={() => setBookToAdd(b.idbook)}>+</button>
+                        <button onClick={() => insertBook(b.idbook)} data-testid="confirm">Confirm</button> :
+                        <button style={{ color: "green" }} onClick={() => setBookToAdd(b.idbook)} data-testid="add-book">+</button>
                     }
                     <NavLink to={'/series/books/book/' + b.idbook}>{b.bookname}</ NavLink>
                 </td>
@@ -267,20 +268,20 @@ export const SeriesInfo = (props) => {
             </tr>
         ));
     };
-    
+
 
     return (
         <div>
-            <NavLink to="/series" style={{textDecoration: "none", color: "grey"}}>← Back to series</NavLink>
+            <NavLink to="/series" style={{ textDecoration: "none", color: "grey" }}>← Back to series</NavLink>
             <h2>{thisSeries.bookseries}</h2>
             <p><b>Publisher:</b> {thisSeries.publisher}</p>
             <p><b>Description:</b> {thisSeries.description}</p>
             <p><b>Classification:</b> {thisSeries.classification}</p>
-            <p>Edit information about the series: <button onClick={openEditModal}>Edit</button></p>
-            { openEdit && <BrowserEditSeries closeEditModal={closeEditModal} seriesToEdit={thisSeries} />}
+            <p>Edit information about the series: <button onClick={openEditModal} data-testid="edit-series">Edit</button></p>
+            {openEdit && <BrowserEditSeries closeEditModal={closeEditModal} seriesToEdit={thisSeries} />}
             <table>
                 <thead>
-                    <tr style={{height: "35px", backgroundColor: "lavender"}}>
+                    <tr style={{ height: "35px", backgroundColor: "lavender" }}>
                         <th>Books</th>
                         <th>Publication year</th>
                     </tr>
@@ -290,8 +291,8 @@ export const SeriesInfo = (props) => {
                 </tbody>
             </table>
             <p>Add new books to the series here:</p>
-            <button onClick={openAddModal}>New book</button>
-            { modalOpen && <BrowserAddBook closeAddModal={closeAddModal} seriesid={idbookseries}/> }
+            <button onClick={openAddModal} data-testid="add-to-series">New book</button>
+            {modalOpen && <BrowserAddBook closeAddModal={closeAddModal} seriesid={idbookseries} />}
         </div>
     )
 }
@@ -299,7 +300,7 @@ export const SeriesInfo = (props) => {
 export const BookInfo = (props) => {
     const [oneBook, setOneBook] = useState({});
     const params = useParams();
-    const {idbook} = params;
+    const { idbook } = params;
 
     const [allBooks, setAllBooks] = useState([]);
     const [bookshelf, setBookshelf] = useState(null);
@@ -326,8 +327,8 @@ export const BookInfo = (props) => {
                 condition: null,
                 solddate: null,
                 soldprice: null,
-            });   
-            console.log(quickAddBook);   
+            });
+            console.log(quickAddBook);
         }
         fetchBook();
     }, [idbook, openEdit]);
@@ -388,19 +389,19 @@ export const BookInfo = (props) => {
 
     return (
         <div>
-            <NavLink to={"/series/books/" + oneBook.idbookseries} style={{textDecoration: "none", color: "grey"}}>← Back to books</NavLink>
+            <NavLink to={"/series/books/" + oneBook.idbookseries} style={{ textDecoration: "none", color: "grey" }}>← Back to books</NavLink>
             <h3>{oneBook.bookname}</h3>
             <p>{oneBook.publicationyear}</p>
             <p>Author: {oneBook.writer}</p>
             <p>Description: {oneBook.description}</p>
-            <button onClick={(e) => {e.preventDefault(); setAddClicked(true)}}>Quick add</button> 
+            <button onClick={(e) => { e.preventDefault(); setAddClicked(true) }} data-testid="quick-add">Quick add</button>
             {addClicked && <button onClick={() => insertBook(quickAddBook)}>Confirm</button>}
-            
-            <button onClick={openModal}>Add with information</button>
+
+            <button onClick={openModal} data-testid="add-w-info">Add with information</button>
             {modalOpen && <AddBookModal closeModal={closeModal} insertBook={insertBook} id={oneBook.idbook} />}
-            
-            <p>Edit information about this book: <button onClick={openEditModal}>Edit</button></p>
-            { openEdit && <BrowserEditBook closeEditModal={closeEditModal} bookToEdit={oneBook} />}
+
+            <p>Edit information about this book: <button onClick={openEditModal} data-testid="edit-book">Edit</button></p>
+            {openEdit && <BrowserEditBook closeEditModal={closeEditModal} bookToEdit={oneBook} />}
         </div>
     )
 }
