@@ -51,7 +51,7 @@ app.use(session({
   saveUninitialized: false,
   cookie: { maxAge: 60000 },
 }))
-
+/*
 // middleware to test if authenticated
 function isAuthenticated(req, res, next) {
   if (req.session.user) next()
@@ -63,32 +63,40 @@ app.get('/', isAuthenticated, (req, res) => {
   const cookieSessionId = req.cookies['connect.sid'];
 
   if (cookieSessionId.includes(req.session.id)) {
-    res.json({ username: req.session.user, sessionId: req.session.id, loggedIn: true });
+    res.json({ username: req.session.user, email: req.session.email, sessionId: req.session.id, loggedIn: req.session.log });
   }
   else {
+    cookieSessionId = null;
     res.json({ loggedIn: false });
   }
   //res.send(req.session.id);
 });
 app.get('/', function (req, res) {
   console.log('Log in');
-  res.json("{loggedIn: false}");
-})
-
-/*
-app.get('/', function (req, res) {
-  const sesId = req.session.id;
-  if(sesId){
-    console.log(`Welcome, ${req.session.id}`);
-    res.json({username: req.session.user, sessionId: req.session.id});
-  }
-  else {
-    console.log('Log in');
-    res.json({message: "not logged"});
-  }
+  res.json("Not logged");
 })*/
 
-app.post('/login', express.urlencoded({ extended: false }), async function (req, res, next) {
+app.get('/', function (req, res) {
+  if (req.session.log) {
+    res.json({ username: req.session.user, email: req.session.email, sessionId: req.session.id, loggedIn: req.session.log });
+
+    /*const cookieSessionId = req.cookies['connect.sid'];
+
+    if (cookieSessionId.includes(req.session.id)) {
+      res.json({ username: req.session.user, sessionId: req.session.id, loggedIn: req.session.log });
+    }
+    else {
+      cookieSessionId = null;
+      res.json({ loggedIn: false });
+    }*/
+  }
+  else {
+    res.json({ loggedIn: false });
+  }
+})
+
+
+app.post('/login',  async function (req, res, next) {
   try {
     const username = req.body.username;
     const password = req.body.password;
@@ -115,16 +123,18 @@ app.post('/login', express.urlencoded({ extended: false }), async function (req,
     }
 
 
-    ///////////////////////////////////////////
+    //if username and password are correct, user is logged in
     if (req.body.username == user.username && req.body.password == user.password) {
       req.session.regenerate(function (err) {
         if (err) next(err)
 
         req.session.user = req.body.username;
+        req.session.email = req.body.email;
+        req.session.log = true;
 
         req.session.save(function (err) {
           if (err) return next(err)
-          //res.json({ success: true });
+          //res.json({username: user.username, password: user.password, email: user.email, loggedIn: true})
           res.redirect('/')
         })
       })
@@ -138,19 +148,21 @@ app.post('/login', express.urlencoded({ extended: false }), async function (req,
     throw err;
   }
 }
-)/*
-app.get('/logout', function (req, res, next) {
-  req.session.user = null
+)
+app.post('/logout', function (req, res, next) {
+  req.session.user = null;
+  req.session.email = null;
+  req.session.log = false;
   req.session.save(function (err) {
     if (err) next(err)
 
-    req.session.regenerate(function (err) {
+    req.session.destroy(function (err) {
       if (err) next(err)
-
       res.redirect('/')
+      //res.json({ loggedIn: false });
     })
   })
-})*/
+})
 
 
 

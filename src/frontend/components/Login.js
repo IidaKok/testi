@@ -95,7 +95,6 @@ const Login = (props) => {
                 });
         }
     }
-    //onSubmit={(e) => handleSubmit(e)}    action="http://localhost:5000/login" method="post"
     return (
         <div className="Forms">
             <p>muuttuuko?</p>

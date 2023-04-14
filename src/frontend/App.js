@@ -15,20 +15,30 @@ const App = () => {
     const [logged, setLogged] = useState(null);
 
 useEffect(() => {
-    const fetchUser = async () => {
+    const fetchUser = () => {
       try {
-        await fetch('http://localhost:5000', {
+        fetch('http://localhost:5000', {
           credentials: 'include', // Send cookies with the request
         })
         .then((res) => res.json())
         .then((data) => {
           console.log("data: ", data);
-          if(data.loggedIn){
+          if(data.loggedIn){ 
+            //adds user to local storage
+          //const storedUser = localStorage.setItem('username', user.username);
+          //console.log(storedUser);
+          localStorage.setItem('username', data.username);
+          localStorage.setItem('loggedIn', true);
+
+
+            setLogged(true);
             console.log("user.loggedIn:", data.loggedIn);
             setUser(data);
-            setLogged(true);
           }
           if(!data.loggedIn){
+            localStorage.setItem('loggedIn', false);
+            localStorage.setItem('username', null);
+
             console.log("user.loggedIn:", data.loggedIn);
             setLogged(false);
           }
@@ -41,7 +51,7 @@ useEffect(() => {
   }, []);
     return (
         <Router>
-            {logged ? <NavBar/> : null}
+            {logged ? <NavBar setLoggedIn={setLogged}/> : null}
             <Routes>
                 <Route path="/" element={
                 logged ? <Logged user={user}/> : <Login userLogged={setLogged}/>} />
