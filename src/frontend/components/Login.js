@@ -74,7 +74,6 @@ const Login = (props) => {
     }
     return (
         <div className="Forms">
-            <h1>MUUTTUUKO????</h1>
             <h2>Login</h2>
             <div className="Container">
                 <form onSubmit={(e) => handleSubmit(e)}>
