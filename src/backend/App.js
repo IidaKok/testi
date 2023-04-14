@@ -22,7 +22,7 @@ const HttpError = require("./models/http-error");
 
 //allows cors
 app.use(function (req, res, next) {
-  res.header("Access-Control-Allow-Origin", "https://bookarchive-test.azurewebsites.net/");
+  res.header("Access-Control-Allow-Origin", "http://localhost:3000");
   res.header(
     "Access-Control-Allow-Headers",
     "x-access-token, Origin, X-Requested-With, Content-Type, Accept"
@@ -30,6 +30,7 @@ app.use(function (req, res, next) {
   res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, PATCH");
   res.header("Content-Type", "application/json");
   res.header("Access-Control-Allow-Credentials", true);
+  //res.setHeader('Set-Cookie', 'user=johndoe; expires=Thu, 01 Jan 2024 00:00:00 UTC; path=/');
   next();
 });
 
@@ -52,9 +53,7 @@ app.use(session({
 }));
 
 app.get('/', function (req, res) {
-  
   if (req.session.log) {
-    //res.json(JSON.parse(userCookie));
     res.json({ iduser: req.session.userId, username: req.session.user, email: req.session.email, loggedIn: req.session.log });
   }
   else {
@@ -100,13 +99,6 @@ app.post('/login',  async function (req, res, next) {
         req.session.userId = user.iduser;
         req.session.log = true;
 
-        res.cookie('user', JSON.stringify(user), {
-          httpOnly: true, // Prevent client-side access to the cookie
-          maxAge: 86400000, // Set the cookie expiration time (in milliseconds)
-          sameSite: 'strict', // Prevent cross-site request forgery
-          secure: true // Use secure cookies for HTTPS connections only
-        });
-
         req.session.save(function (err) {
           if (err) return next(err)
           res.redirect('/')
@@ -120,18 +112,12 @@ app.post('/login',  async function (req, res, next) {
 }
 )
 app.post('/logout', function (req, res, next) {
+  req.session.log = false;
   req.session.save(function (err) {
     if (err) next(err)
 
     req.session.destroy(function (err) {
       if (err) next(err)
-
-      res.cookie('user', '', {
-        expires: new Date(0),
-        httpOnly: true,
-        sameSite: 'strict',
-        secure: true
-      });
       res.redirect('/')
     })
   })

@@ -1,11 +1,6 @@
 const HttpError = require("../models/http-error");
 const db = require("../db");
 
-var escapeHtml = require('escape-html')
-var express = require('express')
-var session = require('express-session')
-
-
 //creates new user
 const createUser = async (req, res, next) => {
 

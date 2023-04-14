@@ -1,18 +1,18 @@
 import React, { useState, useEffect } from "react";
 import "../App.css";
 
-const Logged = () => {
+const Logged = (props) => {
+
+    const { user } = props;
 
     const [shelf, setShelf] = useState([]);
     const [msg, setMsg] = useState("");
     const [bookshelfExists, setBookshelfExists] = useState(false);
-    const usersId = localStorage.getItem("iduser");
-    const userInfo = localStorage.getItem("username");
 
     useEffect(() => {
         const fetchBooks = async () => {
 
-            let response = await fetch("http://localhost:5000/api/bookshelf/" + usersId);
+            let response = await fetch("http://localhost:5000/api/bookshelf/" + user.iduser);
             if (response.ok) {
                 let c = await response.json();
                 setShelf(c);
@@ -24,12 +24,12 @@ const Logged = () => {
             }
         }
         fetchBooks();
-    }, [usersId]);
+    }, [user.iduser]);
 
     return (
         <div>
             <div className="App">
-                <h1>Welcome, {userInfo}</h1>
+                <h1>Welcome, {user.username}</h1>
 
                 {bookshelfExists ? <table>
                     <thead>
