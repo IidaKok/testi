@@ -24,16 +24,16 @@ const App = () => {
                     .then((data) => {
                         console.log("data: ", data);
                         if (data.loggedIn) {
-                            localStorage.setItem('username', data.username);
+                            /*localStorage.setItem('username', data.username);
                             localStorage.setItem('iduser', data.iduser);
-                            localStorage.setItem('loggedIn', true);
+                            localStorage.setItem('loggedIn', true);*/
                             setLogged(true);
                             setUser(data);
                         }
                         if (!data.loggedIn) {
-                            localStorage.setItem('loggedIn', false);
+                            /*localStorage.setItem('loggedIn', false);
                             localStorage.setItem('username', null);
-                            localStorage.setItem('iduser', null);
+                            localStorage.setItem('iduser', null);*/
                             setLogged(false);
                         }
                     })

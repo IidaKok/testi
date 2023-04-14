@@ -43,7 +43,7 @@ const Login = (props) => {
                 .then(response => {
                     if (response.ok) {
                         userLogged(true);
-                        localStorage.setItem("loggedIn", true);
+                        //localStorage.setItem("loggedIn", true);
                         console.log("response ok");
                         setInvalidName(false);
                         setInvalidPassword(false);
