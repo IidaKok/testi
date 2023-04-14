@@ -34,7 +34,6 @@ const App = () => {
                             localStorage.setItem('loggedIn', false);
                             localStorage.setItem('username', null);
                             localStorage.setItem('iduser', null);
-
                             setLogged(false);
                         }
                     })

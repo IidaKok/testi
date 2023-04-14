@@ -19,10 +19,10 @@ const HttpError = require("./models/http-error");
 const cookieParser = require("cookie-parser");
 
 app.use(cookieParser());
-/*
+
 //allows cors
 app.use(function (req, res, next) {
-  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Origin", "https://bookarchive-test.azurewebsites.net/");
   res.header(
     "Access-Control-Allow-Headers",
     "x-access-token, Origin, X-Requested-With, Content-Type, Accept"
@@ -31,7 +31,7 @@ app.use(function (req, res, next) {
   res.header("Content-Type", "application/json");
   res.header("Access-Control-Allow-Credentials", true);
   next();
-});*/
+});
 
 
 const cors = require('cors');
@@ -52,6 +52,7 @@ app.use(session({
 }))
 
 app.get('/', function (req, res) {
+  console.log(req.session.id);
   if (req.session.log) {
     res.json({ iduser: req.session.userId, username: req.session.user, email: req.session.email, loggedIn: req.session.log });
   }

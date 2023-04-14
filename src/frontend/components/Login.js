@@ -46,8 +46,7 @@ const Login = (props) => {
                         localStorage.setItem("loggedIn", true);
                         console.log("response ok");
                         setInvalidName(false);
-                         setInvalidPassword(false);
-
+                        setInvalidPassword(false);
                     }
                     if(response.status === 404) {
                         const s = response.json();
