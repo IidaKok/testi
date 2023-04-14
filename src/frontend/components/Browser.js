@@ -2,6 +2,11 @@ import { useState, useEffect, useMemo } from 'react';
 import { Link, NavLink, useHistory, useParams } from "react-router-dom";
 import "../App.css";
 
+import { BrowserAddSeries } from './BrowserAddSeries';
+import { BrowserAddBook } from './BrowserAddBook';
+import { BrowserEditSeries } from './BrowserEditSeries';
+import { BrowserEditBook } from './BrowserEditBook';
+
 export const SeriesBrowser = (props) => {
     const [series, setSeries] = useState([]);
     const [bookToAdd, setBookToAdd] = useState();
@@ -9,6 +14,26 @@ export const SeriesBrowser = (props) => {
     const [allBooks, setAllBooks] = useState([]);
     const user = props.user;
     const [bookshelf, setBookshelf] = useState(null);
+
+    const [modalOpen, setModalOpen] = useState(false);
+    const [openEdit, setOpenEdit] = useState(false);
+    const [seriesToEdit, setSeriesToEdit] = useState({});
+
+    const openAddModal = () => {
+        setModalOpen(true);
+    }
+    const closeAddModal = () => {
+        setModalOpen(false);
+    }
+
+    const openEditModal = (series) => {
+        setSeriesToEdit(series);
+        console.log("Series to edit (openEditModal): ", seriesToEdit);
+        setOpenEdit(true);
+    }
+    const closeEditModal = () => {
+        setOpenEdit(false)
+    }
 
     // Voi muuttua paljon vielä.
     const tblCell = {
@@ -44,7 +69,7 @@ export const SeriesBrowser = (props) => {
 
         fetchBooks();
         fetchSeries();
-    }, []);
+    }, [modalOpen, openEdit]);
 
     useEffect(() => {
         const fetchBookshelf = async () => {
@@ -97,6 +122,7 @@ export const SeriesBrowser = (props) => {
         insertBooksToBookshelf();
     }, [bookToAdd, allBooks, bookshelf]);
 
+
     return (
         <div>
             <table >
@@ -104,6 +130,7 @@ export const SeriesBrowser = (props) => {
                     <tr style={{height: "35px", backgroundColor: "lavender"}}>
                         <th style={tblCellSer}>Series</th>
                         <th style={tblCell}>Publishers</th>
+                        <th style={tblCell}>Edit</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -113,12 +140,17 @@ export const SeriesBrowser = (props) => {
                                 <tr key={index}>
                                     <td style={tblCell}><button style={{color: "green"}} onClick={() => setBookToAdd(s.idbookseries)}>+</button>  <NavLink to={'/series/books/' + s.idbookseries}>{s.bookseries}</ NavLink></td>
                                     <td style={tblCell}>{s.publisher}</td>
+                                    <td style={tblCell}><button onClick={() => openEditModal(s)}>Edit</button></td>
                                 </tr>
                             )
                         }), [series])
                     } 
                 </tbody>
             </table>
+            <p>Can't find your series? Add it here: </p>
+            <button onClick={openAddModal}>Add series</button>
+            { modalOpen && <BrowserAddSeries closeAddModal={closeAddModal} /> }
+            { openEdit && <BrowserEditSeries closeEditModal={closeEditModal} seriesToEdit={seriesToEdit} />}
         </div>
     )
 }
@@ -129,13 +161,42 @@ export const SeriesInfo = (props) => {
     const params = useParams();
     const {idbookseries} = params;
     const [bookToAdd, setBookToAdd] = useState();
+    const [thisSeries, setThisSeries] = useState({});
 
     const [allBooks, setAllBooks] = useState([]);
     const user = props.user;
     const [bookshelf, setBookshelf] = useState(null);
 
+    const [modalOpen, setModalOpen] = useState(false);
+    const [openEdit, setOpenEdit] = useState(false);
 
-    useEffect( () => {
+    const openAddModal = () => {
+        setModalOpen(true);
+    }
+    const closeAddModal = () => {
+        setModalOpen(false);
+    }
+
+    const openEditModal = () => {
+        console.log("Series to edit (openEditModal): ", thisSeries);
+        setOpenEdit(true);
+    }
+    const closeEditModal = () => {
+        setOpenEdit(false)
+    }
+
+    useEffect(() => {
+        const fetchSeries = async () => {
+            let response = await fetch("http://localhost:5000/api/bookseries");
+            let allSeries = await response.json();
+            let [findSeries] = allSeries.filter((s) => s.idbookseries == idbookseries);
+            setThisSeries(findSeries || {});
+        }
+        fetchSeries();
+    }, [openEdit])
+
+
+    useEffect(() => {
 
         const fetchBooks = async () => {
 
@@ -149,7 +210,7 @@ export const SeriesInfo = (props) => {
         }
 
         fetchBooks();
-    }, []);
+    }, [modalOpen]);
 
 
     useEffect(() => {
@@ -211,6 +272,12 @@ export const SeriesInfo = (props) => {
     return (
         <div>
             <NavLink to="/series" style={{textDecoration: "none", color: "grey"}}>← Back to series</NavLink>
+            <h2>{thisSeries.bookseries}</h2>
+            <p><b>Publisher:</b> {thisSeries.publisher}</p>
+            <p><b>Description:</b> {thisSeries.description}</p>
+            <p><b>Classification:</b> {thisSeries.classification}</p>
+            <p>Edit information about the series: <button onClick={openEditModal}>Edit</button></p>
+            { openEdit && <BrowserEditSeries closeEditModal={closeEditModal} seriesToEdit={thisSeries} />}
             <table>
                 <thead>
                     <tr style={{height: "35px", backgroundColor: "lavender"}}>
@@ -222,7 +289,9 @@ export const SeriesInfo = (props) => {
                     {renderTableRows()}
                 </tbody>
             </table>
-            
+            <p>Add new books to the series here:</p>
+            <button onClick={openAddModal}>New book</button>
+            { modalOpen && <BrowserAddBook closeAddModal={closeAddModal} seriesid={idbookseries}/> }
         </div>
     )
 }
@@ -240,6 +309,7 @@ export const BookInfo = (props) => {
     const [quickAddBook, setQuickAddBook] = useState({});
 
     const [modalOpen, setModalOpen] = useState(false);
+    const [openEdit, setOpenEdit] = useState(false);
 
     useEffect(() => {
         const fetchBook = async () => {
@@ -260,7 +330,7 @@ export const BookInfo = (props) => {
             console.log(quickAddBook);   
         }
         fetchBook();
-    }, [idbook]);
+    }, [idbook, openEdit]);
 
     useEffect(() => {
         const fetchBookshelf = async () => {
@@ -308,6 +378,14 @@ export const BookInfo = (props) => {
         setModalOpen(false);
     }
 
+    const openEditModal = () => {
+        console.log("Book to edit (openEditModal): ", oneBook);
+        setOpenEdit(true);
+    }
+    const closeEditModal = () => {
+        setOpenEdit(false)
+    }
+
     return (
         <div>
             <NavLink to={"/series/books/" + oneBook.idbookseries} style={{textDecoration: "none", color: "grey"}}>← Back to books</NavLink>
@@ -320,6 +398,9 @@ export const BookInfo = (props) => {
             
             <button onClick={openModal}>Add with information</button>
             {modalOpen && <AddBookModal closeModal={closeModal} insertBook={insertBook} id={oneBook.idbook} />}
+            
+            <p>Edit information about this book: <button onClick={openEditModal}>Edit</button></p>
+            { openEdit && <BrowserEditBook closeEditModal={closeEditModal} bookToEdit={oneBook} />}
         </div>
     )
 }

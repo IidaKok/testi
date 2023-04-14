@@ -3,42 +3,88 @@
 }
 
 /* User Page CSS */
-.user-page {
-    height: 80vh;
-    padding: 0px 100px;
-    display: flex;
-    align-items: center;
+.book-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 20px;
     justify-content: center;
+    padding: 0 20px; /* Add left and right padding */
+}
+
+.book {
+    background-color: #f5f5f5;
+    padding: 20px;
+    border-radius: 10px;
     text-align: center;
 }
-.outer-user-page {
-    display: flex;
+
+    .book h2 {
+        font-size: 1.2em;
+        font-weight: bold;
+        margin-top: 0;
+    }
+
+    .book h3, .book h4, .book h5 {
+        margin-top: 0.5em;
+    }
+
+    .book p {
+        margin: 0;
+    }
+
+    .book button {
+        margin-top: 1em;
+    }
+
+@media (max-width: 768px) {
+    .book-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
 }
-.inner-user-page {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-    align-items: center;
+
+@media (max-width: 480px) {
+    .book-grid {
+        grid-template-columns: repeat(1, 1fr);
+    }
 }
 .add-user-btn {
     width: auto;
     min-width: 280px;
-    color: #565656;
-    padding: 12px;
-    font-size: 14px;
+    display: inline-block;
+    margin: 10px;
+    padding: 10px 20px;
+    font-size: 16px;
     font-weight: bold;
-    border: solid 2px #1189de;
-    border-radius: 40px;
-    background: #ffff;
+    color: #fff;
+    text-align: center;
+    text-decoration: none;
+    background-color: #5C7AEA;
+    border-radius: 5px;
+    border: none;
     cursor: pointer;
-    margin: 4px 2px;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.3);
+    transition: background-color 0.3s ease;
 }
+
+    .add-user-btn:hover {
+        background-color: #6E94FF;
+    }
 img {
     width: 200px;
     height: 300px;
     object-fit: cover;
-    background-color: dimgrey;
+    background-color: rgb(203, 238, 227);
+}
+.book-image {
+    width: 200px;
+    height: 300px;
+    object-fit: cover;
+}
+.no-image {
+    width: 200px;
+    height: 300px;
+    object-fit: cover;
+    background-color: rgb(203, 238, 227);
 }
 .delete {
     border: none;
@@ -57,9 +103,9 @@ img {
     color: rgb(139, 139, 234);
 }
 .add-bookcopy-form {
-    display: flex;
+    display:flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 5px;
     align-items: center;
     justify-content: center;
     text-align: center;
@@ -67,7 +113,7 @@ img {
 .add-bookseries-form {
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 5px;
     align-items: center;
     justify-content: center;
     text-align: center;
@@ -76,6 +122,14 @@ img {
     width: 250px;
     padding: 10px;
     border: 1px solid gray;
+}
+.update-bookcopy-form {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
 }
 .formAddBtn {
     border: none;
@@ -98,8 +152,16 @@ img {
     cursor: pointer;
 }
 #h1user {
+    font-size: 40px;
+    font-weight: bold;
     text-align: center;
+    color: #5C7AEA;
+    margin: 20px 0;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+    text-decoration: underline;
 }
+
+
 /* ^^ User Page CSS ^^ */
 /* ^^ User Page CSS ^^ */
 
@@ -125,4 +187,28 @@ img {
     max-width: 90%;
     box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.3);
   }
-  /* ^^ Add to library CSS ^^ */
+  /* ^^ Modal dialog CSS ^^ */
+
+.navbar {
+    background-color: #f5f5f5;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 5px;
+    display: flex;
+    align-items: center;
+}
+
+    .navbar a {
+        color: #565656;
+        font-size: 16px;
+        font-weight: bold;
+        text-decoration: none;
+        margin-right: 10px;
+    }
+
+        .navbar a:first-child {
+            margin-left: 10px;
+        }
+
+        .navbar a:hover {
+            color: #5C7AEA;
+        }

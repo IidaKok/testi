@@ -1,6 +1,11 @@
 const HttpError = require("../models/http-error");
 const db = require("../db");
 
+var escapeHtml = require('escape-html')
+var express = require('express')
+var session = require('express-session')
+
+
 //creates new user
 const createUser = async (req, res, next) => {
 
@@ -37,12 +42,12 @@ const createUser = async (req, res, next) => {
         }
 
         //sends the user's information to the database
-        const response = db.pool.query("INSERT INTO user (username, password, email) VALUES ('" +username + "','" + password + "','" + email + "')");
+        const response = db.pool.query("INSERT INTO user (username, password, email) VALUES ('" + username + "','" + password + "','" + email + "')");
         res.send(response);
 
 
         console.log("This was sent");
-        console.log( username, password, email);
+        console.log(username, password, email);
     }
     catch (err) {
         throw err;
@@ -66,6 +71,7 @@ const getAllUsers = async (req, res, next) => {
 }
 //gets user from the database based on username and password
 const getUserByNameAndPassword = async (req, res, next) => {
+    
     try {
         const username = req.params.username;
         const password = req.params.password;
@@ -90,20 +96,45 @@ const getUserByNameAndPassword = async (req, res, next) => {
         if (!user) {
             return next(new HttpError("Password is incorrect. Try again", 404));
         }
+
+
         res.json(basicDetails(user));
     }
     catch (err) {
         throw err;
     }
 }
-/*const user = result.find(u => {
-            return u.username === usernam && u.password === password;
-        });*/
+
+
 function basicDetails(user) {
     const { iduser, username, password, email } = user;
     return { iduser, username, password, email };
+}
+const deleteUser = async (req, res, next) => {
+    const username = req.params.username;
+    let user;
+    try {
+        user = await db.pool.query("select * from user  where username = '" + username + "'");
+        res.status(200);
+        if (user) {
+            try {
+                await db.pool.query("delete from user  where username = '" + username + "'");
+            }
+            catch (err) {
+                return next(new HttpError("Deleting user failed", 500));
+            }
+        }
+        else {
+            return next(new HttpError("Can't find user", 404));
+        }
+    }
+    catch (err) {
+        throw err;
+    }
+
 }
 
 exports.getAllUsers = getAllUsers;
 exports.getUserByNameAndPassword = getUserByNameAndPassword;
 exports.createUser = createUser;
+exports.deleteUser = deleteUser;

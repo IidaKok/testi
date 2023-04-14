@@ -15,7 +15,7 @@ const Register = () => {
 
   const [password, setPassword] = useState("");
   const [passwordAgain, setPasswordAgain] = useState("");
- 
+
   const [type, setType] = useState("password");
 
 
@@ -66,14 +66,14 @@ const Register = () => {
             console.log("Message: ", msg);
             if (msg.includes("email") && msg.includes("Username")) {
               var m = msg.split(",");
-              setErrors({nameError: m[0], emailError: m[1], invalidName: true, invalidEmail: true });
+              setErrors({ nameError: m[0], emailError: m[1], invalidName: true, invalidEmail: true });
             }
             else {
               if (msg.includes("Username")) {
-                setErrors({nameError: msg, invalidName: true});
+                setErrors({ nameError: msg, invalidName: true });
               }
               else if (msg.includes("email")) {
-                setErrors({emailError: msg, invalidEmail: true});
+                setErrors({ emailError: msg, invalidEmail: true });
               }
             }
           });
@@ -85,15 +85,15 @@ const Register = () => {
     if (userToBeInserted != null) insertUser();
   }, [userToBeInserted]);
 
- /* if (regSuccess) {
-    navigate("/");
-  }*/
+  /* if (regSuccess) {
+     navigate("/");
+   }*/
 
   //password validation
   useEffect(() => {
     if (password !== passwordAgain) setPassMatch(true);
     if (password === passwordAgain) setPassMatch(false);
-  }, [passwordAgain]); 
+  }, [passwordAgain]);
 
 
   //username validation
@@ -103,7 +103,7 @@ const Register = () => {
       //setErrMsg(false);
     }
     else setValidName(false);
-    
+
   }, [username]);
 
   let passMissing = [];
@@ -115,7 +115,7 @@ const Register = () => {
     const numbers = /[1-9]/g;
     setPm("");
 
-    if(password.length < 5 || !password.match(lowerCase) || !password.match(upperCase) || !password.match(numbers)){
+    if (password.length < 5 || !password.match(lowerCase) || !password.match(upperCase) || !password.match(numbers)) {
       setValidPassword(true);
       /*if (password.length < 5) {
         passMissing.push(" at least 5 characters");
@@ -128,13 +128,13 @@ const Register = () => {
       }
       setPm(passMissing);
       console.log(pm);
-*/   
+*/
     }
     else {
-      setValidPassword(false); 
+      setValidPassword(false);
       console.log("ehdot täyttyy");
     }
-    
+
     if (password !== passwordAgain) setPassMatch(true);
     if (password === passwordAgain) setPassMatch(false);
 
@@ -142,7 +142,7 @@ const Register = () => {
 
   //email validation
   useEffect(() => {
-    const isValidEmail = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g; 
+    const isValidEmail = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g;
 
     if (email.length < 5 || !email.match(isValidEmail)) {
       setValidEmail(true);
@@ -156,11 +156,11 @@ const Register = () => {
     event.preventDefault();
     setButtonPressed(true);
 
-    setErrors({nameError: "", emailError: "", invalidName: false, invalidEmail: false });
-    
+    setErrors({ nameError: "", emailError: "", invalidName: false, invalidEmail: false });
+
     setErrMsg(false);
 
-    if (!validName && !validPassword && !validEmail && ! passMatch){
+    if (!validName && !validPassword && !validEmail && !passMatch) {
       setuserToBeInserted({ username: username, password: password, email: email });
       setButtonPressed(false);
     }
@@ -184,25 +184,25 @@ const Register = () => {
         <form onSubmit={(e) => handleSubmit(e)}>
 
           <input type="text" value={username} className={validName && buttonPressed || errors.invalidName ? "invalid" : "valid"} onChange={(e) => setUsername(e.target.value)} placeholder="Username..." />
-          {validName && buttonPressed ? <Error value="Username" text="at least 5 characters"/> : ""}
-          <p>{errors.nameError}</p>
+          {validName && buttonPressed ? <Error id="invalidNameError" value="Username" text="at least 5 characters" /> : ""}
+          <p data-testid="nameError">{errors.nameError}</p>
 
 
-          <OverlayTrigger overlay={(<Tooltip style={{backgroundColor: "lightgrey"}}>Password must contain<br/>at least 5 characters,<br/>a lowercase letter,<br/>an uppercase letter and a number</Tooltip>)} placement="right">
-          <input type={type} value={password} className={validPassword && buttonPressed || passMatch ? "invalid" : "valid"} onChange={(e) => setPassword(e.target.value)} placeholder="Password..." />
+          <OverlayTrigger overlay={(<Tooltip style={{ backgroundColor: "lightgrey" }}>Password must contain<br />at least 5 characters,<br />a lowercase letter,<br />an uppercase letter and a number</Tooltip>)} placement="right">
+            <input data-testid="password1" type={type} value={password} className={validPassword && buttonPressed || passMatch ? "invalid" : "valid"} onChange={(e) => setPassword(e.target.value)} placeholder="Password..." />
           </OverlayTrigger>
-          {validPassword && buttonPressed ? <Error value="Password" text=" at least 5 characters, a lowercase letter, an uppercase letter and a number"/> : ""}
-          
+          {validPassword && buttonPressed ? <Error id="invalidPasswordError" value="Password" text="at least 5 characters, a lowercase letter, an uppercase letter and a number" /> : ""}
 
-          <input type={type} value={passwordAgain} className={passMatch ? "invalid" : "valid"} onChange={(e) => setPasswordAgain(e.target.value)} placeholder="Password again..." />
-          {passMatch ? <p>Passwords don't match</p> : ""}
 
-          <input type="checkbox" onChange={(e) => showPassword(e.target.checked)}/><label>Show Password</label>
-            <input type="text" value={email} className={validEmail && buttonPressed || errors.invalidEmail ? "invalid" : "valid"} onChange={(e) => setEmail(e.target.value)} placeholder="Email..." />
-          {validEmail && buttonPressed ? <Error value="Email"/> : ""}
-          <p>{errors.emailError}</p>
+          <input data-testid="password2" type={type} value={passwordAgain} className={passMatch ? "invalid" : "valid"} onChange={(e) => setPasswordAgain(e.target.value)} placeholder="Password again..." />
+          {passMatch ? <p data-testid="noMatchError">Passwords don't match</p> : ""}
 
-          <input type="submit" value="Register" />
+          <input data-testid="checkbox" type="checkbox" onChange={(e) => showPassword(e.target.checked)} /><label>Show Password</label>
+          <input type="text" value={email} className={validEmail && buttonPressed || errors.invalidEmail ? "invalid" : "valid"} onChange={(e) => setEmail(e.target.value)} placeholder="Email..." />
+          {validEmail && buttonPressed ? <Error id="invalidEmailError" value="Email" /> : ""}
+          <p data-testid="emailError">{errors.emailError}</p>
+
+          <input data-testid="regBtn" type="submit" value="Register" />
 
         </form>
       </div>
