@@ -1,7 +1,7 @@
-import React, {useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import { Login } from "./components/Login";
 import { Register } from "./components/Register";
-import { Routes, Route, BrowserRouter as Router} from "react-router-dom";
+import { Routes, Route, BrowserRouter as Router } from "react-router-dom";
 import { Logged } from "./pages/UserHome";
 import { SeriesBrowser, SeriesInfo, BookInfo } from "./components/Browser";
 import { NavBar } from "./components/NavBar";
@@ -14,55 +14,65 @@ const App = () => {
     const [user, setUser] = useState("");
     const [logged, setLogged] = useState(null);
 
-useEffect(() => {
-    const fetchUser = () => {
-      try {
-        fetch('http://localhost:5000', {
-          credentials: 'include', // Send cookies with the request
-        })
-        .then((res) => res.json())
-        .then((data) => {
-          console.log("data: ", data);
-          if(data.loggedIn){ 
-            //adds user to local storage
-          //const storedUser = localStorage.setItem('username', user.username);
-          //console.log(storedUser);
-          localStorage.setItem('username', data.username);
-          localStorage.setItem('loggedIn', true);
+    useEffect(() => {
+        const fetchUser = () => {
+            try {
+                fetch('http://localhost:5000', {
+                    credentials: 'include',
+                })
+                    .then((res) => res.json())
+                    .then((data) => {
+                        console.log("data: ", data);
+                        if (data.loggedIn) {
+                            localStorage.setItem('username', data.username);
+                            localStorage.setItem('iduser', data.iduser);
+                            localStorage.setItem('loggedIn', true);
+                            setLogged(true);
+                            setUser(data);
+                        }
+                        if (!data.loggedIn) {
+                            localStorage.setItem('loggedIn', false);
+                            localStorage.setItem('username', null);
+                            localStorage.setItem('iduser', null);
 
+                            setLogged(false);
+                        }
+                    })
+            } catch (error) {
+                console.error(error);
+            }
+        };
+        fetchUser();
+    }, [logged]);
 
-            setLogged(true);
-            console.log("user.loggedIn:", data.loggedIn);
-            setUser(data);
-          }
-          if(!data.loggedIn){
-            localStorage.setItem('loggedIn', false);
-            localStorage.setItem('username', null);
-
-            console.log("user.loggedIn:", data.loggedIn);
-            setLogged(false);
-          }
-        })
-      } catch (error) {
-        console.error(error);
-      }
-    };
-    fetchUser();
-  }, []);
     return (
         <Router>
-            {logged ? <NavBar setLoggedIn={setLogged}/> : null}
+            {logged ? <NavBar userLogged={setLogged} /> : null}
             <Routes>
                 <Route path="/" element={
-                logged ? <Logged user={user}/> : <Login userLogged={setLogged}/>} />
+                    logged ? <Logged user={user} /> : <Login userLogged={setLogged}/>} />
                 <Route path="/register" element={<Register />} />
-                <Route path="/series" element={<SeriesBrowser user={user} />} />
-                <Route path="/series/books/:idbookseries" element={<SeriesInfo user={user} />} />
-                <Route path="/series/books/book/:idbook" element={<BookInfo user={user} />} />
-                <Route path="/userPage" element={<UserPage user={user}/>} />
-                <Route path="/Addbook" element={<Addbook user={user}/>} />
-                <Route path="/Addseries" element={<Addseries />} />
-                <Route path="/update/:idbookshelf" element={<Update user={user}/>}/>
+
+                <Route path="/series" element={
+                logged ? <SeriesBrowser user={user} /> : <Login userLogged={setLogged}/>} />
+
+                <Route path="/series/books/:idbookseries" element={
+                    logged ? <SeriesInfo user={user} /> : <Login userLogged={setLogged}/>} />
+
+                <Route path="/series/books/book/:idbook" element={
+                    logged ? <BookInfo user={user} /> : <Login userLogged={setLogged}/>} />
+
+                <Route path="/userPage" element={
+                    logged ? <UserPage user={user} /> : <Login userLogged={setLogged}/>} />
+
+                <Route path="/Addbook" element={
+                    logged ? <Addbook user={user} /> : <Login userLogged={setLogged}/>} />
+
+                <Route path="/Addseries" element={
+                    logged ? <Addseries /> : <Login userLogged={setLogged}/>} />
+
+                <Route path="/update/:idbookshelf" element={
+                    logged ? <Update user={user} /> : <Login userLogged={setLogged}/>} />
             </Routes>
         </Router>
     )
