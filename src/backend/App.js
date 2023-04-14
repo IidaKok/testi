@@ -21,7 +21,7 @@ const HttpError = require("./models/http-error");
 //app.use(cookieParser());
 
 //allows cors
-app.use(function (req, res, next) {
+/*app.use(function (req, res, next) {
   res.header("Access-Control-Allow-Origin", "http://localhost:3000");
   res.header(
     "Access-Control-Allow-Headers",
@@ -32,7 +32,7 @@ app.use(function (req, res, next) {
   res.header("Access-Control-Allow-Credentials", true);
   //res.setHeader('Set-Cookie', 'user=johndoe; expires=Thu, 01 Jan 2024 00:00:00 UTC; path=/');
   next();
-});
+});*/
 
 
 const cors = require('cors');
@@ -49,7 +49,7 @@ app.use(session({
   secret: 'groupb secret',
   resave: false,
   saveUninitialized: false,
-  cookie: { maxAge: 60000 },
+  cookie: { maxAge: 3600 * 1000 },
 }));
 
 app.get('/', function (req, res) {
