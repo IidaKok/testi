@@ -8,6 +8,7 @@ export const NavBar = () => {
             <Link to="/">Home</Link>
             <Link to="/series">Series</Link>
             <Link to="/userPage">UserPage</Link>
+            <button>Log out</button>
         </div>
     )
 }
