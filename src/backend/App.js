@@ -21,7 +21,7 @@ const HttpError = require("./models/http-error");
 //app.use(cookieParser());
 
 //allows cors
-app.use(function (req, res, next) {
+/*app.use(function (req, res, next) {
   res.header("Access-Control-Allow-Origin", "https://bookarchive-test.azurewebsites.net/");
   res.header(
     "Access-Control-Allow-Headers",
@@ -32,14 +32,14 @@ app.use(function (req, res, next) {
   res.header("Access-Control-Allow-Credentials", true);
   //res.setHeader('Set-Cookie', 'user=johndoe; expires=Thu, 01 Jan 2024 00:00:00 UTC; path=/');
   next();
-});
+});*/
 
 
 const cors = require('cors');
 
 // Allow CORS for all routes
 app.use(cors({
-  origin: true,
+  origin: "https://bookarchive-test.azurewebsites.net/",
   credentials: true,
 }));
 
