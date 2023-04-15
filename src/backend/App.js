@@ -42,7 +42,7 @@ app.use(cors({
   origin: true,
   credentials: true,
 }));
-
+app.use(express.static(__dirname));
 
 //login session
 app.use(session({

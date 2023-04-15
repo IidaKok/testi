@@ -65,7 +65,7 @@ const Login = (props) => {
                         });
                     }
                     else {
-                        console.error(response.statusText);
+                        console.error(response.status);
                     }
                 })
                 .catch(error => {
