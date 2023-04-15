@@ -7,6 +7,8 @@ const bookRoutes = require("./routes/book-routes");
 const bookshelfRoutes = require("./routes/bookshelf-routes");
 const bookcopyRoutes = require("./routes/bookcopy-routes");
 const photoRoutes = require("./routes/photo-routes");
+const pictureRoutes = require("./routes/picture-routes");
+const artworkRoutes = require("./routes/artwork-routes");
 
 
 
@@ -32,6 +34,8 @@ app.use("/api/book", bookRoutes);
 app.use("/api/bookshelf", bookshelfRoutes);
 app.use("/api/bookcopy", bookcopyRoutes);
 app.use("/api/photo", photoRoutes);
+app.use("/api/picture", pictureRoutes);
+app.use("/api/artwork", artworkRoutes);
 app.use((error, req, res, next) => {
     if (res.headerSent) {
         return next(error);

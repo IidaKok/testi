@@ -303,6 +303,8 @@ export const BookInfo = (props) => {
 
     const [allBooks, setAllBooks] = useState([]);
     const [bookshelf, setBookshelf] = useState(null);
+    const [thisArtwork, setThisArtwork] = useState({});
+    const [bookImage, setBookImage] = useState(null);
     const user = props.user;
 
     const [addClicked, setAddClicked] = useState(false);
@@ -328,9 +330,34 @@ export const BookInfo = (props) => {
                 soldprice: null,
             });   
             console.log(quickAddBook);   
-        }
+        };
+        const fetchBookImages = async () => {
+            let response = await fetch("http://localhost:5000/api/artwork");
+            let allArtwork = await response.json();
+            console.log("fetchBookImages allArtwork: ", allArtwork);
+
+            let findArtwork = allArtwork.find((a) => a.idbook == idbook);
+            console.log("fetchBookImages findArtwork: ", findArtwork);
+
+            setThisArtwork(findArtwork);
+            console.log("fetchBookImages thisArtwork: ", thisArtwork);
+        };
+
+        fetchBookImages();
         fetchBook();
     }, [idbook, openEdit]);
+
+    useEffect(() => {
+        const fetchBookPicture = async () => {
+            let picId = thisArtwork.idpicture;
+            let response = await fetch("http://localhost:5000/api/picture/");
+            let picture = await response.json();
+            let findpicture = picture.find((p) => p.idpicture == picId);
+            setBookImage(findpicture);
+        };
+
+        if (thisArtwork != null) fetchBookPicture();
+    }, [thisArtwork])
 
     useEffect(() => {
         const fetchBookshelf = async () => {
@@ -390,6 +417,7 @@ export const BookInfo = (props) => {
         <div>
             <NavLink to={"/series/books/" + oneBook.idbookseries} style={{textDecoration: "none", color: "grey"}}>← Back to books</NavLink>
             <h3>{oneBook.bookname}</h3>
+            {bookImage ? <img src={`${bookImage.filename}`} /> : <img src="https://i.imgur.com/Qr08eFc.png" style={{width: "250px", height: "250px"}} />}
             <p>{oneBook.publicationyear}</p>
             <p>Author: {oneBook.writer}</p>
             <p>Description: {oneBook.description}</p>
