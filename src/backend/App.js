@@ -39,17 +39,18 @@ const cors = require('cors');
 
 // Allow CORS for all routes
 app.use(cors({
-  origin: "https://bookarchive-test.azurewebsites.net/",
+  origin: true,
   credentials: true,
 }));
 
 
 //login session
 app.use(session({
+  name: "My-session",
   secret: 'groupb secret',
   resave: false,
   saveUninitialized: false,
-  cookie: { maxAge: 3600 * 1000 },
+  cookie: {  httpOnly: true, secure: true, maxAge: 3600 * 1000, sameSite: 'none'  },
 }));
 
 app.get('/', function (req, res) {
@@ -62,7 +63,7 @@ app.get('/', function (req, res) {
 })
 
 
-app.post('/login',  async function (req, res, next) {
+app.post('/login', async function (req, res, next) {
   try {
     const username = req.body.username;
     const password = req.body.password;
@@ -113,13 +114,21 @@ app.post('/login',  async function (req, res, next) {
 )
 app.post('/logout', function (req, res, next) {
   req.session.log = false;
+  req.session.user = null;
+  req.session.email = null;
+  req.session.userId = null;
+
+
   req.session.save(function (err) {
     if (err) next(err)
 
-    req.session.destroy(function (err) {
+    req.session.regenerate(function (err) {
       if (err) next(err)
+      req.session.destroy()
+      res.clearCookie("My-session")
       res.redirect('/')
     })
+
   })
 })
 
