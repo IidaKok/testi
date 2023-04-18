@@ -71,19 +71,83 @@ verifyToken = (req, res, next) => {
   });
 };*/
 
-/*
-app.get('/', function (req, res) {
-  //res.json({ loggedIn: false });
-  if (req.session.log) {
-    res.json({ iduser: req.session.userId, username: req.session.user, email: req.session.email, loggedIn: req.session.log, accessToken: req.session.token});
+
+app.get('/', async function (req, res) {
+  const authHeader = req.headers['authorization'];
+  const token = authHeader && authHeader.split(' ')[1]; // get the JWT token from the Authorization header
+  //const user = null;
+  if (!token) {
+    return res.status(401).json({ message: 'Missing or invalid authorization token', loggedIn: false });
+  }
+
+  if (token !== "null") {
+    const decoded = jwt.verify(token, config.secret);
+    console.log("decoded: " + decoded.id);
+
+
+    res.json({ iduser: decoded.id, loggedIn: true });
   }
   else {
     res.json({ loggedIn: false });
   }
-})*/
+
+  const tokenCookie = req.headers.cookie && req.headers.cookie.split('; ')
+    .find(cookie => cookie.startsWith('token='));
+  if (tokenCookie) {
+    const tokenValue = tokenCookie.split('=')[1];
+    console.log("tokenValue: " + tokenValue);
+  } else {
+    // the token cookie was not found
+  }
+
+  //const [user] = await db.pool.query("SELECT * FROM user WHERE iduser=" + decoded.id);
+  //console.log("user: " + user[0]);
+
+  /*try {
+    const user = await db.pool.query("SELECT * FROM user WHERE iduser=" + decoded.id);
+    console.log("user: " + user);
+    //res.send(result);
+
+    //if no users are found, error is returned
+    if (!result) {
+      return next(new HttpError("Can't find user", 404));
+    }
+  }
+  catch (err) {
+    return res.status(401).json({ message: 'Invalid authorization token' });
+  }
+
+  /*jwt.verify(token, config.secret, (err, decoded) => {
+    if (err) {
+      return res.status(401).send({ message: "Unauthorized!" });
+    }
+    //req.userId = decoded.id;
+    console.log("decoded: " + decoded.id);
+
+    
+  });
+  const user = await db.pool.query("SELECT * FROM user WHERE iduser=2");
+  console.log("user: " + user);
+  res.json({iduser: user.iduser, username: user.username, email: user.email, loggedIn: true});*/
+
+})
+app.get('/user/:iduser', async function (req, res) {
+  try {
+    const result = await db.pool.query("select * from user where iduser = " + req.params.iduser);
+    res.send(result);
+
+    //if no users are found, error is returned
+    if (!result) {
+      return next(new HttpError("Can't find users", 404));
+    }
+  }
+  catch (err) {
+    throw err;
+  }
+})
 
 
-app.post('/login',  async function (req, res, next) {
+app.post('/login', async function (req, res, next) {
   try {
     const username = req.body.username;
     const password = req.body.password;
@@ -96,7 +160,7 @@ app.post('/login',  async function (req, res, next) {
 
     //if username doesn't exists, error is returned
     if (!userByName) {
-      res.status(404).send({ message: "Username is incorrect. Try again", accessToken: null });
+      return res.status(404).send({ message: "Username is incorrect. Try again", loggedIn: false });
       //return next(new HttpError("Username is incorrect. Try again", 404));
     }
 
@@ -107,52 +171,60 @@ app.post('/login',  async function (req, res, next) {
     });
 
     if (!user) {
-      res.status(401).send({ message: "Password is incorrect. Try again", accessToken: null });
+      return res.status(401).send({ message: "Password is incorrect. Try again", loggedIn: false });
       //return next(new HttpError("Password is incorrect. Try again", 404));
     }
 
-    if (req.body.username == user.username && req.body.password == user.password) {
-      let token = jwt.sign({ id: user.iduser }, config.secret, {
-        expiresIn: 86400 // 24 hours
-      });
-      res.status(200).send({
-        iduser: user.iduser,
-        username: user.username,
-        email: user.email,
-        accessToken: token
-      });
-      console.log("token: " + token);
-    }
 
-/*
-    //if username and password are correct, session is created
-    if (req.body.username == user.username && req.body.password == user.password) {
-      req.session.regenerate(function (err) {
-        if (err) next(err)
-
-        let token = jwt.sign({ id: user.iduser }, config.secret, {
-          expiresIn: 86400 // 24 hours
-        });
+    let token = jwt.sign({ id: user.iduser }, config.secret, {
+      expiresIn: "24h" // 24 hours
+    });
+    res.cookie("token", token);
+    res.json({ token });
+    /* res.status(200).send({
+       iduser: user.iduser,
+       username: user.username,
+       email: user.email,
+       //loggedIn: true,
+       accessToken: token
+     });*/
+    console.log("token: " + token);
 
 
-        req.session.user = user.username;
-        req.session.email = user.email;
-        req.session.userId = user.iduser;
-        req.session.log = true;
-        req.session.token = token;
-
-        req.session.save(function (err) {
-          if (err) return next(err)
-          res.redirect('/')
-        })
-      })
-    }*/
+    /*
+        //if username and password are correct, session is created
+        if (req.body.username == user.username && req.body.password == user.password) {
+          req.session.regenerate(function (err) {
+            if (err) next(err)
+    
+            let token = jwt.sign({ id: user.iduser }, config.secret, {
+              expiresIn: 86400 // 24 hours
+            });
+    
+    
+            req.session.user = user.username;
+            req.session.email = user.email;
+            req.session.userId = user.iduser;
+            req.session.log = true;
+            req.session.token = token;
+    
+            req.session.save(function (err) {
+              if (err) return next(err)
+              res.redirect('/')
+            })
+          })
+        }*/
   }
   catch (err) {
     throw err;
   }
+})
+
+function basicDetails(user) {
+  const { iduser, username, password, email } = user;
+  return { iduser, username, password, email };
 }
-)
+
 /*
 app.post('/logout', function (req, res, next) {
   req.session.log = false;
