@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 import "../Loginstyle.css";
 
 const Login = (props) => {
-
     const { userLogged } = props;
 
     const [name, setName] = useState("");
@@ -43,11 +42,15 @@ const Login = (props) => {
                 .then(response => {
                     if (response.ok) {
                         userLogged(true);
-                        localStorage.setItem("loggedIn", true);
+                        //localStorage.setItem("loggedIn", true);
+                        /*response.json().then(data => {
+                            console.log(data)});*/
+                            response.json().then(data => {
+                                console.log(data.accessToken);
+                            });
                         console.log("response ok");
                         setInvalidName(false);
-                         setInvalidPassword(false);
-
+                        setInvalidPassword(false);
                     }
                     if(response.status === 404) {
                         const s = response.json();
@@ -62,10 +65,10 @@ const Login = (props) => {
                                 setInvalidName(true);
                             }
                         });
-                    }
+                    }/*
                     else {
-                        console.error(response.statusText);
-                    }
+                        console.error(response.status);
+                    }*/
                 })
                 .catch(error => {
                     console.error(error);

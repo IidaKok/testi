@@ -31,8 +31,8 @@ app.use(function (req, res, next) {
   res.header("Content-Type", "application/json");
   res.header("Access-Control-Allow-Credentials", true);
   next();
-});*/
-
+});
+*/
 
 const cors = require('cors');
 
@@ -51,9 +51,31 @@ app.use(session({
   cookie: { maxAge: 60000 },
 }))
 
+const jwt = require("jsonwebtoken");
+const config = {
+  secret: "groupb secret"
+};
+
+verifyToken = (req, res, next) => {
+  let token = req.headers["x-access-token"];
+
+  if(!token) {
+    return res.status(403).send({ message: "No token provided!" });
+  }
+   jwt.verify(token, config.secret, (err, decoded) => {
+    if (err) {
+      return res.status(401).send({ message: "Unauthorized!" });
+    }
+    req.userId = decoded.id;
+    next();
+  });
+};
+
+
 app.get('/', function (req, res) {
+  //res.json({ loggedIn: false });
   if (req.session.log) {
-    res.json({ iduser: req.session.userId, username: req.session.user, email: req.session.email, loggedIn: req.session.log });
+    res.json({ iduser: req.session.userId, username: req.session.user, email: req.session.email, loggedIn: req.session.log, accessToken: req.session.token});
   }
   else {
     res.json({ loggedIn: false });
@@ -74,7 +96,8 @@ app.post('/login',  async function (req, res, next) {
 
     //if username doesn't exists, error is returned
     if (!userByName) {
-      return next(new HttpError("Username is incorrect. Try again", 404));
+      res.status(404).send({ message: "Username is incorrect. Try again", accessToken: null });
+      //return next(new HttpError("Username is incorrect. Try again", 404));
     }
 
     //checks is the password correct
@@ -84,8 +107,27 @@ app.post('/login',  async function (req, res, next) {
     });
 
     if (!user) {
-      return next(new HttpError("Password is incorrect. Try again", 404));
+      res.status(401).send({ message: "Password is incorrect. Try again", accessToken: null });
+      //return next(new HttpError("Password is incorrect. Try again", 404));
     }
+
+   /* if (req.body.username == user.username && req.body.password == user.password) {
+      let token = jwt.sign({ id: user.iduser }, config.secret, {
+        expiresIn: 86400 // 24 hours
+      });
+      res.status(200).send({
+        iduser: user.iduser,
+        username: user.username,
+        email: user.email,
+        accessToken: token
+      });
+      req.session.user = user.username;
+      req.session.email = user.email;
+      req.session.userId = user.iduser;
+      req.session.log = true;
+      req.session.token = token;
+      console.log("token: " + token);
+    }*/
 
 
     //if username and password are correct, session is created
@@ -93,10 +135,16 @@ app.post('/login',  async function (req, res, next) {
       req.session.regenerate(function (err) {
         if (err) next(err)
 
+        let token = jwt.sign({ id: user.iduser }, config.secret, {
+          expiresIn: 86400 // 24 hours
+        });
+
+
         req.session.user = user.username;
         req.session.email = user.email;
         req.session.userId = user.iduser;
         req.session.log = true;
+        req.session.token = token;
 
         req.session.save(function (err) {
           if (err) return next(err)
@@ -110,14 +158,24 @@ app.post('/login',  async function (req, res, next) {
   }
 }
 )
+
 app.post('/logout', function (req, res, next) {
+  req.session.log = false;
+  req.session.user = null;
+  req.session.email = null;
+  req.session.userId = null;
+
+
   req.session.save(function (err) {
     if (err) next(err)
 
-    req.session.destroy(function (err) {
+    req.session.regenerate(function (err) {
       if (err) next(err)
+      req.session.destroy()
+      res.clearCookie("connect.sid")
       res.redirect('/')
     })
+
   })
 })
 
