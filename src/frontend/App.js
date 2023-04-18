@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Login } from "./components/Login";
 import { Register } from "./components/Register";
-import { Routes, Route, HashRouter as Router } from "react-router-dom";
+import { Routes, Route, BrowserRouter as Router } from "react-router-dom";
 import { Logged } from "./pages/UserHome";
 import { SeriesBrowser, SeriesInfo, BookInfo } from "./components/Browser";
 import { NavBar } from "./components/NavBar";
@@ -12,9 +12,9 @@ import { Update } from "./components/Update";
 
 const App = () => {
     const [user, setUser] = useState("");
-    const [logged, setLogged] = useState(null);
+    const [logged, setLogged] = useState(false);
 
-    useEffect(() => {
+  /*  useEffect(() => {
         const fetchUser = () => {
             try {
                 fetch('http://localhost:5000', {
@@ -36,36 +36,36 @@ const App = () => {
             }
         };
         fetchUser();
-    }, [logged]);
-
+    }, [logged]);*/
+    
     return (
         <Router>
             {logged ? <NavBar userLogged={setLogged} /> : null}
             <Routes>
                 <Route path="/" element={
-                    logged ? <Logged user={user} /> : <Login userLogged={setLogged} />} />
+                    logged ? <Logged user={user} /> : <Login userLogged={setLogged}/>} />
                 <Route path="/register" element={<Register />} />
 
                 <Route path="/series" element={
-                    logged ? <SeriesBrowser user={user} /> : <Login userLogged={setLogged} />} />
+                logged ? <SeriesBrowser user={user} /> : <Login userLogged={setLogged}/>} />
 
                 <Route path="/series/books/:idbookseries" element={
-                    logged ? <SeriesInfo user={user} /> : <Login userLogged={setLogged} />} />
+                    logged ? <SeriesInfo user={user} /> : <Login userLogged={setLogged}/>} />
 
                 <Route path="/series/books/book/:idbook" element={
-                    logged ? <BookInfo user={user} /> : <Login userLogged={setLogged} />} />
+                    logged ? <BookInfo user={user} /> : <Login userLogged={setLogged}/>} />
 
                 <Route path="/userPage" element={
-                    logged ? <UserPage user={user} /> : <Login userLogged={setLogged} />} />
+                    logged ? <UserPage user={user} /> : <Login userLogged={setLogged}/>} />
 
                 <Route path="/Addbook" element={
-                    logged ? <Addbook user={user} /> : <Login userLogged={setLogged} />} />
+                    logged ? <Addbook user={user} /> : <Login userLogged={setLogged}/>} />
 
                 <Route path="/Addseries" element={
-                    logged ? <Addseries /> : <Login userLogged={setLogged} />} />
+                    logged ? <Addseries /> : <Login userLogged={setLogged}/>} />
 
                 <Route path="/update/:idbookshelf" element={
-                    logged ? <Update user={user} /> : <Login userLogged={setLogged} />} />
+                    logged ? <Update user={user} /> : <Login userLogged={setLogged}/>} />
             </Routes>
         </Router>
     )
