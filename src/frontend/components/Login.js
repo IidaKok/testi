@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import "../Loginstyle.css";
 
+
 const Login = (props) => {
-    const { userLogged } = props;
+    const { userLogged, saveToken } = props;
 
     const [name, setName] = useState("");
     const [password, setPassword] = useState("");
@@ -13,7 +14,7 @@ const Login = (props) => {
     const [invalidPassword, setInvalidPassword] = useState(false);
 
 
-    const [token, setToken] = useState('');
+    
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -43,21 +44,23 @@ const Login = (props) => {
                 credentials: 'include'
             })
                 .then(response => {
+                    
+                    /*.then(data => {
+                        //console.log(data.loggedIn);
+                        //userLogged(data.loggedIn);
+                    });*/
                     if (response.ok) {
-                        //userLogged(true);
-                        //localStorage.setItem("loggedIn", true);
-                        /*response.json().then(data => {
-                            console.log(data)});*/
-                            response.json().then(data => {
-                                setToken(data.accessToken);
-                                
-                            });
+                        response.json()
+                        .then(data => {
+                            saveToken(data.token);
+                        });
                         console.log("response ok");
                         setInvalidName(false);
                         setInvalidPassword(false);
+                        userLogged(true);
                     }
-                    if(response.status === 404) {
-                        const s = response.json();
+                    else {
+                        const s = response.json()
                         s.then((data) => {
                             console.log(data.message);
                             if (data.message.includes("Password")) {
@@ -69,17 +72,13 @@ const Login = (props) => {
                                 setInvalidName(true);
                             }
                         });
-                    }/*
-                    else {
-                        console.error(response.status);
-                    }*/
+                    }
                 })
                 .catch(error => {
                     console.error(error);
                 });
         }
     }
-    console.log("token: " + token);
     return (
         <div className="Forms">
             <h2>Login</h2>
@@ -92,7 +91,6 @@ const Login = (props) => {
                     <input data-testid="logBtn" type="submit" value="Login" />
                 </form>
             </div>
-            <p>{token ? `Token: ${token}` : 'No token generated yet'}</p>
 
             <div className="Container">
                 <p>Don't have an account? <Link to="/register">Register</Link></p>

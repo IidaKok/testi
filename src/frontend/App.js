@@ -12,60 +12,84 @@ import { Update } from "./components/Update";
 
 const App = () => {
     const [user, setUser] = useState("");
-    const [logged, setLogged] = useState(false);
+    const [logged, setLogged] = useState(null);
+    const [token, setToken] = useState('');
 
-  /*  useEffect(() => {
-        const fetchUser = () => {
-            try {
-                fetch('http://localhost:5000', {
-                    credentials: 'include',
-                })
+    useEffect(() => {
+        const fetchUser = async () => {
+            const response = await fetch('http://localhost:5000/', {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+            const data = await response.json();
+            
+            if(data.loggedIn){
+                setLogged(true);
+                await fetch('http://localhost:5000/user/' + data.iduser)
                     .then((res) => res.json())
                     .then((data) => {
                         console.log("data: ", data);
-                        if (data.loggedIn) {
-                            setLogged(true);
-                            setUser(data);
-                        }
-                        if (!data.loggedIn) {
-                            setLogged(false);
-                        }
-                    })
-            } catch (error) {
-                console.error(error);
+                        setUser(data[0]);
+                    });
+            }
+            else {
+                setLogged(false);
             }
         };
+
+        /* const fetchUser = () => {
+             try {
+                 fetch('http://localhost:5000/', {
+                     credentials: 'include',
+                 })
+                     .then((res) => res.json())
+                     .then((data) => {
+                         console.log("data: ", data);
+                         if (data.loggedIn) {
+                             setLogged(true);
+                             setUser(data);
+                         }
+                         if (!data.loggedIn) {
+                             setLogged(false);
+                         }
+                     })
+             } catch (error) {
+                 console.error(error);
+             }
+         };*/
         fetchUser();
-    }, [logged]);*/
-    
+    }, [token]);
+    console.log("logged: ", logged);
+
     return (
         <Router>
             {logged ? <NavBar userLogged={setLogged} /> : null}
             <Routes>
                 <Route path="/" element={
-                    logged ? <Logged user={user} /> : <Login userLogged={setLogged}/>} />
+                    logged ? <Logged user={user} /> : <Login saveToken={setToken} userLogged={setLogged} />} />
                 <Route path="/register" element={<Register />} />
 
                 <Route path="/series" element={
-                logged ? <SeriesBrowser user={user} /> : <Login userLogged={setLogged}/>} />
+                    logged ? <SeriesBrowser user={user} /> : <Login userLogged={setLogged} />} />
 
                 <Route path="/series/books/:idbookseries" element={
-                    logged ? <SeriesInfo user={user} /> : <Login userLogged={setLogged}/>} />
+                    logged ? <SeriesInfo user={user} /> : <Login userLogged={setLogged} />} />
 
                 <Route path="/series/books/book/:idbook" element={
-                    logged ? <BookInfo user={user} /> : <Login userLogged={setLogged}/>} />
+                    logged ? <BookInfo user={user} /> : <Login userLogged={setLogged} />} />
 
                 <Route path="/userPage" element={
-                    logged ? <UserPage user={user} /> : <Login userLogged={setLogged}/>} />
+                    logged ? <UserPage user={user} /> : <Login userLogged={setLogged} />} />
 
                 <Route path="/Addbook" element={
-                    logged ? <Addbook user={user} /> : <Login userLogged={setLogged}/>} />
+                    logged ? <Addbook user={user} /> : <Login userLogged={setLogged} />} />
 
                 <Route path="/Addseries" element={
-                    logged ? <Addseries /> : <Login userLogged={setLogged}/>} />
+                    logged ? <Addseries /> : <Login userLogged={setLogged} />} />
 
                 <Route path="/update/:idbookshelf" element={
-                    logged ? <Update user={user} /> : <Login userLogged={setLogged}/>} />
+                    logged ? <Update user={user} /> : <Login userLogged={setLogged} />} />
             </Routes>
         </Router>
     )
