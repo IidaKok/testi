@@ -12,9 +12,9 @@ import { Update } from "./components/Update";
 
 const App = () => {
     const [user, setUser] = useState("");
-    const [logged, setLogged] = useState(null);
+    const [logged, setLogged] = useState(false);
 
-    useEffect(() => {
+  /*  useEffect(() => {
         const fetchUser = () => {
             try {
                 fetch('http://localhost:5000', {
@@ -36,7 +36,7 @@ const App = () => {
             }
         };
         fetchUser();
-    }, [logged]);
+    }, [logged]);*/
     
     return (
         <Router>

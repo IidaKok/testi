@@ -42,20 +42,20 @@ app.use(cors({
   credentials: true,
 }));
 
-
+/*
 //login session
 app.use(session({
   secret: 'groupb secret',
   resave: false,
   saveUninitialized: false,
   cookie: { maxAge: 60000 },
-}))
+}))*/
 
 const jwt = require("jsonwebtoken");
 const config = {
   secret: "groupb secret"
 };
-
+/*
 verifyToken = (req, res, next) => {
   let token = req.headers["x-access-token"];
 
@@ -69,9 +69,9 @@ verifyToken = (req, res, next) => {
     req.userId = decoded.id;
     next();
   });
-};
+};*/
 
-
+/*
 app.get('/', function (req, res) {
   //res.json({ loggedIn: false });
   if (req.session.log) {
@@ -80,7 +80,7 @@ app.get('/', function (req, res) {
   else {
     res.json({ loggedIn: false });
   }
-})
+})*/
 
 
 app.post('/login',  async function (req, res, next) {
@@ -111,7 +111,7 @@ app.post('/login',  async function (req, res, next) {
       //return next(new HttpError("Password is incorrect. Try again", 404));
     }
 
-   /* if (req.body.username == user.username && req.body.password == user.password) {
+    if (req.body.username == user.username && req.body.password == user.password) {
       let token = jwt.sign({ id: user.iduser }, config.secret, {
         expiresIn: 86400 // 24 hours
       });
@@ -121,15 +121,10 @@ app.post('/login',  async function (req, res, next) {
         email: user.email,
         accessToken: token
       });
-      req.session.user = user.username;
-      req.session.email = user.email;
-      req.session.userId = user.iduser;
-      req.session.log = true;
-      req.session.token = token;
       console.log("token: " + token);
-    }*/
+    }
 
-
+/*
     //if username and password are correct, session is created
     if (req.body.username == user.username && req.body.password == user.password) {
       req.session.regenerate(function (err) {
@@ -151,14 +146,14 @@ app.post('/login',  async function (req, res, next) {
           res.redirect('/')
         })
       })
-    }
+    }*/
   }
   catch (err) {
     throw err;
   }
 }
 )
-
+/*
 app.post('/logout', function (req, res, next) {
   req.session.log = false;
   req.session.user = null;
@@ -177,7 +172,7 @@ app.post('/logout', function (req, res, next) {
     })
 
   })
-})
+})*/
 
 app.use("/api/users", userRoutes);
 app.use("/api/bookseries", seriesRoutes);

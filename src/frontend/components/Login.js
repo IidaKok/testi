@@ -12,6 +12,9 @@ const Login = (props) => {
     const [invalidName, setInvalidName] = useState(false);
     const [invalidPassword, setInvalidPassword] = useState(false);
 
+
+    const [token, setToken] = useState('');
+
     const handleSubmit = (event) => {
         event.preventDefault();
         setErrorMessage("");
@@ -41,12 +44,13 @@ const Login = (props) => {
             })
                 .then(response => {
                     if (response.ok) {
-                        userLogged(true);
+                        //userLogged(true);
                         //localStorage.setItem("loggedIn", true);
                         /*response.json().then(data => {
                             console.log(data)});*/
                             response.json().then(data => {
-                                console.log(data.accessToken);
+                                setToken(data.accessToken);
+                                
                             });
                         console.log("response ok");
                         setInvalidName(false);
@@ -75,6 +79,7 @@ const Login = (props) => {
                 });
         }
     }
+    console.log("token: " + token);
     return (
         <div className="Forms">
             <h2>Login</h2>
@@ -87,7 +92,7 @@ const Login = (props) => {
                     <input data-testid="logBtn" type="submit" value="Login" />
                 </form>
             </div>
-
+            <p>{token ? `Token: ${token}` : 'No token generated yet'}</p>
 
             <div className="Container">
                 <p>Don't have an account? <Link to="/register">Register</Link></p>
