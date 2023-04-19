@@ -11,5 +11,8 @@ router.get("/:idpicture", pictureControllers.getPictureById);
 // post
 router.post("/", pictureControllers.createPicture);
 
+// patch
+router.patch("/:idpicture", pictureControllers.updatePicture);
+
 
 module.exports = router; 

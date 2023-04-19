@@ -12,7 +12,6 @@ export const BrowserAddPic = ({ closePictureModal, bookid, setImageUpdate }) => 
 
     const [pictureId, setPictureId] = useState();
     const [pagenumber, setPagenumber] = useState();
-    const [imageUpdate] = useState(false);
     const [fetchPic, setFetchPic] = useState(false);
 
     const handleAdd = async (event) => {
@@ -75,7 +74,7 @@ export const BrowserAddPic = ({ closePictureModal, bookid, setImageUpdate }) => 
             };
 
             closePictureModal();
-            setImageUpdate(!imageUpdate);
+            setImageUpdate();
         };
         if (fetchPic) fetchPicture();
     }, [fetchPic]);
