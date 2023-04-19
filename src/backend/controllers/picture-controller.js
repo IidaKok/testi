@@ -25,5 +25,40 @@ const getPictureById = async (req, res, next) => {
     }
 };
 
+const createPicture = async (req, res, next) => {
+    const {
+        picturename,
+        publicationyear,
+        artist,
+        style,
+        description,
+        filename,
+    } = req.body;
+
+    try {
+        await db.pool.query(
+            "INSERT INTO picture (picturename, publicationyear, artist, style, description, filename) VALUES (?, ?, ?, ?, ?, ?)",
+            [
+                picturename,
+                publicationyear,
+                artist,
+                style,
+                description,
+                filename,
+            ]
+        );
+
+        res.status(201).json({ message: "Picture created successfully" });
+    } catch (err) {
+        console.log(err);
+        const error = new HttpError(
+            "Creating picture failed, please try again!",
+            500
+        );
+        return next(error);
+    }
+};
+
 exports.getPictureById = getPictureById;
 exports.getAllPictures = getAllPictures;
+exports.createPicture = createPicture;

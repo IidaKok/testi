@@ -6,6 +6,7 @@ import { BrowserAddSeries } from './BrowserAddSeries';
 import { BrowserAddBook } from './BrowserAddBook';
 import { BrowserEditSeries } from './BrowserEditSeries';
 import { BrowserEditBook } from './BrowserEditBook';
+import { BrowserAddPic } from './BrowserAddPic';
 
 export const SeriesBrowser = (props) => {
     const [series, setSeries] = useState([]);
@@ -305,6 +306,7 @@ export const BookInfo = (props) => {
     const [bookshelf, setBookshelf] = useState(null);
     const [thisArtwork, setThisArtwork] = useState({});
     const [bookImage, setBookImage] = useState(null);
+    const [imageUpdate, setImageUpdate] = useState(false);
     const user = props.user;
 
     const [addClicked, setAddClicked] = useState(false);
@@ -312,6 +314,7 @@ export const BookInfo = (props) => {
 
     const [modalOpen, setModalOpen] = useState(false);
     const [openEdit, setOpenEdit] = useState(false);
+    const [addPicture, setAddPicture] = useState(false);
 
     useEffect(() => {
         const fetchBook = async () => {
@@ -345,7 +348,7 @@ export const BookInfo = (props) => {
 
         fetchBookImages();
         fetchBook();
-    }, [idbook, openEdit]);
+    }, [idbook, openEdit, imageUpdate]);
 
     useEffect(() => {
         const fetchBookPicture = async () => {
@@ -397,6 +400,10 @@ export const BookInfo = (props) => {
         setAddClicked(false);
     };
 
+    const insertPicture = async () => {
+
+    }
+
     const openModal = () => {
         setModalOpen(true);
     }
@@ -413,11 +420,21 @@ export const BookInfo = (props) => {
         setOpenEdit(false)
     }
 
+    const openPictureModal = () => {
+        setAddPicture(true);
+    }
+    const closePictureModal = () => {
+        setAddPicture(false);
+    }
+
     return (
         <div>
             <NavLink to={"/series/books/" + oneBook.idbookseries} style={{textDecoration: "none", color: "grey"}}>← Back to books</NavLink>
             <h3>{oneBook.bookname}</h3>
             {bookImage ? <img src={`${bookImage.filename}`} /> : <img src="https://i.imgur.com/Qr08eFc.png" style={{width: "250px", height: "250px"}} />}
+            {bookImage ? <p><button>Change the cover picture</button></p> : <p><button onClick={openPictureModal}>Add a cover picture</button></p>}
+            {addPicture && <BrowserAddPic closePictureModal={closePictureModal} bookid={idbook} setImageUpdate={setImageUpdate} />}
+
             <p>{oneBook.publicationyear}</p>
             <p>Author: {oneBook.writer}</p>
             <p>Description: {oneBook.description}</p>

@@ -8,5 +8,8 @@ const router = express.Router();
 router.get("/", pictureControllers.getAllPictures);
 router.get("/:idpicture", pictureControllers.getPictureById);
 
+// post
+router.post("/", pictureControllers.createPicture);
+
 
 module.exports = router; 

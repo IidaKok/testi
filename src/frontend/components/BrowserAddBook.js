@@ -33,7 +33,7 @@ export const BrowserAddBook = ({ closeAddModal, seriesid }) => {
             if (!response.ok) {
                 const errorText = await response.text();
                 throw new Error(errorText || "Network response was not ok");
-            }
+            };
 
             const data = await response.json();
             console.log(data);
