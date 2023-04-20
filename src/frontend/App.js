@@ -16,29 +16,30 @@ const App = () => {
     const [token, setToken] = useState('');
 
     useEffect(() => {
-        const fetchUser = async () => {
+       /* const fetchUser = async () => {
             const response = await fetch('http://localhost:5000/', {
                 headers: {
-                    Authorization: `Bearer ${token}`
+                    'Authorization': `Bearer ${token}`
                 }
             });
             const data = await response.json();
-            
-            if(data.loggedIn){
+            console.log("data /: ", data);
+
+            if (data.loggedIn) {
                 setLogged(true);
                 await fetch('http://localhost:5000/user/' + data.iduser)
                     .then((res) => res.json())
                     .then((data) => {
-                        console.log("data: ", data);
+                        console.log("data /user: ", data);
                         setUser(data[0]);
                     });
             }
             else {
                 setLogged(false);
             }
-        };
+        };*/
 
-        /* const fetchUser = () => {
+        const fetchUser = () => {
              try {
                  fetch('http://localhost:5000/', {
                      credentials: 'include',
@@ -57,10 +58,13 @@ const App = () => {
              } catch (error) {
                  console.error(error);
              }
-         };*/
+         };
         fetchUser();
-    }, [token]);
+    }, []);
     console.log("logged: ", logged);
+    console.log("user: ", user);
+
+
 
     return (
         <Router>

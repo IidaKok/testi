@@ -16,9 +16,10 @@ export const NavBar = (props) => {
             .then(response => {
                 if (response.ok) {
                     userLogged(false);
+                    document.cookie = "cookieName=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
                     navigate("/");
                 } else {
-                    console.error(response.statusText);
+                    console.error(response.message);
                 }
             })
             .catch(error => {
