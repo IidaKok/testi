@@ -49,8 +49,9 @@ app.use(session({
   resave: false,
   saveUninitialized: true,
   cookie: {
-    domain: 'bookarchive-test.azurewebsites.net', // set the domain of the cookie to your frontend domain
-    secure: true // set the secure flag to true to only send the cookie over HTTPS
+    //domain: 'bookarchive-test.azurewebsites.net', // set the domain of the cookie to your frontend domain
+    secure: true, // set the secure flag to true to only send the cookie over HTTPS
+    maxAge: 60000 // set the maxAge to 7 days
   }
 }));
 /*
@@ -92,7 +93,24 @@ app.get('/', async function (req, res) {
 
 //});
 
-app.get('/', (req, res) => {
+app.get('/', authenticateToken, async (req, res) => {
+  const userId = req.userId;
+  
+  try {
+    const result = await db.pool.query("select * from user where iduser = " + userId);
+    //res.send(result);
+    res.json({ message: 'Success!', user: req.session.user });
+
+
+    //if no users are found, error is returned
+    if (!result) {
+      return next(new HttpError("Can't find users", 404));
+    }
+  }
+  catch (err) {
+    throw err;
+  }
+
   if (req.session.user) {
     // user is logged in
     res.json({ message: 'Success!', user: req.session.user });
@@ -100,7 +118,39 @@ app.get('/', (req, res) => {
     // user is not logged in
     res.status(401).json({ message: 'Not authorized' });
   }
+
+ /* if (req.session.log) {
+    res.json({ username: req.session.user, email: req.session.email, sessionId: req.session.id, loggedIn: req.session.log });
+  }
+  else {
+    res.json({ loggedIn: false });
+  }*/
 });
+
+
+
+const jwt = require("jsonwebtoken");
+const config = {
+  secret: "groupb secret"
+};
+
+
+
+// Set up middleware to authenticate the user with a token
+function authenticateToken(req, res, next) {
+
+  const token = req.cookies['token'];
+  if (!token) {
+    return res.status(401).json({ message: 'Missing or invalid authorization token', loggedIn: false });
+  }
+  else {
+    const decoded = jwt.verify(token, config.secret);
+    req.userId = decoded.id;
+    console.log("decoded: " + decoded.id);
+    return res.json({ iduser: decoded.id, loggedIn: true, token: token });
+  }
+}
+
 
 app.get('/user/:iduser', async function (req, res) {
   try {
@@ -149,9 +199,21 @@ app.post('/login', async function (req, res, next) {
     req.session.regenerate(function (err) {
       if (err) next(err)
 
-      req.session.user = req.body.username;
-      req.session.email = req.body.email;
+      req.session.user = user.username;
+      req.session.email = user.email;
       req.session.log = true;
+
+
+      let token = jwt.sign({ id: user.iduser }, config.secret);
+      res.cookie("token", token, {
+        httpOnly: true, 
+        maxAge: 60000,
+      });
+
+
+      req.session.token = token;
+
+      console.log("token: " + token);
 
       req.session.save(function (err) {
         if (err) return next(err)
@@ -180,17 +242,15 @@ app.post('/logout', function (req, res, next) {
   //res.clearCookie("token");
   
 
-  req.session.save(function (err) {
-    if (err) next(err)
-
-    req.session.destroy(function (err) {
-      if (err) next(err)
-      res.clearCookie("connect.sid");
-      res.redirect('/')
-    })
-  })
-
-  res.json({ loggedIn: false });
+  
+  req.session.destroy(err => {
+    if (err) {
+      console.error(err);
+      return res.status(500).json({ message: 'Server error' });
+    }
+    res.clearCookie('token'); // clear the session cookie
+    res.json({ message: 'Logout successful' });
+  });
 })
 
 app.use("/api/users", userRoutes);
