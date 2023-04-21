@@ -1,7 +1,7 @@
-import React, {useState} from "react";
+import React, { useState, useEffect } from "react";
 import { Login } from "./components/Login";
 import { Register } from "./components/Register";
-import { Routes, Route, HashRouter as Router} from "react-router-dom";
+import { Routes, Route, HashRouter as Router } from "react-router-dom";
 import { Logged } from "./pages/UserHome";
 import { SeriesBrowser, SeriesInfo, BookInfo } from "./components/Browser";
 import { NavBar } from "./components/NavBar";
@@ -9,27 +9,64 @@ import { UserPage } from "./components/UserPage";
 import { Addbook } from "./components/Addbook";
 import { Addseries } from "./components/Addseries";
 import { Update } from "./components/Update";
-import { EditPhotos } from "./components/EditPhotos";
 
 const App = () => {
     const [user, setUser] = useState("");
+    const [logged, setLogged] = useState(null);
+
+    useEffect(() => {
+        const fetchUser = () => {
+             try {
+                 fetch('http://localhost:5000/', {
+                     credentials: 'include',
+                 })
+                     .then((res) => res.json())
+                     .then((data) => {
+                         console.log("data: ", data);
+                         if (data.loggedIn) {
+                             setLogged(true);
+                             console.log("data.user: ", data.user[0])
+                             setUser(data.user[0]);
+                         }
+                         if (!data.loggedIn) {
+                             setLogged(false);
+                         }
+                     })
+             } catch (error) {
+                 console.error(error);
+             }
+         };
+        fetchUser();
+    }, [logged]);
 
     return (
         <Router>
-            {user ? <NavBar/> : null}
+            {logged ? <NavBar userLogged={setLogged} /> : null}
             <Routes>
                 <Route path="/" element={
-                user ? <Logged user={user}/> : <Login  saveUser={setUser}/>} />
+                    logged ? <Logged user={user} /> : <Login userLogged={setLogged} />} />
                 <Route path="/register" element={<Register />} />
-                <Route path="/series" element={<SeriesBrowser user={user} />} />
-                <Route path="/series/books/:idbookseries" element={<SeriesInfo user={user} />} />
-                <Route path="/series/books/book/:idbook" element={<BookInfo user={user} />} />
-                <Route path="/userPage" element={<UserPage user={user}/>} />
-                <Route path="/Addbook" element={<Addbook user={user}/>} />
-                <Route path="/Addseries" element={<Addseries />} />
-                <Route path="/update/:idbookshelf" element={<Update user={user} />} />
-                <Route path="/EditPhotos/:idbookshelf" element={<EditPhotos user={user} />} />
 
+                <Route path="/series" element={
+                    logged ? <SeriesBrowser user={user} /> : <Login userLogged={setLogged} />} />
+
+                <Route path="/series/books/:idbookseries" element={
+                    logged ? <SeriesInfo user={user} /> : <Login userLogged={setLogged} />} />
+
+                <Route path="/series/books/book/:idbook" element={
+                    logged ? <BookInfo user={user} /> : <Login userLogged={setLogged} />} />
+
+                <Route path="/userPage" element={
+                    logged ? <UserPage user={user} /> : <Login userLogged={setLogged} />} />
+
+                <Route path="/Addbook" element={
+                    logged ? <Addbook user={user} /> : <Login userLogged={setLogged} />} />
+
+                <Route path="/Addseries" element={
+                    logged ? <Addseries /> : <Login userLogged={setLogged} />} />
+
+                <Route path="/update/:idbookshelf" element={
+                    logged ? <Update user={user} /> : <Login userLogged={setLogged} />} />
             </Routes>
         </Router>
     )
