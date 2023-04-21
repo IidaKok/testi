@@ -9,6 +9,7 @@ import { UserPage } from "./components/UserPage";
 import { Addbook } from "./components/Addbook";
 import { Addseries } from "./components/Addseries";
 import { Update } from "./components/Update";
+import { EditPhotos } from "./components/EditPhotos";
 
 const App = () => {
     const [user, setUser] = useState("");
@@ -26,7 +27,9 @@ const App = () => {
                 <Route path="/userPage" element={<UserPage user={user}/>} />
                 <Route path="/Addbook" element={<Addbook user={user}/>} />
                 <Route path="/Addseries" element={<Addseries />} />
-                <Route path="/update/:idbookshelf" element={<Update user={user}/>}/>
+                <Route path="/update/:idbookshelf" element={<Update user={user} />} />
+                <Route path="/EditPhotos/:idbookshelf" element={<EditPhotos user={user} />} />
+
             </Routes>
         </Router>
     )

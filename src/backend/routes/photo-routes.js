@@ -11,11 +11,14 @@ router.get("/:idbookcopy", photoControllers.getAllBookCopyPhotos);
 //post kutsu httplle
 router.post("/post/", photoControllers.createUserPhoto);
 
+
 //update
-router.put('/:idbookcopy', photoControllers.updateBookPhoto);
+router.put('/:idphoto', photoControllers.updateBookPhoto);
 
 //delete
+router.delete('/:idphoto', photoControllers.deleteBookIdPhoto);
 router.delete('/:idbookcopy', photoControllers.deleteBookPhoto);
+
 
 
 module.exports = router; //vie appille

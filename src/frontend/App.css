@@ -10,7 +10,6 @@
     justify-content: center;
     padding: 0 20px; /* Add left and right padding */
 }
-
 .book {
     background-color: #f5f5f5;
     padding: 20px;
@@ -65,10 +64,27 @@
     box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.3);
     transition: background-color 0.3s ease;
 }
-
-    .add-user-btn:hover {
-        background-color: #6E94FF;
-    }
+.add-photo-btn {
+    width: auto;
+    min-width: 280px;
+    display: inline-block;
+    margin: 10px;
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    color: #fff;
+    text-align: center;
+    text-decoration: none;
+    background-color: #5C7AEA;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.3);
+    transition: background-color 0.3s ease;
+}
+.add-user-btn:hover {
+    background-color: #6E94FF;
+}
 img {
     width: 200px;
     height: 300px;
@@ -102,6 +118,14 @@ img {
     border: 1px solid rgb(204, 204, 243);
     color: rgb(139, 139, 234);
 }
+.edit {
+    border: none;
+    padding: 3px 6px;
+    background-color: white;
+    cursor: pointer;
+    border: 1px solid rgb(204, 204, 243);
+    color: rgb(139, 139, 234);
+}
 .add-bookcopy-form {
     display:flex;
     flex-direction: column;
@@ -119,9 +143,10 @@ img {
     text-align: center;
 }
 #user-input {
-    width: 250px;
+    width: 200px;
     padding: 10px;
     border: 1px solid gray;
+    box-sizing: border-box;
 }
 .update-bookcopy-form {
     display: flex;
@@ -137,6 +162,26 @@ img {
     padding: 10px;
     border: 1px solid gray;
     background-color: rgb(12 180 87);
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+}
+.photoAddBtn {
+    border: none;
+    width: 200px;
+    padding: 10px;
+    border: 1px solid gray;
+    background-color: rgb(12 180 87);
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+}
+.photoDeleteBtn {
+    border: none;
+    width: 200px;
+    padding: 10px;
+    border: 1px solid gray;
+    background-color: rgb(225 28 28);
     color: white;
     font-weight: bold;
     cursor: pointer;
@@ -160,11 +205,41 @@ img {
     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
     text-decoration: underline;
 }
+.editphotos {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+.photo-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 20px;
+    justify-content: center;
+    padding: 0 20px; /* Add left and right padding */
+}
 
+.photo {
+    background-color: #f5f5f5;
+    border-radius: 10px;
+}
 
+.photo-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+}
+
+.pagenumber {
+    font-size: 14px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
 /* ^^ User Page CSS ^^ */
 /* ^^ User Page CSS ^^ */
-
 .modal-overlay {
     position: fixed;
     top: 0;
@@ -176,7 +251,7 @@ img {
     justify-content: center;
     align-items: center;
     z-index: 999;
-  }
+}
   
   .modal-content {
     position: relative;
