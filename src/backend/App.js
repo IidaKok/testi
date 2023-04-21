@@ -125,12 +125,13 @@ const jwt = require("jsonwebtoken");
 const config = {
   secret: "groupb secret"
 };
+let myToken;
 
 
 
 // Set up middleware to authenticate the user with a token
 function authenticateToken(req, res, next) {
-  console.log("req.session.token: " + req.session.token);
+  /*console.log("req.session.token: " + req.session.token);
   const token = req.cookies['token'];
   
   if (!token) {
@@ -141,7 +142,19 @@ function authenticateToken(req, res, next) {
     req.userId = decoded.id;
     console.log("decoded: " + decoded.id);
     return res.json({ iduser: decoded.id, loggedIn: true, token: token });
+  }*/
+  console.log("myToken: " + myToken);
+
+  if(!myToken){
+    return res.status(401).json({ message: 'Missing or invalid authorization token', loggedIn: false });
   }
+  else{
+    const decoded = jwt.verify(myToken, config.secret);
+    req.userId = decoded.id;
+    console.log("decoded: " + decoded.id);
+    return res.json({ iduser: decoded.id, loggedIn: true, token: myToken });
+  }
+
 }
 
 
@@ -204,7 +217,7 @@ app.post('/login', async function (req, res, next) {
         sameSite: "none"
       }*/);
 
-
+      myToken = token;
       req.session.token = token;
 
       console.log("token in /login: " + req.session.token);
@@ -236,16 +249,16 @@ app.post('/login', async function (req, res, next) {
 app.post('/logout', function (req, res, next) {
   //res.clearCookie("token");
   
-
+  myToken = null;
   
-  req.session.destroy(err => {
+  /*req.session.destroy(err => {
     if (err) {
       console.error(err);
       return res.status(500).json({ message: 'Server error' });
     }
     res.clearCookie('token'); // clear the session cookie
     res.json({ message: 'Logout successful' });
-  });
+  });*/
 })
 
 app.use("/api/users", userRoutes);
