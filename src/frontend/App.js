@@ -49,7 +49,8 @@ const App = () => {
                          console.log("data: ", data);
                          if (data.loggedIn) {
                              setLogged(true);
-                             setUser(data);
+                             console.log("data.user: ", data.user[0])
+                             setUser(data.user[0]);
                          }
                          if (!data.loggedIn) {
                              setLogged(false);
@@ -60,15 +61,15 @@ const App = () => {
              }
          };
         fetchUser();
-    }, []);
+    }, [logged]);
     console.log("logged: ", logged);
     console.log("token: ", token);
+    console.log("user: ", user);
 
 
 
     return (
         <Router>
-            <p>{token}</p>
             {logged ? <NavBar userLogged={setLogged} /> : null}
             <Routes>
                 <Route path="/" element={

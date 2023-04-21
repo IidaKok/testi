@@ -5,19 +5,17 @@ import "../App.css";
 export const NavBar = (props) => {
 
     const { userLogged } = props;
-
     const navigate = useNavigate();
 
-    const logOut = () => {
-        fetch('http://localhost:5000/logout', {
+    const logOut = async () => {
+        await fetch('http://localhost:5000/logout', {
             method: 'POST',
             credentials: 'include'
         })
             .then(response => {
                 if (response.ok) {
-                    userLogged(false);
-                    document.cookie = "cookieName=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
                     navigate("/");
+                    userLogged(false);
                 } else {
                     console.error(response.message);
                 }
@@ -26,6 +24,7 @@ export const NavBar = (props) => {
                 console.error(error);
             });
     }
+
     return (
         <div className="navbar">
             <Link to="/">Home</Link>
