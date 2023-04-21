@@ -19,13 +19,25 @@ const HttpError = require("./models/http-error");
 const cookieParser = require("cookie-parser");
 
 app.use(cookieParser());
+
+app.set('trust proxy', 1);
+
+
+const cors = require('cors');
+// Allow CORS for all routes
+app.use(cors({
+  // origin: "http://localhost:3000", //this is the frontend url
+   //origin: "https://bookarchive-test.azurewebsites.net",
+   origin: true,
+   credentials: true,
+  // sameSite: "none"
+ }));
 /*
-//allows cors
 app.use(function (req, res, next) {
   res.header("Access-Control-Allow-Origin", "https://bookarchive-test.azurewebsites.net");
   res.header(
     "Access-Control-Allow-Headers",
-    "x-access-token, Origin, X-Requested-With, Content-Type, Accept"
+    "x-access-token, Origin, X-Requested-With, Content-Type, Accept, Authorization, X-HTTP-Method-Override, Set-Cookie, Cookie"
   );
   res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, PATCH");
   res.header("Content-Type", "application/json");
@@ -34,24 +46,20 @@ app.use(function (req, res, next) {
   next();
 });*/
 
-const cors = require('cors');
 
-// Allow CORS for all routes
-app.use(cors({
-  origin: true,
-  // origin: "https://bookarchive-test.azurewebsites.net",
-  credentials: true,
-}));
 
-app.set('trust proxy', 1);
+
+
 app.use(session({
   secret: 'your secret',
   resave: false,
-  saveUninitialized: true,
+  saveUninitialized: false,
   cookie: {
+   // domain: "http://192.168.8.101:3000",
     //domain: 'bookarchive-test.azurewebsites.net', // set the domain of the cookie to your frontend domain
-    secure: true, // set the secure flag to true to only send the cookie over HTTPS
-    maxAge: 60000 // set the maxAge to 7 days
+    maxAge: 60000, // set the maxAge to 7 days
+    //sameSite: "none",
+    httpOnly: true
   }
 }));
 /*
@@ -96,35 +104,19 @@ app.get('/', async function (req, res) {
 app.get('/', authenticateToken, async (req, res) => {
   const userId = req.userId;
   
-  try {
+  if (req.session.token) {
+    // user is logged in
     const result = await db.pool.query("select * from user where iduser = " + userId);
-    //res.send(result);
-    res.json({ message: 'Success!', user: req.session.user });
-
-
     //if no users are found, error is returned
     if (!result) {
       return next(new HttpError("Can't find users", 404));
     }
-  }
-  catch (err) {
-    throw err;
-  }
 
-  if (req.session.user) {
-    // user is logged in
-    res.json({ message: 'Success!', user: req.session.user });
+    res.json({ message: 'Success!', result: result });
   } else {
     // user is not logged in
-    res.status(401).json({ message: 'Not authorized' });
+    res.status(401).json({ message: 'no token' });
   }
-
- /* if (req.session.log) {
-    res.json({ username: req.session.user, email: req.session.email, sessionId: req.session.id, loggedIn: req.session.log });
-  }
-  else {
-    res.json({ loggedIn: false });
-  }*/
 });
 
 
@@ -138,8 +130,9 @@ const config = {
 
 // Set up middleware to authenticate the user with a token
 function authenticateToken(req, res, next) {
-
+  console.log("req.session.token: " + req.session.token);
   const token = req.cookies['token'];
+  
   if (!token) {
     return res.status(401).json({ message: 'Missing or invalid authorization token', loggedIn: false });
   }
@@ -204,20 +197,22 @@ app.post('/login', async function (req, res, next) {
       req.session.log = true;
 
 
-      let token = jwt.sign({ id: user.iduser }, config.secret);
-      res.cookie("token", token, {
+      let token = jwt.sign({ id: user.iduser }, config.secret, {expiresIn: "24h",});
+      res.cookie("token", token, /*{
         httpOnly: true, 
         maxAge: 60000,
-      });
+        sameSite: "none"
+      }*/);
 
 
       req.session.token = token;
 
-      console.log("token: " + token);
+      console.log("token in /login: " + req.session.token);
 
       req.session.save(function (err) {
         if (err) return next(err)
-        res.redirect('/')
+        //res.redirect('/')
+        res.json({token: token});
       })
     })
 

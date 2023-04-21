@@ -62,12 +62,13 @@ const App = () => {
         fetchUser();
     }, []);
     console.log("logged: ", logged);
-    console.log("user: ", user);
+    console.log("token: ", token);
 
 
 
     return (
         <Router>
+            <p>{token}</p>
             {logged ? <NavBar userLogged={setLogged} /> : null}
             <Routes>
                 <Route path="/" element={
