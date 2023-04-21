@@ -9,6 +9,7 @@ import { UserPage } from "./components/UserPage";
 import { Addbook } from "./components/Addbook";
 import { Addseries } from "./components/Addseries";
 import { Update } from "./components/Update";
+import { EditPhotos } from "./components/EditPhotos";
 
 const App = () => {
     const [user, setUser] = useState("");
