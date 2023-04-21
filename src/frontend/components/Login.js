@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import "../Loginstyle.css";
 
 
 const Login = (props) => {
-    const { userLogged, saveToken } = props;
+    const { userLogged } = props;
 
     const [name, setName] = useState("");
     const [password, setPassword] = useState("");
@@ -12,9 +12,6 @@ const Login = (props) => {
     const [errorMessage2, setErrorMessage2] = useState("");
     const [invalidName, setInvalidName] = useState(false);
     const [invalidPassword, setInvalidPassword] = useState(false);
-
-
-    
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -44,17 +41,7 @@ const Login = (props) => {
                 credentials: 'include'
             })
                 .then(response => {
-                    
-                    /*.then(data => {
-                        //console.log(data.loggedIn);
-                        //userLogged(data.loggedIn);
-                    });*/
                     if (response.ok) {
-                        response.json()
-                        .then(data => {
-                            saveToken(data.token);
-                        });
-                        console.log("response ok");
                         setInvalidName(false);
                         setInvalidPassword(false);
                         userLogged(true);
