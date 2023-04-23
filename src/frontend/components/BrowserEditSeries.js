@@ -6,7 +6,7 @@ export const BrowserEditSeries = ({ closeEditModal, seriesToEdit }) => {
     const [bookseries, setBookSeries] = useState(seriesToEdit.bookseries);
     const [publisher, setPublisher] = useState(seriesToEdit.publisher);
     const [description, setDescription] = useState(seriesToEdit.description);
-    const [classification, setClassification] = useState("classification");
+    const [classification, setClassification] = useState(seriesToEdit.classification);
 
     console.log("Series to edit: ", seriesToEdit);
 

@@ -94,7 +94,24 @@ const updatePicture = async (req, res, next) => {
     }
 };
 
+const deletePicture = async (req, res, next) => {
+    const idpicture = req.params.idpicture;
+    try {
+        const response = await db.pool.query("DELETE FROM picture WHERE idpicture = " + idpicture);
+        if (response.affectedRows == 0) {
+            res.status(404).json({ message: "Picture not found" });
+        } else {
+            res.json({ message: "Picture with idpicture = " + idpicture + " was deleted from the database" });
+            console.log("Picture with idpicture = " + idpicture + " was deleted from the database");
+        }
+    }
+    catch (err) {
+        throw err;
+    }
+};
+
 exports.getPictureById = getPictureById;
 exports.getAllPictures = getAllPictures;
 exports.createPicture = createPicture;
 exports.updatePicture = updatePicture;
+exports.deletePicture = deletePicture;

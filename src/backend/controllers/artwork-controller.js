@@ -53,7 +53,41 @@ const createArtwork = async (req, res, next) => {
     }
 };
 
+const deleteArtwork = async (req, res, next) => {
+    const idpicture = req.params.idpicture;
+    try {
+        const response = await db.pool.query("DELETE FROM artwork WHERE idpicture = " + idpicture);
+        if (response.affectedRows == 0) {
+            res.status(404).json({ message: "Artwork not found" });
+        } else {
+            res.json({ message: "Artwork with idpicture = " + idpicture + " was deleted from the database" });
+            console.log("Artwork with idpicture = " + idpicture + " was deleted from the database");
+        }
+    }
+    catch (err) {
+        throw err;
+    }
+};
+
+const deleteArtworkByIdBook = async (req, res, next) => {
+    const idbook = req.params.idbook;
+    try {
+        const response = await db.pool.query("DELETE FROM artwork WHERE idbook = " + idbook);
+        if (response.affectedRows == 0) {
+            res.status(404).json({ message: "Artwork with idbook = " + idbook + " not found" });
+        } else {
+            res.json({ message: "Artwork with idbook = " + idbook + " was deleted from the database" });
+            console.log("Artwork with idbook = " + idbook + " was deleted from the database");
+        }
+    }
+    catch (err) {
+        throw err;
+    }
+};
+
 
 exports.getAllArtwork = getAllArtwork;
 exports.getArtworkByIdbook = getArtworkByIdbook;
 exports.createArtwork = createArtwork;
+exports.deleteArtwork = deleteArtwork;
+exports.deleteArtworkByIdBook = deleteArtworkByIdBook;

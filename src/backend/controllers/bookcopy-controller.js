@@ -24,7 +24,8 @@ const getBookCopiesByShelfID = async (req, res, next) => {
     catch (err) {
         throw err;
     }
-}
+};
+
 const createBookCopy = async (req, res, next) => {
     const {
         bookname,
@@ -138,6 +139,22 @@ const deleteBookcopy = async (req, res, next) => {
     }
 }
 
+const deleteBookcopyByBookId = async (req, res, next) => {
+    const idbook = req.params.idbook;
+    try {
+        const response = await db.pool.query("DELETE FROM book WHERE idbook = " + idbook);
+        if (response.affectedRows == 0) {
+            res.status(404).json({ message: "Bookcopies not found" });
+        } else {
+            res.json({ message: "Bookcopies with idbook = " + idbook + " were deleted from the database"});
+            console.log("Bookcopies with idbook = " + idbook + " were deleted from the database");
+        }
+    }
+    catch (err) {
+        throw err;
+    }
+}
+
 const updateBookcopy = async (req, res, next) => {
     const idbookcopy = req.params.idbookcopy;
     const {
@@ -188,3 +205,4 @@ exports.getAllBookCopies = getAllBookCopies;
 exports.getBookCopiesByShelfID = getBookCopiesByShelfID;
 exports.createUserBook = createUserBook;
 exports.createBookCopy = createBookCopy;
+exports.deleteBookcopyByBookId = deleteBookcopyByBookId;

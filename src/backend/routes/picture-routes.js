@@ -14,5 +14,8 @@ router.post("/", pictureControllers.createPicture);
 // patch
 router.patch("/:idpicture", pictureControllers.updatePicture);
 
+// delete
+router.delete("/:idpicture", pictureControllers.deletePicture);
+
 
 module.exports = router; 

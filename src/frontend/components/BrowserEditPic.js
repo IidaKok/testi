@@ -1,5 +1,4 @@
-import { useState, useEffect, useMemo } from 'react';
-import { Link, NavLink, useHistory, useParams } from "react-router-dom";
+import { useState } from 'react';
 import "../App.css";
 
 export const BrowserEditPic = ({ closeEditPicModal, picToEdit, setImageUpdate }) => {

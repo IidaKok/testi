@@ -3,12 +3,12 @@ import { Link, NavLink, useHistory, useParams } from "react-router-dom";
 import "../App.css";
 
 export const BrowserAddBook = ({ closeAddModal, seriesid }) => {
-    const [bookname, setBookName] = useState();
-    const [publicationyear, setPublicationYear] = useState();
-    const [description, setDescription] = useState();
+    const [bookname, setBookName] = useState(null);
+    const [publicationyear, setPublicationYear] = useState(null);
+    const [description, setDescription] = useState(null);
     const idbookseries = seriesid;
-    const [seriesnumber, setSeriesNumber] = useState();
-    const [writer, setWriter] = useState();
+    const [seriesnumber, setSeriesNumber] = useState(null);
+    const [writer, setWriter] = useState(null);
 
     const handleAdd = async (event) => {
         event.preventDefault();
