@@ -4,7 +4,7 @@ import "../App.css";
 
 export const NavBar = (props) => {
 
-    const { userLogged } = props;
+    const { userLogged, user } = props;
     const navigate = useNavigate();
 
     const logOut = async () => {
@@ -30,6 +30,7 @@ export const NavBar = (props) => {
             <Link to="/">Home</Link>
             <Link to="/series">Series</Link>
             <Link to="/userPage">UserPage</Link>
+            <p>{user.username}</p>
             <button onClick={() => logOut()}>Log out</button>
         </div>
     )

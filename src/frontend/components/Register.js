@@ -49,9 +49,10 @@ const Register = () => {
             email: userToBeInserted.email
           }),
         })
-          .then((res) => res.json())
+          .then((res) =>  res.json())
           .then((data) => {
             if (data.message === undefined) {
+              
               console.log("INSERT:", userToBeInserted);
               setuserToBeInserted(null);
               setRegSuccess(true);
@@ -106,33 +107,17 @@ const Register = () => {
 
   }, [username]);
 
-  let passMissing = [];
-  const [pm, setPm] = useState("");
   //password validation
   useEffect(() => {
     const lowerCase = /[a-z]/g;
     const upperCase = /[A-Z]/g;
     const numbers = /[1-9]/g;
-    setPm("");
 
     if (password.length < 5 || !password.match(lowerCase) || !password.match(upperCase) || !password.match(numbers)) {
       setValidPassword(true);
-      /*if (password.length < 5) {
-        passMissing.push(" at least 5 characters");
-      }
-      if (!password.match(lowerCase)) {
-        passMissing.push(" a lowercase letter");
-      }
-      if (!password.match(upperCase)) {
-        passMissing.push(" an uppercase letter");
-      }
-      setPm(passMissing);
-      console.log(pm);
-*/
     }
     else {
       setValidPassword(false);
-      console.log("ehdot täyttyy");
     }
 
     if (password !== passwordAgain) setPassMatch(true);

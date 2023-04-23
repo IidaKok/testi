@@ -10,6 +10,8 @@ import { Addbook } from "./components/Addbook";
 import { Addseries } from "./components/Addseries";
 import { Update } from "./components/Update";
 import { EditPhotos } from "./components/EditPhotos";
+import { Email } from "./components/sendEmail";
+import { ChangePassword } from "./components/changePassword";
 
 const App = () => {
     const [user, setUser] = useState("");
@@ -17,32 +19,34 @@ const App = () => {
 
     useEffect(() => {
         const fetchUser = () => {
-             try {
-                 fetch('http://localhost:5000/', {
-                     credentials: 'include',
-                 })
-                     .then((res) => res.json())
-                     .then((data) => {
-                         console.log("data: ", data);
-                         if (data.loggedIn) {
-                             setLogged(true);
-                             console.log("data.user: ", data.user[0])
-                             setUser(data.user[0]);
-                         }
-                         if (!data.loggedIn) {
-                             setLogged(false);
-                         }
-                     })
-             } catch (error) {
-                 console.error(error);
-             }
-         };
+            try {
+                fetch('http://localhost:5000/', {
+                    credentials: 'include',
+                })
+                    .then((res) => res.json())
+                    .then((data) => {
+                        console.log("data: ", data);
+                        if (data.loggedIn) {
+                            setLogged(true);
+                            console.log("data.user: ", data.user[0])
+                            setUser(data.user[0]);
+                        }
+                        if (!data.loggedIn) {
+                            setLogged(false);
+                        }
+                    })
+            } catch (error) {
+                console.error(error);
+            }
+        };
         fetchUser();
     }, [logged]);
 
+    console.log("user.iduser: ", user.iduser)
+
     return (
         <Router>
-            {logged ? <NavBar userLogged={setLogged} /> : null}
+            {logged ? <NavBar user={user} userLogged={setLogged} /> : null}
             <Routes>
                 <Route path="/" element={
                     logged ? <Logged user={user} /> : <Login userLogged={setLogged} />} />
@@ -68,6 +72,9 @@ const App = () => {
 
                 <Route path="/update/:idbookshelf" element={
                     logged ? <Update user={user} /> : <Login userLogged={setLogged} />} />
+
+                <Route path="/sendEmail" element={<Email />} />
+                <Route path="/changePassword/:token" element={<ChangePassword />} />
             </Routes>
         </Router>
     )

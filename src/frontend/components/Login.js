@@ -81,6 +81,7 @@ const Login = (props) => {
             </div>
 
             <div className="Container">
+            <p>Forgot password? <Link to="/sendEmail">Reset password</Link></p>
                 <p>Don't have an account? <Link to="/register">Register</Link></p>
             </div>
         </div>

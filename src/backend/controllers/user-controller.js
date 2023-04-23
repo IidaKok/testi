@@ -1,5 +1,6 @@
 const HttpError = require("../models/http-error");
 const db = require("../db");
+var nodemailer = require('nodemailer');
 
 //creates new user
 const createUser = async (req, res, next) => {
@@ -47,7 +48,32 @@ const createUser = async (req, res, next) => {
     catch (err) {
         throw err;
     }
+}
+const createBookShelf = async (req, res, next) => {
+    const iduser = req.body.iduser;
+    const username = req.body.username;
 
+    try {
+        const result = await db.pool.query("select * from bookshelf");
+        const bookshelf = result.find(b => {
+            return b.iduser == iduser;
+        });
+
+        if (!bookshelf) {
+            
+            try {
+                const newBookShelf = await db.pool.query("INSERT INTO bookshelf (idbookshelf, iduser, owner) VALUES ("+iduser+","+iduser+",'"+username+"')");
+                res.send(newBookShelf);
+            }
+            catch (err) {
+                return next(new HttpError("Creating bookshelf failed", 500));
+            }
+        }
+        else res.send(bookshelf);
+    }
+    catch (err) {
+        throw err;
+    }
 }
 //gets all users from the database
 const getAllUsers = async (req, res, next) => {
@@ -66,7 +92,7 @@ const getAllUsers = async (req, res, next) => {
 }
 //gets user from the database based on username and password
 const getUserByNameAndPassword = async (req, res, next) => {
-    
+
     try {
         const username = req.params.username;
         const password = req.params.password;
@@ -129,7 +155,88 @@ const deleteUser = async (req, res, next) => {
 
 }
 
+const jwt = require("jsonwebtoken");
+const config = { secret: "groupb secret" };
+var nodemailer = require('nodemailer');
+let token;
+
+const transporter = nodemailer.createTransport({
+    host: "smtp.office365.com",
+    port: 587,
+    secure: false,
+    auth: {
+      user: "groupb1231@outlook.com",
+      pass: "KissaKoira58",
+    },
+  });
+  
+  const sendEmail = async (recipientEmail) => {
+    try {
+      await transporter.sendMail({
+        from: "groupb1231@outlook.com",
+        to: recipientEmail,
+        subject: "Reset ypur password",
+        html: `<p>Dear user,</p><p>Please click <a href="http://localhost:3000/#/changePassword/${token}">here</a> to reset your password.</p><p>If you didn't request a password reset, please ignore this email.</p>`,
+      });
+  
+      console.log("Email sent successfully");
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  
+  const email = async (req, res) => {
+    const recipientEmail = req.query.email;
+    try {
+      const result = await db.pool.query("select * from user");
+      const user = result.find(u => {
+        return u.email === recipientEmail;
+      });
+  
+      if (!user) {
+        return res.status(404).send("There is no user that uses given email" );
+      }
+  
+      //if email is correct, token is created
+      let t = jwt.sign({ id: user.iduser }, config.secret, { expiresIn: "24h", });
+  
+      token = t;
+      sendEmail(recipientEmail);
+      res.send("Email sent successfully");
+  
+    } catch (error) {
+      console.error(error);
+    }
+  }
+  
+  const changePassword = async (req, res) => {
+    const { tokenfromUrl } = req.params;
+    const { password } = req.body;
+    
+    
+    try {
+      const decoded = jwt.verify(tokenfromUrl, config.secret);
+      const userId = decoded.id;
+      console.log("decoded: " + decoded.id);
+  
+      const result = await db.pool.query("UPDATE user SET password = '" + password + "' WHERE iduser = " + userId);
+      //if no users are found, error is returned
+      if (!result) {
+        return next(new HttpError("Can't find user", 404));
+      }
+      console.log("Password reset successfully");
+      res.status(200).json({ message: "Password changed" });
+    }
+    catch (err) {
+      return next(new HttpError("Something went wrong"));
+    }
+  }
+
+
 exports.getAllUsers = getAllUsers;
 exports.getUserByNameAndPassword = getUserByNameAndPassword;
 exports.createUser = createUser;
 exports.deleteUser = deleteUser;
+exports.createBookShelf = createBookShelf;
+exports.email = email;
+exports.changePassword = changePassword;

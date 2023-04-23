@@ -38,6 +38,7 @@ const jwt = require("jsonwebtoken");
 const config = { secret: "groupb secret" };
 let myToken;
 
+
 //after user is logged in, users data is returned
 app.get("/", async (req, res) => {
   console.log("myToken: " + myToken);
@@ -64,7 +65,6 @@ app.get("/", async (req, res) => {
       return next(new HttpError("Something went wrong"));
     }
   }
-
 })
 
 //when user logs in, token is created

@@ -6,32 +6,43 @@ const Logged = (props) => {
     const { user } = props;
 
     const [shelf, setShelf] = useState([]);
-    const [msg, setMsg] = useState("");
-    const [bookshelfExists, setBookshelfExists] = useState(false);
 
     useEffect(() => {
         const fetchBooks = async () => {
-
-            let response = await fetch("http://localhost:5000/api/bookshelf/" + user.iduser);
-            if (response.ok) {
-                let c = await response.json();
-                setShelf(c);
-                setBookshelfExists(true);
+            try {
+               await fetch("http://localhost:5000/api/users/createBookshelf/", {
+                    method: "POST",
+                    headers: {
+                        "Content-type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        username: user.username,
+                        iduser: user.iduser
+                    }),
+                })
+                    .then(response => {
+                        if (response.ok) {
+                            response.json()
+                            .then(c => {
+                                setShelf(c)}
+                                )
+                            
+                        }
+                    });
             }
-            else {
-                setMsg("You don't have a bookshelf yet");
-                setBookshelfExists(false);
+            catch (error) {
+                console.log(error);
             }
         }
         fetchBooks();
-    }, [user.iduser]);
+    }, [user]);
 
     return (
         <div>
             <div className="App">
                 <h1>Welcome, {user.username}</h1>
 
-                {bookshelfExists ? <table>
+                 <table>
                     <thead>
                         <tr>
                             <th>iduser</th>
@@ -46,7 +57,7 @@ const Logged = (props) => {
                             <td>{shelf.owner}</td>
                         </tr>
                     </tbody>
-                </table> : <p>{msg}</p>}
+                </table>
             </div>
         </div>
     )
