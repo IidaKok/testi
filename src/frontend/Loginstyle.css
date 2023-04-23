@@ -1,11 +1,10 @@
 .Forms {
-  background-color: rgb(196, 233, 196);
+  background-color: rgb(245, 236, 236);
   text-align: center;
   height: 100%;
   width: 50%;
   margin: auto;
   padding: 30px;
-  margin-top: 10px;
 }
 
 .Container {
@@ -44,4 +43,15 @@ input[type=text]:focus.invalid,
 input[type=password]:focus.invalid
 input[type=email]:focus.invalid {
   border: 2px solid red;
+}
+
+.img {
+  min-height: 100vh;
+  background-image: url("./login_picture.jpg");
+  background-color: #cccccc;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  position: relative;
+  padding: 80px
 }

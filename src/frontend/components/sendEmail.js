@@ -16,19 +16,18 @@ export const Email = () => {
     };
 
     return (
-        <div className="Container">
-            <form onSubmit={handleSubmit}>
-                <label>
-                    Recipient email:
-                    <input
-                        type="email"
-                        value={email}
-                        onChange={(event) => setEmail(event.target.value)}
-                    />
-                </label>
-                <p>{message}</p>
-                <button type="submit">Reset password</button>
-            </form>
+        <div className="Forms">
+            <div className="Container">
+                <form onSubmit={handleSubmit}>
+                    <label>
+                        Recipient email:
+                        <input type="email" placeholder="Your email..." value={email} onChange={(event) => setEmail(event.target.value)}
+                        />
+                    </label>
+                    <p>{message}</p>
+                    <button type="submit">Reset password</button>
+                </form>
+            </div>
         </div>
     );
 };

@@ -33,7 +33,7 @@ app.use(function(req, res, next) {
 });*/
 
 
-
+/*
 const jwt = require("jsonwebtoken");
 const config = { secret: "groupb secret" };
 let myToken;
@@ -109,7 +109,7 @@ app.post('/login', async function (req, res, next) {
 app.post('/logout', function (req, res, next) {
   myToken = null;
   res.json({ message: "logged out" });
-})
+})*/
 
 //app uses routes
 app.use("/api/users", userRoutes);

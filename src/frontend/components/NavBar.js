@@ -8,7 +8,7 @@ export const NavBar = (props) => {
     const navigate = useNavigate();
 
     const logOut = async () => {
-        await fetch('http://localhost:5000/logout', {
+        await fetch('http://localhost:5000/api/users/logout', {
             method: 'POST',
             credentials: 'include'
         })
@@ -30,8 +30,7 @@ export const NavBar = (props) => {
             <Link to="/">Home</Link>
             <Link to="/series">Series</Link>
             <Link to="/userPage">UserPage</Link>
-            <p>{user.username}</p>
-            <button onClick={() => logOut()}>Log out</button>
+            <Link onClick={() => logOut()}>Log out</Link>
         </div>
     )
 }

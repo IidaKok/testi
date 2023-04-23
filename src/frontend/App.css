@@ -1,5 +1,5 @@
 .App {
-  text-align: center;
+    text-align: center;
 }
 
 /* User Page CSS */
@@ -8,8 +8,10 @@
     grid-template-columns: repeat(5, 1fr);
     gap: 20px;
     justify-content: center;
-    padding: 0 20px; /* Add left and right padding */
+    padding: 0 20px;
+    /* Add left and right padding */
 }
+
 .book {
     background-color: #f5f5f5;
     padding: 20px;
@@ -17,23 +19,25 @@
     text-align: center;
 }
 
-    .book h2 {
-        font-size: 1.2em;
-        font-weight: bold;
-        margin-top: 0;
-    }
+.book h2 {
+    font-size: 1.2em;
+    font-weight: bold;
+    margin-top: 0;
+}
 
-    .book h3, .book h4, .book h5 {
-        margin-top: 0.5em;
-    }
+.book h3,
+.book h4,
+.book h5 {
+    margin-top: 0.5em;
+}
 
-    .book p {
-        margin: 0;
-    }
+.book p {
+    margin: 0;
+}
 
-    .book button {
-        margin-top: 1em;
-    }
+.book button {
+    margin-top: 1em;
+}
 
 @media (max-width: 768px) {
     .book-grid {
@@ -46,6 +50,7 @@
         grid-template-columns: repeat(1, 1fr);
     }
 }
+
 .add-user-btn {
     width: auto;
     min-width: 280px;
@@ -64,6 +69,7 @@
     box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.3);
     transition: background-color 0.3s ease;
 }
+
 .add-photo-btn {
     width: auto;
     min-width: 280px;
@@ -82,26 +88,31 @@
     box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.3);
     transition: background-color 0.3s ease;
 }
+
 .add-user-btn:hover {
     background-color: #6E94FF;
 }
+
 img {
     width: 200px;
     height: 300px;
     object-fit: cover;
     background-color: rgb(203, 238, 227);
 }
+
 .book-image {
     width: 200px;
     height: 300px;
     object-fit: cover;
 }
+
 .no-image {
     width: 200px;
     height: 300px;
     object-fit: cover;
     background-color: rgb(203, 238, 227);
 }
+
 .delete {
     border: none;
     padding: 3px 6px;
@@ -110,6 +121,7 @@ img {
     border: 1px solid rgb(245, 191, 191);
     color: rgb(242, 100, 100);
 }
+
 .update {
     border: none;
     padding: 3px 6px;
@@ -118,6 +130,7 @@ img {
     border: 1px solid rgb(204, 204, 243);
     color: rgb(139, 139, 234);
 }
+
 .edit {
     border: none;
     padding: 3px 6px;
@@ -126,14 +139,16 @@ img {
     border: 1px solid rgb(204, 204, 243);
     color: rgb(139, 139, 234);
 }
+
 .add-bookcopy-form {
-    display:flex;
+    display: flex;
     flex-direction: column;
     gap: 5px;
     align-items: center;
     justify-content: center;
     text-align: center;
 }
+
 .add-bookseries-form {
     display: flex;
     flex-direction: column;
@@ -142,12 +157,14 @@ img {
     justify-content: center;
     text-align: center;
 }
+
 #user-input {
     width: 200px;
     padding: 10px;
     border: 1px solid gray;
     box-sizing: border-box;
 }
+
 .update-bookcopy-form {
     display: flex;
     flex-direction: column;
@@ -156,6 +173,7 @@ img {
     justify-content: center;
     text-align: center;
 }
+
 .formAddBtn {
     border: none;
     width: 250px;
@@ -166,6 +184,7 @@ img {
     font-weight: bold;
     cursor: pointer;
 }
+
 .photoAddBtn {
     border: none;
     width: 200px;
@@ -176,6 +195,7 @@ img {
     font-weight: bold;
     cursor: pointer;
 }
+
 .photoDeleteBtn {
     border: none;
     width: 200px;
@@ -186,6 +206,7 @@ img {
     font-weight: bold;
     cursor: pointer;
 }
+
 .formCancelBtn {
     border: none;
     width: 250px;
@@ -196,6 +217,7 @@ img {
     font-weight: bold;
     cursor: pointer;
 }
+
 #h1user {
     font-size: 40px;
     font-weight: bold;
@@ -205,6 +227,7 @@ img {
     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
     text-decoration: underline;
 }
+
 .editphotos {
     display: flex;
     flex-direction: column;
@@ -213,12 +236,14 @@ img {
     justify-content: center;
     text-align: center;
 }
+
 .photo-grid {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
     gap: 20px;
     justify-content: center;
-    padding: 0 20px; /* Add left and right padding */
+    padding: 0 20px;
+    /* Add left and right padding */
 }
 
 .photo {
@@ -238,6 +263,7 @@ img {
     font-weight: bold;
     margin-bottom: 10px;
 }
+
 /* ^^ User Page CSS ^^ */
 /* ^^ User Page CSS ^^ */
 .modal-overlay {
@@ -252,8 +278,8 @@ img {
     align-items: center;
     z-index: 999;
 }
-  
-  .modal-content {
+
+.modal-content {
     position: relative;
     background-color: #fff;
     padding: 20px;
@@ -261,8 +287,9 @@ img {
     width: 400px;
     max-width: 90%;
     box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.3);
-  }
-  /* ^^ Modal dialog CSS ^^ */
+}
+
+/* ^^ Modal dialog CSS ^^ */
 
 .navbar {
     background-color: #f5f5f5;
@@ -272,18 +299,55 @@ img {
     align-items: center;
 }
 
-    .navbar a {
-        color: #565656;
-        font-size: 16px;
-        font-weight: bold;
-        text-decoration: none;
-        margin-right: 10px;
-    }
+.navbar a {
+    color: #565656;
+    font-size: 16px;
+    font-weight: bold;
+    text-decoration: none;
+    margin-right: 10px;
+}
 
-        .navbar a:first-child {
-            margin-left: 10px;
-        }
+.navbar a:first-child {
+    margin-left: 10px;
+}
 
-        .navbar a:hover {
-            color: #5C7AEA;
-        }
+.navbar a:hover {
+    color: #5C7AEA;
+}
+
+
+/* Header */
+.header {
+    text-align: center;
+    color: white;
+    height: 50%;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    position: relative;
+}
+
+/* Increase the font size of the heading */
+.header-text {
+    font-size: 40px;
+    text-align: center;
+    transform: translate(-50%, -50%);
+    color: white;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+}
+
+
+
+.div {
+    position: relative;
+    width: fit-content;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 85%;
+    margin: 50px;
+    padding: 40px;
+}

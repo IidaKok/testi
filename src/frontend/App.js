@@ -12,15 +12,16 @@ import { Update } from "./components/Update";
 import { EditPhotos } from "./components/EditPhotos";
 import { Email } from "./components/sendEmail";
 import { ChangePassword } from "./components/changePassword";
+import headerPicture from "./header_picture.jpg";
 
 const App = () => {
-    const [user, setUser] = useState("");
-    const [logged, setLogged] = useState(null);
+    const [user, setUser] = useState(null);
+    const [logged, setLogged] = useState(false);
+    
 
     useEffect(() => {
         const fetchUser = () => {
-            try {
-                fetch('http://localhost:5000/', {
+                fetch('http://localhost:5000/api/users/', {
                     credentials: 'include',
                 })
                     .then((res) => res.json())
@@ -33,23 +34,28 @@ const App = () => {
                         }
                         if (!data.loggedIn) {
                             setLogged(false);
+                            setUser("");
                         }
                     })
-            } catch (error) {
-                console.error(error);
-            }
+                    .catch((err) => {
+                        console.log(err);
+                    })      
         };
         fetchUser();
     }, [logged]);
 
-    console.log("user.iduser: ", user.iduser)
-
     return (
         <Router>
-            {logged ? <NavBar user={user} userLogged={setLogged} /> : null}
+            {logged ? <>
+            <div className="header">   
+                <img src={headerPicture} style={{width:"100%", filter: "blur(2px)"}}/>
+                <h1 className="header-text">Group B Book Archive</h1>
+            </div>
+            <NavBar user={user} userLogged={setLogged} />
+            </> : null}
             <Routes>
                 <Route path="/" element={
-                    logged ? <Logged user={user} /> : <Login userLogged={setLogged} />} />
+                    logged ? <Logged user={user} islogged={logged} /> : <Login userLogged={setLogged} />} />
                 <Route path="/register" element={<Register />} />
 
                 <Route path="/series" element={
@@ -79,4 +85,36 @@ const App = () => {
         </Router>
     )
 }
+/*<Router>
+            {logged ? <NavBar user={user} userLogged={setLogged} /> : null}
+            <Routes>
+                <Route path="/" element={
+                    logged ? <Logged user={user} islogged={logged} /> : <Login userLogged={setLogged} />} />
+                <Route path="/register" element={<Register />} />
+
+                <Route path="/series" element={
+                    logged ? <SeriesBrowser user={user} /> : <Login userLogged={setLogged} />} />
+
+                <Route path="/series/books/:idbookseries" element={
+                    logged ? <SeriesInfo user={user} /> : <Login userLogged={setLogged} />} />
+
+                <Route path="/series/books/book/:idbook" element={
+                    logged ? <BookInfo user={user} /> : <Login userLogged={setLogged} />} />
+
+                <Route path="/userPage" element={
+                    logged ? <UserPage user={user} /> : <Login userLogged={setLogged} />} />
+
+                <Route path="/Addbook" element={
+                    logged ? <Addbook user={user} /> : <Login userLogged={setLogged} />} />
+
+                <Route path="/Addseries" element={
+                    logged ? <Addseries /> : <Login userLogged={setLogged} />} />
+
+                <Route path="/update/:idbookshelf" element={
+                    logged ? <Update user={user} /> : <Login userLogged={setLogged} />} />
+
+                <Route path="/sendEmail" element={<Email />} />
+                <Route path="/changePassword/:token" element={<ChangePassword />} />
+            </Routes>
+        </Router>*/
 export default App

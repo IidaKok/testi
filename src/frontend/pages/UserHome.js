@@ -1,16 +1,19 @@
 import React, { useState, useEffect } from "react";
 import "../App.css";
+import { userHomeInfo } from "../data/data";
 
 const Logged = (props) => {
 
-    const { user } = props;
+    const { user, islogged } = props;
+    console.log("islogged", islogged);
 
     const [shelf, setShelf] = useState([]);
 
+
     useEffect(() => {
-        const fetchBooks = async () => {
-            try {
-               await fetch("http://localhost:5000/api/users/createBookshelf/", {
+        
+        const fetchBooks = () => {
+               fetch("http://localhost:5000/api/users/createBookshelf/", {
                     method: "POST",
                     headers: {
                         "Content-type": "application/json",
@@ -28,36 +31,19 @@ const Logged = (props) => {
                                 )
                             
                         }
-                    });
-            }
-            catch (error) {
-                console.log(error);
-            }
+                    })
+                    .catch(error => console.log(error))   
         }
         fetchBooks();
-    }, [user]);
+        
+    }, []);
 
     return (
         <div>
-            <div className="App">
+            <div className="div">
                 <h1>Welcome, {user.username}</h1>
 
-                 <table>
-                    <thead>
-                        <tr>
-                            <th>iduser</th>
-                            <th>idbookshelf</th>
-                            <th>owner</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>{shelf.iduser}</td>
-                            <td>{shelf.idbookshelf}</td>
-                            <td>{shelf.owner}</td>
-                        </tr>
-                    </tbody>
-                </table>
+                 <p>{userHomeInfo}</p>
             </div>
         </div>
     )

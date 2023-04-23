@@ -18,7 +18,7 @@ export const ChangePassword = () => {
     //setMessage(<Link to="/">Link to login</Link>);
     const resett = async () => {
         setButtonPressed(true);
-        if(!validPassword) {
+        if (!validPassword) {
             try {
                 const response = await fetch(`http://localhost:5000/api/users/changePassword/${tokenfromUrl}`, {
                     method: "PATCH",
@@ -28,15 +28,25 @@ export const ChangePassword = () => {
                     body: JSON.stringify({ password: password }),
                 });
                 if (!response.ok) {
-                    throw new Error("Something went wrong");
+                    const data = await response.json();
+                    console.log(data);
+                    alert(data.message);
                 }
-                const data = await response.json();
-                setMessage(data.message);
+                else {
+                    const data = await response.json();
+                    setMessage(<div>
+                        <p>
+                            {data.message}
+                            <Link to="/">Link to login</Link>
+                        </p>
+    
+                    </div>);
+                } 
             }
             catch (error) {
                 console.error(error);
             }
-        } 
+        }
     };
 
 
@@ -63,19 +73,15 @@ export const ChangePassword = () => {
     }
 
     return (
-        <div className="Container">
-            <h1>Change password</h1>
-            <input type={type} placeholder="New password..."  className={validPassword && buttonPressed ? "invalid" : "valid"}  onChange={(e) => setPassword(e.target.value)} />
-            <input type="checkbox" onChange={(e) => showPassword(e.target.checked)} /><label>Show Password</label>
-            {validPassword && buttonPressed ? <Error id="invalidPasswordError" value="Password" text="at least 5 characters, a lowercase letter, an uppercase letter and a number" /> : 
-            <div>
-                <p>
-                {message}
-                <Link to="/">Link to login</Link>
-                </p>
-                
-                </div>}
-            <button onClick={() => resett()}>Reset</button>
+        <div className="Forms">
+            <div className="Container">
+                <h1>Change password</h1>
+                <input type={type} placeholder="New password..." className={validPassword && buttonPressed ? "invalid" : "valid"} onChange={(e) => setPassword(e.target.value)} />
+                <input type="checkbox" onChange={(e) => showPassword(e.target.checked)} /><label>Show Password</label>
+                {validPassword && buttonPressed ? <Error id="invalidPasswordError" value="Password" text="at least 5 characters, a lowercase letter, an uppercase letter and a number" /> :
+                    message}
+                <button onClick={() => resett()}>Reset</button>
+            </div>
         </div>
     );
 }

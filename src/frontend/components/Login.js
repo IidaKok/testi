@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import "../Loginstyle.css";
-
+import picture from "../login_picture.jpg"
 
 const Login = (props) => {
     const { userLogged } = props;
@@ -29,46 +29,49 @@ const Login = (props) => {
             setErrorMessage2("Password can't be empty");
         }
         else {
-            fetch('http://localhost:5000/login', {
-                method: "POST",
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    username: name,
-                    password: password
-                }),
-                credentials: 'include'
-            })
-                .then(response => {
-                    if (response.ok) {
-                        setInvalidName(false);
-                        setInvalidPassword(false);
-                        userLogged(true);
-                    }
-                    else {
-                        const s = response.json()
-                        s.then((data) => {
-                            console.log(data.message);
-                            if (data.message.includes("Password")) {
-                                setErrorMessage2(data.message);
-                                setInvalidPassword(true);
-                            }
-                            else if (data.message.includes("Username")) {
-                                setErrorMessage(data.message);
-                                setInvalidName(true);
-                            }
-                        });
-                    }
+
+                fetch('http://localhost:5000/api/users/login', {
+                    method: "POST",
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        username: name,
+                        password: password
+                    }),
+                    credentials: 'include'
                 })
-                .catch(error => {
-                    console.error(error);
-                });
+                    .then(response => {
+                        if (response.ok) {
+                            setInvalidName(false);
+                            setInvalidPassword(false);
+                            userLogged(true);
+                        }
+                        else {
+                            const s = response.json()
+                            s.then((data) => {
+                                console.log(data.message);
+                                if (data.message.includes("Password")) {
+                                    setErrorMessage2(data.message);
+                                    setInvalidPassword(true);
+                                }
+                                else if (data.message.includes("Username")) {
+                                    setErrorMessage(data.message);
+                                    setInvalidName(true);
+                                }
+                            });
+                        }
+                    })
+                    .catch(error => {
+                        console.error(error);
+                    })
         }
     }
-    
+
     return (
+        <div className="img">
         <div className="Forms">
+            
             <h2>Login</h2>
             <div className="Container">
                 <form onSubmit={(e) => handleSubmit(e)}>
@@ -81,9 +84,10 @@ const Login = (props) => {
             </div>
 
             <div className="Container">
-            <p>Forgot password? <Link to="/sendEmail">Reset password</Link></p>
+                <p>Forgot password? <Link to="/sendEmail">Reset password</Link></p>
                 <p>Don't have an account? <Link to="/register">Register</Link></p>
             </div>
+        </div>
         </div>
     )
 }

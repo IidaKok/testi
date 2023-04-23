@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import "../Loginstyle.css";
 import { OverlayTrigger, Tooltip } from "react-bootstrap";
 import { Error } from "./InvalidInput";
+import "../Loginstyle.css";
 
 
 const Register = () => {
@@ -163,6 +164,7 @@ const Register = () => {
     else setType("Password");
   }
   return (
+    <div className="img">
     <div className="Forms">
       <h2>Register</h2>
       <div className="Container">
@@ -197,6 +199,7 @@ const Register = () => {
         <p>Already have an account? <Link to="/">Login</Link></p>
       </div>
 
+    </div>
     </div>
   )
 }

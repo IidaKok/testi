@@ -53,6 +53,8 @@ const createBookShelf = async (req, res, next) => {
     const iduser = req.body.iduser;
     const username = req.body.username;
 
+    console.log("iduser: " + req.body.iduser);
+
     try {
         const result = await db.pool.query("select * from bookshelf");
         const bookshelf = result.find(b => {
@@ -159,6 +161,7 @@ const jwt = require("jsonwebtoken");
 const config = { secret: "groupb secret" };
 var nodemailer = require('nodemailer');
 let token;
+let myToken;
 
 const transporter = nodemailer.createTransport({
     host: "smtp.office365.com",
@@ -209,7 +212,7 @@ const transporter = nodemailer.createTransport({
     }
   }
   
-  const changePassword = async (req, res) => {
+  const changePassword = async (req, res, next) => {
     const { tokenfromUrl } = req.params;
     const { password } = req.body;
     
@@ -228,10 +231,84 @@ const transporter = nodemailer.createTransport({
       res.status(200).json({ message: "Password changed" });
     }
     catch (err) {
-      return next(new HttpError("Something went wrong"));
+        return next(new HttpError("Unauthorized"));
     }
   }
 
+
+  //login
+  
+//after user is logged in, users data is returned
+const islogged =  async (req, res) => {
+    console.log("myToken: " + myToken);
+  
+    if (!myToken) {
+      return res.status(401).json({ message: 'Missing or invalid authorization token', loggedIn: false });
+    }
+    else {
+      //decodes token and gets user id
+      const decoded = jwt.verify(myToken, config.secret);
+      const userId = decoded.id;
+      console.log("decoded: " + decoded.id);
+  
+      try {
+        const result = await db.pool.query("select * from user where iduser = " + userId);
+        //if no users are found, error is returned
+        if (!result) {
+          return next(new HttpError("Can't find users", 404));
+        }
+  
+        res.json({ message: 'Success!', user: result, loggedIn: true });
+      }
+      catch (err) {
+        return next(new HttpError("Something went wrong"));
+      }
+    }
+  }
+  
+  //when user logs in, token is created
+  const login = async (req, res, next) => {
+    try {
+      const username = req.body.username;
+      const password = req.body.password;
+  
+      //checks username
+      const result1 = await db.pool.query("select * from user where username = '" + username + "'");
+      const userByName = result1.find(u => {
+        return u.username === username;
+      });
+  
+      //if username doesn't exists, error is returned
+      if (!userByName) {
+        return res.status(404).send({ message: "Username is incorrect. Try again", loggedIn: false });
+      }
+  
+      //checks is the password correct
+      const result = await db.pool.query("select * from user");
+      const user = result.find(u => {
+        return u.username === username && u.password === password;
+      });
+  
+      if (!user) {
+        return res.status(401).send({ message: "Password is incorrect. Try again", loggedIn: false });
+      }
+  
+      //if everything is correct, token is created
+      let token = jwt.sign({ id: user.iduser }, config.secret, { expiresIn: "24h", });
+  
+      myToken = token;
+      res.json({ token: myToken });
+    }
+    catch (err) {
+      throw err;
+    }
+  }
+  
+  //when user logs out, token is set to null
+    const logout = (req, res, next) => {
+    myToken = null;
+    res.json({ message: "logged out" });
+  }
 
 exports.getAllUsers = getAllUsers;
 exports.getUserByNameAndPassword = getUserByNameAndPassword;
@@ -240,3 +317,6 @@ exports.deleteUser = deleteUser;
 exports.createBookShelf = createBookShelf;
 exports.email = email;
 exports.changePassword = changePassword;
+exports.login = login;
+exports.logout = logout;
+exports.islogged = islogged;
