@@ -121,7 +121,6 @@ app.use("/api/book", bookRoutes);
 app.use("/api/bookshelf", bookshelfRoutes);
 app.use("/api/bookcopy", bookcopyRoutes);
 app.use("/api/photo", photoRoutes);
-
 app.use("/api/picture", pictureRoutes);
 app.use("/api/artwork", artworkRoutes);
 app.use("/api/userseries", userseriesRoutes);
