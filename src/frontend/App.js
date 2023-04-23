@@ -68,6 +68,10 @@ const App = () => {
 
                 <Route path="/update/:idbookshelf" element={
                     logged ? <Update user={user} /> : <Login userLogged={setLogged} />} />
+
+                <Route path="/EditPhotos/:idbookshelf" element={
+                    logged ? <EditPhotos user={user} /> : <Login userLogged={setLogged} />} />
+
             </Routes>
         </Router>
     )

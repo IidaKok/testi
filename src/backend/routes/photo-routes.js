@@ -16,8 +16,8 @@ router.post("/post/", photoControllers.createUserPhoto);
 router.put('/:idphoto', photoControllers.updateBookPhoto);
 
 //delete
-router.delete('/:idphoto', photoControllers.deleteBookIdPhoto);
 router.delete('/:idbookcopy', photoControllers.deleteBookPhoto);
+router.delete('/idphoto/:idphoto', photoControllers.deleteBookIdPhoto);
 
 
 
