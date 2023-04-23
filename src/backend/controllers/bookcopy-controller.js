@@ -108,6 +108,7 @@ const createUserBook = async (req, res, next) => {
     INSERT INTO bookcopy 
       (bookname, edition, publicationyear, purchaseprice, purchasedate, \`condition\`, description, solddate, soldprice, idbookshelf)
     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    RETURNING idbookcopy;
   `;
 
     const selectSql = `

@@ -31,10 +31,13 @@ const Addbook = (props) => {
         // Validate input
         const errors = {};
 
+        if (!/^[a-zA-Z0-9 ]{1,100}$/.test(bookcopy.bookname)) {
+            errors.bookname = "Book name should contain only letters, digits, and spaces, and have a length between 1 and 100 characters";
+        }
+
         if (!/^\d+$/.test(bookcopy.edition) || bookcopy.edition.length > 9) {
             errors.edition = "Edition should be a number with no less than 1 & no more than 9 digits";
         }
-
 
         if (
             !/^\d{4}$/.test(bookcopy.publicationyear) ||

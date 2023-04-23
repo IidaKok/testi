@@ -102,12 +102,12 @@ const UserPage = (props) => {
             <div className="user-page-btn" style={{ textAlign: "center" }}>
                 <Link to="/addBook">
                     <button className="add-user-btn">
-                        Add a new book to your library
+                        Add a new private book to your library
                     </button>
                 </Link>
                 <Link to="/addSeries">
                     <button className="add-user-btn">
-                        Add a new custom series
+                        Add a new custom public series
                     </button>
                 </Link>
             </div>
@@ -117,11 +117,17 @@ const UserPage = (props) => {
                         <div className="book" key={book.idbookcopy}>
                             <h2>{book.bookname}</h2>
                             {bookPhotos[book.idbookcopy] ? (
-                                <img
-                                    src={`https://${bookPhotos[book.idbookcopy]}`}
-                                    alt=""
-                                    className="book-image"
-                                />
+                                <div className="book-images">
+                                    {bookPhotos[book.idbookcopy] && bookPhotos[book.idbookcopy][0] ? (
+                                        <img
+                                            src={`https://${bookPhotos[book.idbookcopy][0]}`}
+                                            alt=""
+                                            className="book-image"
+                                        />
+                                    ) : (
+                                        <img alt="" className="book-image no-image" />
+                                    )}
+                                </div>
                             ) : (
                                 <img alt="" className="book-image no-image" />
                             )}
@@ -133,10 +139,9 @@ const UserPage = (props) => {
                             <p>Purchase price: {book.purchaseprice ? book.purchaseprice + '$' : '0$'}</p>
                             <p>Sold date: {book.solddate ? formatDate(book.solddate) : 'Not sold'}</p>
                             <p>Sold price: {book.soldprice ? book.soldprice + '$' : '0$'}</p>
-                            <button className="delete" onClick={() => handleDelete(book.idbookcopy)}>Delete</button>
-                            <button className="update">
-                                <Link to={`/update/${book.idbookcopy}`}>Update</Link>
-                            </button>
+                            <button className="update"><Link to={`/update/${book.idbookcopy}`}>Update Info</Link></button>
+                            <button className="edit"><Link to={`/Editphotos/${book.idbookcopy}`}>Edit Photos</Link></button>
+                            <button className="delete" onClick={() => handleDelete(book.idbookcopy)}>Delete Book</button>
                         </div>
                     ))}
                 </div>

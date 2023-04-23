@@ -47,15 +47,16 @@ const createUserPhoto = async (req, res, next) => {
 }
 //updates the photo
 const updateBookPhoto = async (req, res, next) => {
+    const idphoto = req.params.idphoto;
     const idbookcopy = req.params.idbookcopy;
     const { photoname, pagenumber } = req.body;
-    const values = [photoname || null, pagenumber || null, idbookcopy];
+    const values = [photoname || null, pagenumber || null, idphoto];
     const sql = `
     UPDATE photo 
     SET 
       photoname = IFNULL(?, photoname),
       pagenumber = IFNULL(?, pagenumber)
-    WHERE idbookcopy = ?
+    WHERE idphoto = ?
   `;
     try {
         const response = await db.pool.query(sql, values);
@@ -63,9 +64,9 @@ const updateBookPhoto = async (req, res, next) => {
             res.status(404).json({ message: "Photo not found" });
         } else {
             res.json({
-                message: `Bookcopy with idbookcopy = ${idbookcopy} was updated in the database`,
+                message: `Bookcopy with idbookcopy = ${idphoto} was updated in the database`,
             });
-            console.log(`Bookcopy with idbookcopy = ${idbookcopy} was updated in the database`);
+            console.log(`Bookcopy with idbookcopy = ${idphoto} was updated in the database`);
         }
     } catch (err) {
         console.error(err);
@@ -90,9 +91,26 @@ const deleteBookPhoto = async (req, res, next) => {
     }
 }
 
+const deleteBookIdPhoto = async (req, res, next) => {
+    const idphoto = req.params.idphoto;
+    try {
+        // deletes the bookcopy with the given id from the database
+        const response = await db.pool.query("DELETE FROM photo WHERE idphoto = " + idphoto);
+        if (response.affectedRows == 0) {
+            res.status(404).json({ message: "Photo not found" });
+        } else {
+            res.json({ message: "Photo with idphoto = " + idphoto + " was deleted from the database" });
+            console.log("Photo with idphoto = " + idphoto + " was deleted from the database");
+        }
+    }
+    catch (err) {
+        throw err;
+    }
+}
 
 exports.updateBookPhoto = updateBookPhoto;
 exports.deleteBookPhoto = deleteBookPhoto;
+exports.deleteBookIdPhoto = deleteBookIdPhoto;
 exports.createUserPhoto = createUserPhoto;
 exports.getAllBookCopyPhoto = getAllBookCopyPhoto;
 exports.getAllBookCopyPhotos = getAllBookCopyPhotos;

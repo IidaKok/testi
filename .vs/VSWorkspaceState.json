@@ -1,7 +1,6 @@
 {
   "ExpandedNodes": [
     "",
-    "\\public",
     "\\src",
     "\\src\\backend",
     "\\src\\backend\\controllers",
@@ -9,8 +8,8 @@
     "\\src\\backend\\routes",
     "\\src\\frontend",
     "\\src\\frontend\\components",
-    "\\src\\frontend\\pages"
+    "\\src\\frontend\\pages",
+    "\\src\\tests"
   ],
-  "SelectedNode": "\\src\\frontend\\App.css",
   "PreviewInSolutionExplorer": false
 }
