@@ -1,6 +1,6 @@
 import { useState, useEffect, useMemo } from 'react';
 import { NavLink } from "react-router-dom";
-import "../App.css";
+import "../App.css"; 
 
 import { BrowserAddSeries } from './BrowserAddSeries';
 import { BrowserEditSeries } from './BrowserEditSeries';
@@ -21,6 +21,7 @@ export const SeriesBrowser = (props) => {
     const [openEdit, setOpenEdit] = useState(false);
     const [seriesToEdit, setSeriesToEdit] = useState({});
     const [seriesToDelete, setSeriesToDelete] = useState();
+    const [seriesToAdd, setSeriesToAdd] = useState();
     const [booksToDelete, setBooksToDelete] = useState([]);
 
     const [allUserSeries, setAllUserSeries] = useState();
@@ -247,7 +248,13 @@ export const SeriesBrowser = (props) => {
                             const hasSeriesInBookshelf = compareSeriesUserSeries(s);
                             return (
                                 <tr key={index}>
-                                    <td style={tblCell}><button style={{ color: "green" }} onClick={() => setBookToAdd(s.idbookseries)}>+</button>  <NavLink to={'/series/books/' + s.idbookseries}>{s.bookseries}</ NavLink></td>
+                                    <td style={tblCell}>
+                                        { seriesToAdd === s.idbookseries ?
+                                            <button onClick={() => setBookToAdd(s.idbookseries)}>Confirm?</button> :
+                                            <button style={{ color: "green" }} onClick={() => setSeriesToAdd(s.idbookseries)}>+</button> 
+                                        } 
+                                        <NavLink to={'/series/books/' + s.idbookseries}>{s.bookseries}</ NavLink>
+                                    </td>
                                     <td style={tblCell}>{s.publisher}</td>
                                     {hasSeriesInBookshelf &&
                                         <>

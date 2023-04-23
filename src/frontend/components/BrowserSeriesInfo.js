@@ -39,7 +39,6 @@ export const SeriesInfo = (props) => {
     }
 
     const openEditModal = () => {
-        console.log("Series to edit (openEditModal): ", thisSeries);
         setOpenEdit(true);
     }
     const closeEditModal = () => {
@@ -47,10 +46,6 @@ export const SeriesInfo = (props) => {
     }
 
     const compareSeriesUserSeries = () => {
-        console.log("compareSeries thisSeries: ", thisSeries);
-        console.log("compareSeries allUserSeries: ", allUserSeries);
-        console.log("compareSeries ownUserSeries: ", ownUserSeries);
-
         let sameser
         if (Array.isArray(ownUserSeries)) {
             sameser = allUserSeries.find((s) => s.idbookseries == idbookseries);
@@ -74,31 +69,22 @@ export const SeriesInfo = (props) => {
 
 
     useEffect(() => {
-
         const fetchBooks = async () => {
-
             let response = await fetch("http://localhost:5000/api/book");
             let books = await response.json();
             setAllBooks(books);
             let filteredBooks = books.filter((b) => b.idbookseries == idbookseries);
-
             setBookData(filteredBooks);
-
         };
         const fetchBookImages = async () => {
             let response = await fetch("http://localhost:5000/api/artwork");
             let allArtwork = await response.json();
-            console.log("fetchBookImages allArtwork: ", allArtwork);
-
             setArtwork(allArtwork);
-            console.log("fetchBookImages artwork: ", artwork);
         };
         const fetchBookPhotos = async () => {
             let response = await fetch("http://localhost:5000/api/photo");
             let allPhotos = await response.json();
-
             setBookPhotos(allPhotos);
-            console.log("fetchBookPhotos bookPhotos: ", bookPhotos);
         };
 
         fetchBookPhotos();
@@ -111,12 +97,10 @@ export const SeriesInfo = (props) => {
             let response = await fetch("http://localhost:5000/api/picture/");
             let picture = await response.json();
             setPictures(picture);
-            console.log(pictures);
         };
 
         fetchBookPicture();
     }, [artwork]);
-
 
     useEffect(() => {
         const fetchBookshelf = async () => {
@@ -130,16 +114,13 @@ export const SeriesInfo = (props) => {
         const fetchUserseries = async () => {
             let response = await fetch("http://localhost:5000/api/userseries");
             let userseries = await response.json();
-            console.log("fetchuserseries userseries: ", userseries);
             setAllUserSeries(userseries);
             let findUserSeries = userseries.filter((u) => u.idbookshelf === bookShelfId);
             setOwnUserSeries(findUserSeries);
         }
         fetchUserseries();
-
         let hasSeries = compareSeriesUserSeries();
         setHasSeriesInBookShelf(hasSeries);
-
     }, [bookshelf, user.iduser, allBooks, thisSeries]);
 
     const insertBook = async (bookId) => {
@@ -238,8 +219,6 @@ export const SeriesInfo = (props) => {
 
     const renderTableRows = () => {
         let ownSer = compareSeriesUserSeries();
-
-        console.log("In renderTableRows: ", bookData);
         return bookData.map((b) => (
             <tr key={b.idbook}>
                 <td>
@@ -264,7 +243,6 @@ export const SeriesInfo = (props) => {
 
     return (
         <div>
-
             <NavLink to="/series" style={{ textDecoration: "none", color: "grey" }}>← Back to series</NavLink>
             <h2>{thisSeries.bookseries}</h2>
             <p><b>Publisher:</b> {thisSeries.publisher}</p>

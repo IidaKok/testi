@@ -43,7 +43,7 @@ const createBookCopy = async (req, res, next) => {
     } = req.body;
 
     try {
-        await db.pool.query(
+        const result = await db.pool.query(
             "INSERT INTO bookcopy (bookname, edition, publicationyear, idbook, purchaseprice, purchasedate, `condition`, description, solddate, soldprice, idbookseries, idbookshelf) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
             [
                 bookname,
@@ -61,7 +61,12 @@ const createBookCopy = async (req, res, next) => {
             ]
         );
 
-        res.status(201).json({ message: "Book copy created successfully" });
+        
+        const newId = parseInt(result.insertId); // get the newly created idbookcopy
+    
+        res.status(201).json({ message: "Bookseries created successfully", id: newId });
+
+        // res.status(201).json({ message: "Book copy created successfully" });
     } catch (err) {
         console.log(err);
         const error = new HttpError(

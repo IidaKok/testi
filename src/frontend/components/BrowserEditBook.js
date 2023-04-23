@@ -61,7 +61,7 @@ export const BrowserEditBook = ({ closeEditModal, bookToEdit }) => {
                     </label>
                     <label>
                         Publication Year:
-                        <input type="number" value={publicationyear} onChange={(e) => setPublicationYear(e.target.value)} />
+                        <input type="number" min="1901" max="2155" value={publicationyear} onChange={(e) => setPublicationYear(e.target.value)} />
                     </label>
                     <label>
                         Description:

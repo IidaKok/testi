@@ -14,6 +14,8 @@ export const BrowserAddBook = ({ closeAddModal, seriesid }) => {
         event.preventDefault();
         console.log(bookname, publicationyear, description, idbookseries, seriesnumber, writer);
 
+        if (publicationyear == null || publicationyear == "") setPublicationYear(1901);
+
         try {
             const response = await fetch("http://localhost:5000/api/book", {
                 method: "POST",
@@ -57,7 +59,7 @@ export const BrowserAddBook = ({ closeAddModal, seriesid }) => {
                     </label>
                     <label>
                         Publication Year:
-                        <input type="number" onChange={(e) => setPublicationYear(e.target.value)}></input>
+                        <input type="number" min="1901" max="2155" onChange={(e) => setPublicationYear(e.target.value)}></input>
                     </label>
                     <label>
                         Description:

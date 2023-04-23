@@ -36,44 +36,16 @@ export const BookInfo = (props) => {
     const [coverNro, setCoverNro] = useState(0);
 
     const [allUserSeries, setAllUserSeries] = useState();
-    const [ownUserSeries, setOwnUserSeries] = useState();
 
     const compareSeriesUserSeries = () => {
-        console.log("compareSeries allUserSeries: ", allUserSeries);
-        console.log("compareSeries ownUserSeries: ", ownUserSeries);
-
         let sameser
         if (Array.isArray(allUserSeries)) {
             sameser = allUserSeries.find((s) => s.idbookseries == oneBook.idbookseries);
         }
-
         if (sameser) {
             if (sameser.idbookshelf == bookShelfId) return true;
         }
         else return false;
-
-        /*
-        let sameser;
-        if (Array.isArray(ownUserSeries)) {
-            sameser = ownUserSeries.find((s) => s.idbookseries == oneBook.idbookseries);
-            console.log("compareSeries sameser: " + sameser.idbookseries + " compareSeries onebook series id: " + oneBook.idbookseries);
-        };
-
-        if (sameser) {
-            console.log("before check compareSeries sameser: " + sameser.idbookseries + " compareSeries onebook series id: " + oneBook.idbookseries);
-
-            let foundSer = parseInt(sameser.idbookseries);
-            let thisSer = parseInt(oneBook.idbookseries);
-
-            console.log("thisSer: " + thisSer + " foundSer: " + foundSer);
-
-            if (foundSer === thisSer) {
-                console.log("is owned series");
-                return true;
-            } else return false;
-
-        }
-        */
     };
 
     useEffect(() => {
@@ -92,29 +64,20 @@ export const BookInfo = (props) => {
                 solddate: null,
                 soldprice: null,
             });
-            console.log(quickAddBook);
         };
         const fetchBookImages = async () => {
             let response = await fetch("http://localhost:5000/api/artwork");
             let allArtwork = await response.json();
-            console.log("fetchBookImages allArtwork: ", allArtwork);
-
             let findArtwork = allArtwork.filter((a) => a.idbook == idbook);
-            console.log("fetchBookImages findArtwork: ", findArtwork);
-
             let f = findArtwork.find((a) => a.pagenumber == 1);
             let b = findArtwork.find((a) => a.pagenumber == 2);
-
             setFront(f);
             setBack(b);
-            console.log("f: "  + " b: " + back.idpicture);
         };
         const fetchBookPhotos = async () => {
             let response = await fetch("http://localhost:5000/api/photo");
             let allPhotos = await response.json();
-
             setBookPhotos(allPhotos);
-            console.log("fetchBookPhotos bookPhotos: ", bookPhotos);
         };
 
         fetchBookPhotos();
@@ -126,13 +89,11 @@ export const BookInfo = (props) => {
         const fetchBookPicture = async () => {
             let response = await fetch("http://localhost:5000/api/picture/");
             let picture = await response.json();
-
             if (front) {
                 let idFront = front.idpicture;
                 let findFront = picture.find((p) => p.idpicture == idFront);
                 setFCoverImage(findFront);
             }
-
             if (back) {
                 let idBack = back.idpicture;
                 let findBack = picture.find((p) => p.idpicture == idBack);
@@ -140,7 +101,7 @@ export const BookInfo = (props) => {
             }
         };
 
-        if (front != null || back != null) fetchBookPicture(); // thisArtwork
+        if (front != null || back != null) fetchBookPicture();
     }, [imageUpdate, front, back])
 
     const [dataLoaded, setDataLoaded] = useState(false);
@@ -153,17 +114,12 @@ export const BookInfo = (props) => {
             setBookshelf(userBookshelf);
             setBookShelfId(userBookshelf.idbookshelf);
         };
-
         const fetchUserseries = async () => {
             let response = await fetch("http://localhost:5000/api/userseries");
             let userseries = await response.json();
-            console.log("fetchuserseries userseries: ", userseries);
             setAllUserSeries(userseries);
-            let findUserSeries = userseries.filter((u) => u.idbookshelf === bookShelfId);
-            setOwnUserSeries(findUserSeries);
             setDataLoaded(true);
         };
-
         if (bookshelf == null) fetchBookshelf();
         fetchUserseries();
     }, [bookshelf, user.iduser, oneBook, allBooks, openEdit]);
@@ -171,49 +127,84 @@ export const BookInfo = (props) => {
     const hasSeriesInBookShelf = dataLoaded ? compareSeriesUserSeries() : false;
 
     const insertBook = async (book) => {
+
+        const addCoverPhotos = async (idBCopy) => { // is called after bookcopy is inserted into user bookshelf. idBCopy is the id of the newly created bookcopy 
+            if (bookshelf !== null && fCoverImage !== null) {
+                const r = await fetch("http://localhost:5000/api/photo/post/", {
+                    method: "POST",
+                    headers: {
+                        "Content-type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        photoname: fCoverImage.filename,
+                        idbookcopy: idBCopy,
+                        pagenumber: 1,
+                    }),
+                });
+                console.log("INSERT FRONT PHOTO:", r);
+            };
+            if (bookshelf !== null && bCoverImage !== null) {
+                const r = await fetch("http://localhost:5000/api/photo/post/", {
+                    method: "POST",
+                    headers: {
+                        "Content-type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        photoname: bCoverImage.filename,
+                        idbookcopy: idBCopy,
+                        pagenumber: 2,
+                    }),
+                });
+                console.log("INSERT BACK PHOTO:", r);
+            };
+        };
+
         let findBook = allBooks.find((b) => b.idbook == book.id);
         if (bookshelf !== null) {
-            const r = await fetch("http://localhost:5000/api/bookcopy", {
+            const response = await fetch("http://localhost:5000/api/bookcopy", {
                 method: "POST",
                 headers: {
                     "Content-type": "application/json",
                 },
                 body: JSON.stringify({
                     bookname: findBook.bookname,
-                    edition: book.edition, // default arvo
+                    edition: book.edition,
                     publicationyear: findBook.publicationyear,
                     idbook: findBook.idbook,
-                    purchaseprice: book.purchaseprice, // default arvo
-                    purchasedate: book.purchasedate, // default arvo
-                    condition: book.condition, // default arvo
+                    purchaseprice: book.purchaseprice,
+                    purchasedate: book.purchasedate,
+                    condition: book.condition,
                     description: findBook.description,
-                    solddate: book.solddate, // default arvo
-                    soldprice: book.soldprice, // default arvo
+                    solddate: book.solddate,
+                    soldprice: book.soldprice,
                     idbookseries: findBook.idbookseries,
                     idbookshelf: bookshelf.idbookshelf,
                 }),
             });
-            console.log("INSERT:", r);
-        }
+            console.log("INSERT:", response);
+            if (!response.ok) {
+                const errorText = await response.text();
+                throw new Error(errorText || "Network response was not ok");
+            }
+            const data = await response.json();
+            console.log("Series created: ", data.id);
+            if (data.id !== null) addCoverPhotos(data.id);
+        };
         setAddClicked(false);
     };
 
     const openModal = () => {
         setModalOpen(true);
     }
-
     const closeModal = () => {
         setModalOpen(false);
     }
-
     const openEditModal = () => {
-        console.log("Book to edit (openEditModal): ", oneBook);
         setOpenEdit(true);
     }
     const closeEditModal = () => {
         setOpenEdit(false)
     }
-
     const openPictureModal = (cover) => {
         if (cover == 1) setCoverNro(1);
         if (cover == 2) setCoverNro(2);
@@ -222,19 +213,15 @@ export const BookInfo = (props) => {
     const closePictureModal = () => {
         setAddPicture(false);
     }
-
     const openEditPicModal = () => {
         setEditPicture(true);
     }
     const closeEditPicModal = () => {
         setEditPicture(false);
     }
-
     const updateImage = () => {
         setImageUpdate(!imageUpdate);
     }
-
-
 
     const deleteBook = async (bookId) => {
         if (fCoverImage) {
@@ -314,7 +301,6 @@ export const BookInfo = (props) => {
                     {editPicture && <BrowserEditPic closeEditPicModal={closeEditPicModal} picToEdit={fCoverImage} setImageUpdate={updateImage} />}
                 </>
             }
-
             <p>{oneBook.publicationyear}</p>
             <p>Author: {oneBook.writer}</p>
             <p>Description: {oneBook.description}</p>
