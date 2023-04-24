@@ -75,7 +75,7 @@ export const BrowserAddSeries = ({ closeAddModal, idbookshelf }) => {
       
 
     return (
-        <div className="modal">
+        <div className="modal-overlay">
             <div className="modal-content">
                 <form>
                     <label>
@@ -94,9 +94,9 @@ export const BrowserAddSeries = ({ closeAddModal, idbookshelf }) => {
                         Classification:
                         <input type="text" value={classification} onChange={(e) => setClassification(e.target.value)} />
                     </label>
-                    <button onClick={(e) => handleAdd(e)}>Add</button>
+                    <button className='add-books-btn' onClick={(e) => handleAdd(e)}>Add</button>
+                    <button className='add-books-btn' onClick={() => closeAddModal()}>Cancel</button>
                 </form>
-                <button onClick={() => closeAddModal()}>Cancel</button>
             </div>
         </div>
     );

@@ -1,6 +1,6 @@
 import { useState, useEffect, useMemo } from 'react';
 import { NavLink } from "react-router-dom";
-import "../App.css"; 
+import "../App.css";
 
 import { BrowserAddSeries } from './BrowserAddSeries';
 import { BrowserEditSeries } from './BrowserEditSeries';
@@ -217,7 +217,7 @@ export const SeriesBrowser = (props) => {
     };
 
 
-    const compareSeriesUserSeries = (ser) => { 
+    const compareSeriesUserSeries = (ser) => {
         // returns a boolean value to determine whether the delete and edit buttons get rendered or not
         // if the user logged in has created the series, they should be able to edit and delete it
 
@@ -226,7 +226,7 @@ export const SeriesBrowser = (props) => {
             sameser = allUserSeries.find((s) => s.idbookseries == ser.idbookseries);
         }
 
-        if(sameser) {
+        if (sameser) {
             if (sameser.idbookshelf == bookShelfId) return true;
         }
         else return false;
@@ -234,49 +234,59 @@ export const SeriesBrowser = (props) => {
 
 
     return (
-        <div>
-            <table >
-                <thead>
-                    <tr style={{ height: "35px", backgroundColor: "lavender" }}>
-                        <th style={tblCellSer}>Series</th>
-                        <th style={tblCell}>Publishers</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {   // all the book series get rendered in a table element here
-                        useMemo(() => series.map((s, index) => {
-                            const hasSeriesInBookshelf = compareSeriesUserSeries(s);
-                            return (
-                                <tr key={index}>
-                                    <td style={tblCell}>
-                                        { seriesToAdd === s.idbookseries ?
-                                            <button onClick={() => setBookToAdd(s.idbookseries)}>Confirm?</button> :
-                                            <button style={{ color: "green" }} onClick={() => setSeriesToAdd(s.idbookseries)}>+</button> 
-                                        } 
-                                        <NavLink to={'/series/books/' + s.idbookseries}>{s.bookseries}</ NavLink>
-                                    </td>
-                                    <td style={tblCell}>{s.publisher}</td>
-                                    {hasSeriesInBookshelf &&
-                                        <>
-                                            <td><button onClick={() => openEditModal(s)}>Edit</button></td>
-                                            <td>
-                                                {seriesToDelete === s.idbookseries ?
-                                                    <button onClick={() => deleteSeries(s.idbookseries)}>Confirm?</button> :
-                                                    <button onClick={() => setSeriesToDelete(s.idbookseries)}>Delete</button>
-                                                }
-                                            </td>
-                                        </>
-                                    }
-                                </tr>
-                            )
-                        }), [series, compareSeriesUserSeries, allUserSeries])
-                    }
-                </tbody>
-            </table>
-            <p>Can't find your series? Add it here: </p>
-            <button onClick={openAddModal}>Add series</button>
-            {modalOpen && <BrowserAddSeries closeAddModal={closeAddModal} idbookshelf={bookShelfId} />}
-            {openEdit && <BrowserEditSeries closeEditModal={closeEditModal} seriesToEdit={seriesToEdit} />}
+        <div className='flex-base'>
+            <div className='browser-container-table'>
+                <table className='browser-table'>
+                    <thead>
+                        <tr>
+                            <th>Series</th>
+                            <th>Publishers</th>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {   // all the book series get rendered in a table element here
+                            useMemo(() => series.map((s, index) => {
+                                const hasSeriesInBookshelf = compareSeriesUserSeries(s);
+                                return (
+                                    <tr key={index} >
+                                        <td>
+                                            {seriesToAdd === s.idbookseries ?
+                                                <button className='add-books-btn' onClick={() => setBookToAdd(s.idbookseries)}>Confirm?</button> :
+                                                <button className='add-books-btn' onClick={() => setSeriesToAdd(s.idbookseries)}>+</button>
+                                            }
+                                            <NavLink to={'/series/books/' + s.idbookseries}>{s.bookseries}</ NavLink>
+                                        </td>
+                                        <td>{s.publisher}</td>
+                                        {hasSeriesInBookshelf ?
+                                            <>
+                                                <td><button className='update' onClick={() => openEditModal(s)}>Edit</button></td>
+                                                <td>
+                                                    {seriesToDelete === s.idbookseries ?
+                                                        <button className='delete' onClick={() => deleteSeries(s.idbookseries)}>Confirm?</button> :
+                                                        <button className='delete' onClick={() => setSeriesToDelete(s.idbookseries)}>Delete</button>
+                                                    }
+                                                </td>
+                                            </> :
+                                            <>
+                                                <td></td>
+                                                <td></td>
+                                            </>
+                                        }
+                                    </tr>
+                                )
+                            }), [series, compareSeriesUserSeries, allUserSeries])
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <div className='browser-container-button'>
+                <p>Can't find your series? Add it here: </p>
+                <button className='add-user-btn' onClick={openAddModal}>Add series</button>
+                {modalOpen && <BrowserAddSeries closeAddModal={closeAddModal} idbookshelf={bookShelfId} />}
+                {openEdit && <BrowserEditSeries closeEditModal={closeEditModal} seriesToEdit={seriesToEdit} />}
+            </div>
         </div>
     )
 }

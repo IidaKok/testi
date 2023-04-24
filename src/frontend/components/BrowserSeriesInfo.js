@@ -51,7 +51,7 @@ export const SeriesInfo = (props) => {
             sameser = allUserSeries.find((s) => s.idbookseries == idbookseries);
         }
 
-        if(sameser) {
+        if (sameser) {
             if (sameser.idbookshelf == bookShelfId) return true;
         }
         else return false;
@@ -223,8 +223,8 @@ export const SeriesInfo = (props) => {
             <tr key={b.idbook}>
                 <td>
                     {bookToAdd === b.idbook ?
-                        <button onClick={() => insertBook(b.idbook)}>Confirm?</button> :
-                        <button style={{ color: "green" }} onClick={() => setBookToAdd(b.idbook)}>+</button>
+                        <button className='add-books-btn' onClick={() => insertBook(b.idbook)}>Confirm?</button> :
+                        <button className='add-books-btn' onClick={() => setBookToAdd(b.idbook)}>+</button>
                     }
                     <NavLink to={'/series/books/book/' + b.idbook}>{b.bookname}</ NavLink>
                 </td>
@@ -232,8 +232,8 @@ export const SeriesInfo = (props) => {
                 {ownSer &&
                     <td>
                         {bookToDelete === b.idbook ?
-                            <button onClick={() => deleteBook(b.idbook)}>Confirm?</button> :
-                            <button onClick={() => setBookToDelete(b.idbook)}>Delete</button>
+                            <button className='delete' onClick={() => deleteBook(b.idbook)}>Confirm?</button> :
+                            <button className='delete' onClick={() => setBookToDelete(b.idbook)}>Delete</button>
                         }
                     </td>
                 }
@@ -242,40 +242,49 @@ export const SeriesInfo = (props) => {
     };
 
     return (
-        <div>
-            <NavLink to="/series" style={{ textDecoration: "none", color: "grey" }}>← Back to series</NavLink>
-            <h2>{thisSeries.bookseries}</h2>
-            <p><b>Publisher:</b> {thisSeries.publisher}</p>
-            <p><b>Description:</b> {thisSeries.description}</p>
-            <p><b>Classification:</b> {thisSeries.classification}</p>
-            { hasSeriesInBookShelf &&
-                <>
-                    <p>Edit information about the series: <button onClick={openEditModal}>Edit</button></p>
-                    <p>
-                        {openEdit &&
-                            <BrowserEditSeries closeEditModal={closeEditModal} seriesToEdit={thisSeries} />
-                        }
-                    </p>
-                </>
-            }
-            <table>
-                <thead>
-                    <tr style={{ height: "35px", backgroundColor: "lavender" }}>
-                        <th>Books</th>
-                        <th>Publication year</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {renderTableRows()}
-                </tbody>
-            </table>
-            { hasSeriesInBookShelf &&
-                <>
-                    <p>Add new books to the series here:</p>
-                    <button onClick={openAddModal}>New book</button>
-                </>
-            }
-            {modalOpen && <BrowserAddBook closeAddModal={closeAddModal} seriesid={idbookseries} />}
+        <div className='flex-base'>
+            <div className='browser-container-info'>
+                <div className='info-box'>
+                    <NavLink to="/series">← Back to series</NavLink>
+                    <h2>{thisSeries.bookseries}</h2>
+                    <p><b>Publisher:</b> {thisSeries.publisher}</p>
+                    <p><b>Description:</b> {thisSeries.description}</p>
+                    <p><b>Classification:</b> {thisSeries.classification}</p>
+                    {hasSeriesInBookShelf &&
+                        <>
+                            <p>Edit information about the series: <button className='update' onClick={openEditModal}>Edit</button></p>
+                            <p>
+                                {openEdit &&
+                                    <BrowserEditSeries closeEditModal={closeEditModal} seriesToEdit={thisSeries} />
+                                }
+                            </p>
+                        </>
+                    }
+                </div>
+            </div>
+            <div className='browser-container-table'>
+                <table className='browser-table'>
+                    <thead>
+                        <tr style={{ height: "35px", backgroundColor: "lavender" }}>
+                            <th>Books</th>
+                            <th>Publication year</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {renderTableRows()}
+                    </tbody>
+                </table>
+            </div>
+            <div className='browser-container-button'>
+                {hasSeriesInBookShelf &&
+                    <>
+                        <p>Add new books here:</p>
+                        <button className='add-user-btn' onClick={openAddModal}>New book</button>
+                    </>
+                }
+                {modalOpen && <BrowserAddBook closeAddModal={closeAddModal} seriesid={idbookseries} />}
+            </div>
         </div>
     )
 }

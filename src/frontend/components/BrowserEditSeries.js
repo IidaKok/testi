@@ -47,7 +47,7 @@ export const BrowserEditSeries = ({ closeEditModal, seriesToEdit }) => {
 
 
     return (
-        <div className="modal">
+        <div className="modal-overlay">
             <div className="modal-content">
                 <form>
                     <label>
@@ -66,9 +66,9 @@ export const BrowserEditSeries = ({ closeEditModal, seriesToEdit }) => {
                         Classification:
                         <input type="text" value={classification} onChange={(e) => setClassification(e.target.value)} />
                     </label>
-                    <button onClick={(e) => handleEdit(e)}>Edit</button>
+                    <button className='add-books-btn' onClick={(e) => handleEdit(e)}>Edit</button>
+                    <button className='add-books-btn' onClick={() => closeEditModal()}>Cancel</button>
                 </form>
-                <button onClick={() => closeEditModal()}>Cancel</button>
             </div>
         </div>
     );

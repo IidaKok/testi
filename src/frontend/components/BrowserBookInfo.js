@@ -288,40 +288,48 @@ export const BookInfo = (props) => {
     };
 
     return (
-        <div>
-            <NavLink to={"/series/books/" + oneBook.idbookseries} style={{ textDecoration: "none", color: "grey" }}>← Back to books</NavLink>
-            <h3>{oneBook.bookname}</h3>
-            {fCoverImage ? <img src={`${fCoverImage.filename}`} /> : <img src="https://i.imgur.com/Qr08eFc.png" style={{ width: "250px", height: "250px" }} />}
-            {bCoverImage ? <img src={`${bCoverImage.filename}`} /> : <img src="https://i.imgur.com/Qr08eFc.png" style={{ width: "250px", height: "250px" }} />}
-            {dataLoaded && hasSeriesInBookShelf &&
-                <>
-                    {fCoverImage ? <p><button onClick={openEditPicModal}>Change the cover picture</button></p> : <p><button onClick={() => { openPictureModal(1) }}>Add a cover picture</button></p>}
-                    {bCoverImage ? <p><button onClick={openEditPicModal}>Change the back cover picture</button></p> : <p><button onClick={() => { openPictureModal(2) }}>Add a back cover picture</button></p>}
-                    {addPicture && <BrowserAddPic closePictureModal={closePictureModal} bookid={idbook} setImageUpdate={updateImage} cover={coverNro} />}
-                    {editPicture && <BrowserEditPic closeEditPicModal={closeEditPicModal} picToEdit={fCoverImage} setImageUpdate={updateImage} />}
-                </>
-            }
-            <p>{oneBook.publicationyear}</p>
-            <p>Author: {oneBook.writer}</p>
-            <p>Description: {oneBook.description}</p>
-            <button onClick={(e) => { e.preventDefault(); setAddClicked(true) }}>Quick add</button>
-            {addClicked && <button onClick={() => insertBook(quickAddBook)}>Confirm?</button>}
+        <div className='flex-base-bookinfo'>
+            <div className='pic-box'>
+                <NavLink to={"/series/books/" + oneBook.idbookseries} style={{ textDecoration: "none", color: "grey" }}>← Back to books</NavLink>
+                <div className='pic-box-pictures'>
+                    {fCoverImage ? <img src={`${fCoverImage.filename}`} /> : <img src="https://i.imgur.com/Qr08eFc.png" style={{ width: "250px", height: "250px" }} />}
+                    {bCoverImage ? <img src={`${bCoverImage.filename}`} /> : <img src="https://i.imgur.com/Qr08eFc.png" style={{ width: "250px", height: "250px" }} />}
+                </div>
+                {dataLoaded && hasSeriesInBookShelf &&
+                    <>
+                        {fCoverImage ? <p><button onClick={openEditPicModal}>Change the cover picture</button></p> : <p><button onClick={() => { openPictureModal(1) }}>Add a cover picture</button></p>}
+                        {bCoverImage ? <p><button onClick={openEditPicModal}>Change the back cover picture</button></p> : <p><button onClick={() => { openPictureModal(2) }}>Add a back cover picture</button></p>}
+                        {addPicture && <BrowserAddPic closePictureModal={closePictureModal} bookid={idbook} setImageUpdate={updateImage} cover={coverNro} />}
+                        {editPicture && <BrowserEditPic closeEditPicModal={closeEditPicModal} picToEdit={fCoverImage} setImageUpdate={updateImage} />}
+                    </>
+                }
+            </div>
+            <div className='data-box'>
+                <h3>{oneBook.bookname}</h3>
+                <p><b>Publication year: </b>{oneBook.publicationyear}</p>
+                <p><b>Author: </b>{oneBook.writer}</p>
+                <p><b>Description: </b>{oneBook.description}</p>
+                {addClicked ? 
+                    <button className='add-books-btn' onClick={() => insertBook(quickAddBook)}>Confirm?</button> :
+                    <button className='add-books-btn' onClick={(e) => { e.preventDefault(); setAddClicked(true) }}>Quick add</button>
+                }
 
-            <button onClick={openModal}>Add with information</button>
-            {modalOpen && <AddBookModal closeModal={closeModal} insertBook={insertBook} id={oneBook.idbook} />}
+                <button className='add-books-btn' onClick={openModal}>Add with information</button>
+                {modalOpen && <AddBookModal closeModal={closeModal} insertBook={insertBook} id={oneBook.idbook} />}
 
-            {dataLoaded && hasSeriesInBookShelf &&
-                <>
-                    <p>Edit information about this book: <button onClick={openEditModal}>Edit</button></p>
-                    {openEdit && <BrowserEditBook closeEditModal={closeEditModal} bookToEdit={oneBook} />}
-                    <p>Delete book:
-                        {bookToDelete ?
-                            <button onClick={deleteBook(oneBook.idbook)}>Confirm?</button> :
-                            <button onClick={() => setBookToDelete(oneBook.idbook)}>Delete</button>
-                        }
-                    </p>
-                </>
-            }
+                {dataLoaded && hasSeriesInBookShelf &&
+                    <>
+                        <p>Edit information about this book: <button className='update' onClick={openEditModal}>Edit</button></p>
+                        {openEdit && <BrowserEditBook closeEditModal={closeEditModal} bookToEdit={oneBook} />}
+                        <p>Delete book:
+                            {bookToDelete ?
+                                <button className='delete' onClick={deleteBook(oneBook.idbook)}>Confirm?</button> :
+                                <button className='delete' onClick={() => setBookToDelete(oneBook.idbook)}>Delete</button>
+                            }
+                        </p>
+                    </>
+                }
+            </div>
         </div>
     )
 }

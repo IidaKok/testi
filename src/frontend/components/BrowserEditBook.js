@@ -52,7 +52,7 @@ export const BrowserEditBook = ({ closeEditModal, bookToEdit }) => {
 
 
     return (
-        <div className="modal">
+        <div className="modal-overlay">
             <div className="modal-content">
                 <form>
                     <label>
@@ -75,9 +75,9 @@ export const BrowserEditBook = ({ closeEditModal, bookToEdit }) => {
                         Writer:
                         <input type="text" value={writer} onChange={(e) => setWriter(e.target.value)}></input>
                     </label>
-                    <button onClick={(e) => handleEdit(e)}>Edit</button>
+                    <button className='add-books-btn' onClick={(e) => handleEdit(e)}>Edit</button>
+                    <button className='add-books-btn' onClick={() => closeEditModal()}>Cancel</button>
                 </form>
-                <button onClick={() => closeEditModal()}>Cancel</button>
             </div>
         </div>
     );

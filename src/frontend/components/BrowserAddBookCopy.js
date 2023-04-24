@@ -60,9 +60,9 @@ export const AddBookModal = ({ closeModal, insertBook, id }) => {
                         Sold price:
                         <input type="text" value={soldprice} onChange={(e) => setSoldprice(e.target.value)}></input>
                     </label>
-                    <button onClick={(e) => handleAdd(e)}>Add Book</button>
+                    <button className='add-books-btn' onClick={(e) => handleAdd(e)}>Add Book</button>
+                    <button className='add-books-btn' onClick={closeModal}>Cancel</button>
                 </form>
-                <button onClick={closeModal}>Cancel</button>
             </div>
         </div>
     );

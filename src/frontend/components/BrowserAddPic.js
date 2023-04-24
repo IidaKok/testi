@@ -88,7 +88,7 @@ export const BrowserAddPic = ({ closePictureModal, bookid, setImageUpdate, cover
 
 
     return (
-        <div className="modal">
+        <div className="modal-overlay">
             <div className="modal-content">
                 <form>
                     <label>
@@ -115,9 +115,9 @@ export const BrowserAddPic = ({ closePictureModal, bookid, setImageUpdate, cover
                         Link:
                         <input type="text" onChange={(e) => setFilename(e.target.value)}></input>
                     </label>
-                    <button onClick={(e) => handleAdd(e)}>Add</button>
+                    <button className='add-books-btn' onClick={(e) => handleAdd(e)}>Add</button>
+                    <button className='add-books-btn' onClick={() => closePictureModal()}>Cancel</button>
                 </form>
-                <button onClick={() => closePictureModal()}>Cancel</button>
             </div>
         </div>
     );

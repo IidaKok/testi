@@ -52,7 +52,7 @@ export const BrowserEditPic = ({ closeEditPicModal, picToEdit, setImageUpdate })
 
 
     return (
-        <div className="modal">
+        <div className="modal-overlay">
             <div className="modal-content">
                 <form>
                     <label>
@@ -79,9 +79,9 @@ export const BrowserEditPic = ({ closeEditPicModal, picToEdit, setImageUpdate })
                         Link:
                         <input type="text" value={filename} onChange={(e) => setFilename(e.target.value)}></input>
                     </label>
-                    <button onClick={(e) => handleEdit(e)}>Edit</button>
+                    <button className='add-books-btn' onClick={(e) => handleEdit(e)}>Edit</button>
+                    <button className='add-books-btn' onClick={() => closeEditPicModal()}>Cancel</button>
                 </form>
-                <button onClick={() => closeEditPicModal()}>Cancel</button>
             </div>
         </div>
     );
