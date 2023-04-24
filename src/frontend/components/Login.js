@@ -30,64 +30,67 @@ const Login = (props) => {
         }
         else {
 
-                fetch('http://localhost:5000/api/users/login', {
-                    method: "POST",
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        username: name,
-                        password: password
-                    }),
-                    credentials: 'include'
+            fetch('http://localhost:5000/api/users/login', {
+                method: "POST",
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    username: name,
+                    password: password
+                }),
+                credentials: 'include'
+            })
+                .then(response => {
+                    if (response.ok) {
+                        setInvalidName(false);
+                        setInvalidPassword(false);
+                        userLogged(true);
+                    }
+                    else {
+                        const s = response.json()
+                        s.then((data) => {
+                            console.log(data.message);
+                            if (data.message.includes("Password")) {
+                                setErrorMessage2(data.message);
+                                setInvalidPassword(true);
+                            }
+                            else if (data.message.includes("Username")) {
+                                setErrorMessage(data.message);
+                                setInvalidName(true);
+                            }
+                        });
+                    }
                 })
-                    .then(response => {
-                        if (response.ok) {
-                            setInvalidName(false);
-                            setInvalidPassword(false);
-                            userLogged(true);
-                        }
-                        else {
-                            const s = response.json()
-                            s.then((data) => {
-                                console.log(data.message);
-                                if (data.message.includes("Password")) {
-                                    setErrorMessage2(data.message);
-                                    setInvalidPassword(true);
-                                }
-                                else if (data.message.includes("Username")) {
-                                    setErrorMessage(data.message);
-                                    setInvalidName(true);
-                                }
-                            });
-                        }
-                    })
-                    .catch(error => {
-                        console.error(error);
-                    })
+                .catch(error => {
+                    console.error(error);
+                })
         }
     }
 
     return (
-        <div className="img">
-        <div className="Forms">
-            
-            <h2>Login</h2>
-            <div className="Container">
-                <form onSubmit={(e) => handleSubmit(e)}>
-                    <input type="text" name="username" value={name} className={invalidName ? "invalid" : "valid"} onChange={(e) => setName(e.target.value)} placeholder="Username..." />
-                    <p data-testid="nameError">{errorMessage}</p>
-                    <input name="password" type="password" value={password} className={invalidPassword ? "invalid" : "valid"} onChange={(e) => setPassword(e.target.value)} placeholder="Password..." />
-                    <p data-testid="passError">{errorMessage2}</p>
-                    <input data-testid="logBtn" type="submit" value="Login" />
-                </form>
-            </div>
+        
+            <div className="img">
+                <div className="blur">
+                <div className="Forms">
 
-            <div className="Container">
-                <p>Forgot password? <Link to="/sendEmail">Reset password</Link></p>
-                <p>Don't have an account? <Link to="/register">Register</Link></p>
+                    <h2>Login</h2>
+                    <div className="Container">
+                        <form onSubmit={(e) => handleSubmit(e)}>
+                            <input type="text" name="username" value={name} className={invalidName ? "invalid" : "valid"} onChange={(e) => setName(e.target.value)} placeholder="Username..." />
+                            <p data-testid="nameError">{errorMessage}</p>
+                            <input name="password" type="password" value={password} className={invalidPassword ? "invalid" : "valid"} onChange={(e) => setPassword(e.target.value)} placeholder="Password..." />
+                            <p data-testid="passError">{errorMessage2}</p>
+                            <input data-testid="logBtn" type="submit" value="Login" />
+                        </form>
+                    </div>
+
+                    <div className="Container">
+                        <p>Forgot password? <Link to="/sendEmail">Reset password</Link></p>
+                        <p>Don't have an account? <Link to="/register">Register</Link></p>
+                    </div>
+                </div>
             </div>
-        </div>
         </div>
     )
 }

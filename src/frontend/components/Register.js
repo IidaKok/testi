@@ -51,10 +51,10 @@ const Register = () => {
           }),
           credentials: 'include',
         })
-          .then((res) =>  res.json())
+          .then((res) => res.json())
           .then((data) => {
             if (data.message === undefined) {
-              
+
               console.log("INSERT:", data);
               setuserToBeInserted(null);
               setRegSuccess(true);
@@ -166,41 +166,43 @@ const Register = () => {
   }
   return (
     <div className="img">
-    <div className="Forms">
-      <h2>Register</h2>
-      <div className="Container">
-        <form onSubmit={(e) => handleSubmit(e)}>
+      <div className="blur">
+        <div className="Forms">
+          <h2>Register</h2>
+          <div className="Container">
+            <form onSubmit={(e) => handleSubmit(e)}>
 
-          <input type="text" value={username} className={validName && buttonPressed || errors.invalidName ? "invalid" : "valid"} onChange={(e) => setUsername(e.target.value)} placeholder="Username..." />
-          {validName && buttonPressed ? <Error id="invalidNameError" value="Username" text="at least 5 characters" /> : ""}
-          <p data-testid="nameError">{errors.nameError}</p>
-
-
-          <OverlayTrigger overlay={(<Tooltip style={{ backgroundColor: "lightgrey" }}>Password must contain<br />at least 5 characters,<br />a lowercase letter,<br />an uppercase letter and a number</Tooltip>)} placement="right">
-            <input data-testid="password1" type={type} value={password} className={validPassword && buttonPressed || passMatch ? "invalid" : "valid"} onChange={(e) => setPassword(e.target.value)} placeholder="Password..." />
-          </OverlayTrigger>
-          {validPassword && buttonPressed ? <Error id="invalidPasswordError" value="Password" text="at least 5 characters, a lowercase letter, an uppercase letter and a number" /> : ""}
+              <input type="text" value={username} className={validName && buttonPressed || errors.invalidName ? "invalid" : "valid"} onChange={(e) => setUsername(e.target.value)} placeholder="Username..." />
+              {validName && buttonPressed ? <Error id="invalidNameError" value="Username" text="at least 5 characters" /> : ""}
+              <p data-testid="nameError">{errors.nameError}</p>
 
 
-          <input data-testid="password2" type={type} value={passwordAgain} className={passMatch ? "invalid" : "valid"} onChange={(e) => setPasswordAgain(e.target.value)} placeholder="Password again..." />
-          {passMatch ? <p data-testid="noMatchError">Passwords don't match</p> : ""}
+              <OverlayTrigger overlay={(<Tooltip style={{ backgroundColor: "lightgrey" }}>Password must contain<br />at least 5 characters,<br />a lowercase letter,<br />an uppercase letter and a number</Tooltip>)} placement="right">
+                <input data-testid="password1" type={type} value={password} className={validPassword && buttonPressed || passMatch ? "invalid" : "valid"} onChange={(e) => setPassword(e.target.value)} placeholder="Password..." />
+              </OverlayTrigger>
+              {validPassword && buttonPressed ? <Error id="invalidPasswordError" value="Password" text="at least 5 characters, a lowercase letter, an uppercase letter and a number" /> : ""}
 
-          <input data-testid="checkbox" type="checkbox" onChange={(e) => showPassword(e.target.checked)} /><label>Show Password</label>
-          <input type="text" value={email} className={validEmail && buttonPressed || errors.invalidEmail ? "invalid" : "valid"} onChange={(e) => setEmail(e.target.value)} placeholder="Email..." />
-          {validEmail && buttonPressed ? <Error id="invalidEmailError" value="Email" /> : ""}
-          <p data-testid="emailError">{errors.emailError}</p>
 
-          <input data-testid="regBtn" type="submit" value="Register" />
+              <input data-testid="password2" type={type} value={passwordAgain} className={passMatch ? "invalid" : "valid"} onChange={(e) => setPasswordAgain(e.target.value)} placeholder="Password again..." />
+              {passMatch ? <p data-testid="noMatchError">Passwords don't match</p> : ""}
 
-        </form>
+              <input data-testid="checkbox" type="checkbox" onChange={(e) => showPassword(e.target.checked)} /><label>Show Password</label>
+              <input type="text" value={email} className={validEmail && buttonPressed || errors.invalidEmail ? "invalid" : "valid"} onChange={(e) => setEmail(e.target.value)} placeholder="Email..." />
+              {validEmail && buttonPressed ? <Error id="invalidEmailError" value="Email" /> : ""}
+              <p data-testid="emailError">{errors.emailError}</p>
+
+              <input data-testid="regBtn" type="submit" value="Register" />
+
+            </form>
+          </div>
+
+
+          <div className="Container">
+            <p>Already have an account? <Link to="/">Login</Link></p>
+          </div>
+
+        </div>
       </div>
-
-
-      <div className="Container">
-        <p>Already have an account? <Link to="/">Login</Link></p>
-      </div>
-
-    </div>
     </div>
   )
 }

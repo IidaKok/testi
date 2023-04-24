@@ -319,7 +319,7 @@ img {
 /* Header */
 .header {
     text-align: center;
-    color: white;
+    color: rgb(90, 88, 88);
     height: 50%;
     background-position: center;
     background-repeat: no-repeat;
