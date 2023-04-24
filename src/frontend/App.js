@@ -54,7 +54,6 @@ const App = () => {
                     <Routes>
                         <Route path="/" element={<Login userLogged={setLogged} />} />
                         <Route path="/register" element={<Register />} />
-
                         <Route path="/sendEmail" element={<Email />} />
                         <Route path="/changePassword/:token" element={<ChangePassword />} />
                     </Routes>
@@ -73,7 +72,6 @@ const App = () => {
             {authCheckCompleted && (
                 <Routes>
                     <Route path="/" element={<Logged user={user} islogged={logged} />} />
-                    <Route path="/register" element={<Register />} />
                     <Route path="/series" element={<SeriesBrowser user={user} />} />
                     <Route path="/series/books/:idbookseries" element={<SeriesInfo user={user} />} />
                     <Route path="/series/books/book/:idbook" element={<BookInfo user={user} />} />
