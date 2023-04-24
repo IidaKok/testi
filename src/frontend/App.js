@@ -17,104 +17,72 @@ import headerPicture from "./header_picture.jpg";
 const App = () => {
     const [user, setUser] = useState(null);
     const [logged, setLogged] = useState(false);
-    
+    const [authCheckCompleted, setAuthCheckCompleted] = useState(false);
 
     useEffect(() => {
         const fetchUser = () => {
-                fetch('http://localhost:5000/api/users/', {
-                    credentials: 'include',
+            fetch('http://localhost:5000/api/users/', {
+                credentials: 'include',
+            })
+                .then((res) => res.json())
+                .then((data) => {
+                    console.log("data: ", data);
+                    if (data.loggedIn) {
+                        setLogged(true);
+                        console.log("data.user: ", data.user[0])
+                        setUser(data.user[0]);
+                    }
+                    if (!data.loggedIn) {
+                        setLogged(false);
+                        setUser("");
+                    }
+                    setAuthCheckCompleted(true);
                 })
-                    .then((res) => res.json())
-                    .then((data) => {
-                        console.log("data: ", data);
-                        if (data.loggedIn) {
-                            setLogged(true);
-                            console.log("data.user: ", data.user[0])
-                            setUser(data.user[0]);
-                        }
-                        if (!data.loggedIn) {
-                            setLogged(false);
-                            setUser("");
-                        }
-                    })
-                    .catch((err) => {
-                        console.log(err);
-                    })      
+                .catch((err) => {
+                    console.log(err);
+                })
         };
         fetchUser();
     }, [logged]);
 
+    if (!logged) {
+        return (
+            <Router>
+                {authCheckCompleted && (
+                    <Routes>
+                        <Route path="/" element={<Login userLogged={setLogged} />} />
+                        <Route path="/register" element={<Register />} />
+
+                        <Route path="/sendEmail" element={<Email />} />
+                        <Route path="/changePassword/:token" element={<ChangePassword />} />
+                    </Routes>
+                )}
+            </Router>
+        )
+    }
+
     return (
         <Router>
-            {logged ? <>
-            <div className="header">   
-                <img src={headerPicture} style={{width:"100%", filter: "blur(2px)"}}/>
+
+            <div className="header">
+                <img src={headerPicture} style={{ width: "100%", filter: "blur(2px)" }} />
                 <h1 className="header-text">Group B Book Archive</h1>
             </div>
             <NavBar user={user} userLogged={setLogged} />
-            </> : null}
-            <Routes>
-                <Route path="/" element={
-                    logged ? <Logged user={user} islogged={logged} /> : <Login userLogged={setLogged} />} />
-                <Route path="/register" element={<Register />} />
-
-                <Route path="/series" element={
-                    logged ? <SeriesBrowser user={user} /> : <Login userLogged={setLogged} />} />
-
-                <Route path="/series/books/:idbookseries" element={
-                    logged ? <SeriesInfo user={user} /> : <Login userLogged={setLogged} />} />
-
-                <Route path="/series/books/book/:idbook" element={
-                    logged ? <BookInfo user={user} /> : <Login userLogged={setLogged} />} />
-
-                <Route path="/userPage" element={
-                    logged ? <UserPage user={user} /> : <Login userLogged={setLogged} />} />
-
-                <Route path="/Addbook" element={
-                    logged ? <Addbook user={user} /> : <Login userLogged={setLogged} />} />
-
-                <Route path="/Addseries" element={
-                    logged ? <Addseries /> : <Login userLogged={setLogged} />} />
-
-                <Route path="/update/:idbookshelf" element={
-                    logged ? <Update user={user} /> : <Login userLogged={setLogged} />} />
-
-                <Route path="/sendEmail" element={<Email />} />
-                <Route path="/changePassword/:token" element={<ChangePassword />} />
-            </Routes>
+            {authCheckCompleted && (
+                <Routes>
+                    <Route path="/" element={<Logged user={user} islogged={logged} />} />
+                    <Route path="/register" element={<Register />} />
+                    <Route path="/series" element={<SeriesBrowser user={user} />} />
+                    <Route path="/series/books/:idbookseries" element={<SeriesInfo user={user} />} />
+                    <Route path="/series/books/book/:idbook" element={<BookInfo user={user} />} />
+                    <Route path="/userPage" element={<UserPage user={user} />} />
+                    <Route path="/Addbook" element={<Addbook user={user} />} />
+                    <Route path="/Addseries" element={<Addseries />} />
+                    <Route path="/update/:idbookshelf" element={<Update user={user} />} />
+                </Routes>
+            )}
         </Router>
     )
 }
-/*<Router>
-            {logged ? <NavBar user={user} userLogged={setLogged} /> : null}
-            <Routes>
-                <Route path="/" element={
-                    logged ? <Logged user={user} islogged={logged} /> : <Login userLogged={setLogged} />} />
-                <Route path="/register" element={<Register />} />
-
-                <Route path="/series" element={
-                    logged ? <SeriesBrowser user={user} /> : <Login userLogged={setLogged} />} />
-
-                <Route path="/series/books/:idbookseries" element={
-                    logged ? <SeriesInfo user={user} /> : <Login userLogged={setLogged} />} />
-
-                <Route path="/series/books/book/:idbook" element={
-                    logged ? <BookInfo user={user} /> : <Login userLogged={setLogged} />} />
-
-                <Route path="/userPage" element={
-                    logged ? <UserPage user={user} /> : <Login userLogged={setLogged} />} />
-
-                <Route path="/Addbook" element={
-                    logged ? <Addbook user={user} /> : <Login userLogged={setLogged} />} />
-
-                <Route path="/Addseries" element={
-                    logged ? <Addseries /> : <Login userLogged={setLogged} />} />
-
-                <Route path="/update/:idbookshelf" element={
-                    logged ? <Update user={user} /> : <Login userLogged={setLogged} />} />
-
-                <Route path="/sendEmail" element={<Email />} />
-                <Route path="/changePassword/:token" element={<ChangePassword />} />
-            </Routes>
-        </Router>*/
 export default App
