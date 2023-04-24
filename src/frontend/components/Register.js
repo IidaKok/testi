@@ -49,12 +49,13 @@ const Register = () => {
             password: userToBeInserted.password,
             email: userToBeInserted.email
           }),
+          credentials: 'include',
         })
           .then((res) =>  res.json())
           .then((data) => {
             if (data.message === undefined) {
               
-              console.log("INSERT:", userToBeInserted);
+              console.log("INSERT:", data);
               setuserToBeInserted(null);
               setRegSuccess(true);
               setUsername("");

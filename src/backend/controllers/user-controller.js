@@ -20,6 +20,7 @@ const createUser = async (req, res, next) => {
         const usern = userByName.find(u => {
             return u.username === username;
         });
+        
         //checks if the email is taken
         const userByEmail = await db.pool.query("select * from user where email = '" + email + "'");
         const usere = userByEmail.find(u => {
@@ -39,39 +40,28 @@ const createUser = async (req, res, next) => {
 
         //sends the user's information to the database
         const response = db.pool.query("INSERT INTO user (username, password, email) VALUES ('" + username + "','" + password + "','" + email + "')");
-        res.send(response);
 
-
-        console.log("This was sent");
-        console.log(username, password, email);
-    }
-    catch (err) {
-        throw err;
-    }
-}
-const createBookShelf = async (req, res, next) => {
-    const iduser = req.body.iduser;
-    const username = req.body.username;
-
-    console.log("iduser: " + req.body.iduser);
-
-    try {
-        const result = await db.pool.query("select * from bookshelf");
-        const bookshelf = result.find(b => {
-            return b.iduser == iduser;
+       // res.send(response);
+       try {
+        const result1 = await db.pool.query("select * from user where username = '" + username + "'");
+        const user = result1.find(u => {
+            return u.username === username;
         });
 
-        if (!bookshelf) {
-            
-            try {
-                const newBookShelf = await db.pool.query("INSERT INTO bookshelf (idbookshelf, iduser, owner) VALUES ("+iduser+","+iduser+",'"+username+"')");
-                res.send(newBookShelf);
-            }
-            catch (err) {
-                return next(new HttpError("Creating bookshelf failed", 500));
-            }
+        if (!user) {
+            return next(new HttpError("Password is incorrect. Try again", 404));
         }
-        else res.send(bookshelf);
+
+        console.log(user.iduser);
+        await db.pool.query("INSERT INTO bookshelf (idbookshelf, iduser, owner) VALUES ("+user.iduser+","+user.iduser+",'"+username+"')");
+        res.send(response);
+        console.log(username, password, email);
+      }
+        
+      catch (error) {
+        console.error(error);
+        res.status(500).send('Internal server error');
+      }
     }
     catch (err) {
         throw err;
@@ -314,7 +304,6 @@ exports.getAllUsers = getAllUsers;
 exports.getUserByNameAndPassword = getUserByNameAndPassword;
 exports.createUser = createUser;
 exports.deleteUser = deleteUser;
-exports.createBookShelf = createBookShelf;
 exports.email = email;
 exports.changePassword = changePassword;
 exports.login = login;

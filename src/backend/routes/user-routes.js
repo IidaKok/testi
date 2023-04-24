@@ -9,9 +9,6 @@ const router = express.Router();
 router.get("/all", userControllers.getAllUsers);
 router.get("/:username&:password", userControllers.getUserByNameAndPassword);
 
-//get bookshelf
-router.post("/createBookshelf/", userControllers.createBookShelf);
-
 //post user
 router.post("/post/", userControllers.createUser);
 
