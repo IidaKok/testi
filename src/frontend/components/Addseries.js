@@ -54,7 +54,7 @@ const Addseries = () => {
                 description: '',
                 classification: '',
             });
-            navigate('/userPage');
+            navigate('/series');
         } catch (err) {
             console.log(err);
             alert('Error: ' + err.message);

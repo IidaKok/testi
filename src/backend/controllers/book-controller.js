@@ -99,7 +99,24 @@ const updateBook = async (req, res, next) => {
     }
 };
 
+const deleteBook = async (req, res, next) => {
+    const idbook = req.params.idbook;
+    try {
+        const response = await db.pool.query("DELETE FROM book WHERE idbook = " + idbook);
+        if (response.affectedRows == 0) {
+            res.status(404).json({ message: "Book not found" });
+        } else {
+            res.json({ message: "Book with idbook = " + idbook + " was deleted from the database" });
+            console.log("Book with idbook = " + idbook + " was deleted from the database");
+        }
+    }
+    catch (err) {
+        throw err;
+    }
+};
+
 exports.getAllBooks = getAllBooks;
 exports.getBooksBySeriesID = getBooksBySeriesID;
 exports.createBook = createBook;
 exports.updateBook = updateBook;
+exports.deleteBook = deleteBook;

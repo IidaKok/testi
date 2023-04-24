@@ -1,14 +1,42 @@
 import React, { useState, useEffect } from "react";
 import "../App.css";
+import { userHomeInfo } from "../data/data";
 
 const Logged = (props) => {
 
-    const { user } = props;
+    const { user, islogged } = props;
+    console.log("islogged", islogged);
 
     const [shelf, setShelf] = useState([]);
-    const [msg, setMsg] = useState("");
-    const [bookshelfExists, setBookshelfExists] = useState(false);
 
+
+    /* useEffect(() => {
+         
+         const fetchBooks = () => {
+                fetch("http://localhost:5000/api/users/createBookshelf/", {
+                     method: "POST",
+                     headers: {
+                         "Content-type": "application/json",
+                     },
+                     body: JSON.stringify({
+                         username: user.username,
+                         iduser: user.iduser
+                     }),
+                 })
+                     .then(response => {
+                         if (response.ok) {
+                             response.json()
+                             .then(c => {
+                                 setShelf(c)}
+                                 )
+                             
+                         }
+                     })
+                     .catch(error => console.log(error))   
+         }
+         fetchBooks();
+         
+     }, []);*/
     useEffect(() => {
         const fetchBooks = async () => {
 
@@ -16,11 +44,6 @@ const Logged = (props) => {
             if (response.ok) {
                 let c = await response.json();
                 setShelf(c);
-                setBookshelfExists(true);
-            }
-            else {
-                setMsg("You don't have a bookshelf yet");
-                setBookshelfExists(false);
             }
         }
         fetchBooks();
@@ -28,10 +51,11 @@ const Logged = (props) => {
 
     return (
         <div>
-            <div className="App">
+            <div className="div">
                 <h1>Welcome, {user.username}</h1>
 
-                {bookshelfExists ? <table>
+                <p>{userHomeInfo}</p>
+                <table>
                     <thead>
                         <tr>
                             <th>iduser</th>
@@ -46,7 +70,7 @@ const Logged = (props) => {
                             <td>{shelf.owner}</td>
                         </tr>
                     </tbody>
-                </table> : <p>{msg}</p>}
+                </table>
             </div>
         </div>
     )

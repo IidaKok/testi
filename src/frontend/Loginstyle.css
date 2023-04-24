@@ -1,18 +1,19 @@
 .Forms {
-  background-color: rgb(196, 233, 196);
   text-align: center;
-  height: 100%;
   width: 50%;
   margin: auto;
   padding: 30px;
-  margin-top: 10px;
+  margin-top: 70px;
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 10px;
+
+ 
 }
 
 .Container {
   text-align: left;
   padding: 20px 50px;
   width: 70%;
-  background-color: aliceblue;
   margin: auto;
 }
 
@@ -44,4 +45,31 @@ input[type=text]:focus.invalid,
 input[type=password]:focus.invalid
 input[type=email]:focus.invalid {
   border: 2px solid red;
+}
+
+.img {
+  min-height: 100vh;
+  background-image: url("./login_picture.jpg");
+  background-color: #cccccc;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  position: relative;
+  padding: 80px
+}
+.blur {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  backdrop-filter: blur(2px);
+}
+
+
+@media screen and (max-width: 700px) {
+  .Forms {
+    width: 80%;
+  }
+
 }

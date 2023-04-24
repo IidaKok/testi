@@ -25,16 +25,6 @@ const Update = (props) => {
 
     const handleClick = async (e) => {
         try {
-            await fetch(`http://localhost:5000/api/photo/${bookId}`, {
-                method: "PUT",
-                headers: {
-                    "Content-type": "application/json",
-                },
-                body: JSON.stringify({
-                    photoname: bookcopy.photoname,
-                    pagenumber: bookcopy.pagenumber,
-                }),
-                    }).then((res) => res.json());
             // Update the bookcopy record
             await fetch(`http://localhost:5000/api/bookcopy/${bookId}`, {
                 method: "PUT",
@@ -104,12 +94,6 @@ const Update = (props) => {
             <p>Solddate</p>
             <input id="user-input" type="date" placeholder="solddate" onChange={handleChange} name="solddate" />
             <input id="user-input" type="number" placeholder="soldprice" onChange={handleChange} name="soldprice" onKeyPress={(event) => {
-                if (!/[0-9]/.test(event.key)) {
-                    event.preventDefault();
-                }
-            }} />
-            <input id="user-input" type="text" placeholder="Photo-URL" onChange={handleChange} name="photoname" />
-            <input id="user-input" type="number" placeholder="Photo page number" onChange={handleChange} name="pagenumber" onKeyPress={(event) => {
                 if (!/[0-9]/.test(event.key)) {
                     event.preventDefault();
                 }

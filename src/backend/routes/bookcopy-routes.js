@@ -16,6 +16,7 @@ router.post("/post/", bookcopyControllers.createUserBook);
 
 //delete
 router.delete('/:idbookcopy', bookcopyControllers.deleteBookcopy);
+router.delete('/idbook/:idbook', bookcopyControllers.deleteBookcopyByBookId);
 
 //update
 router.put('/:idbookcopy', bookcopyControllers.updateBookcopy);

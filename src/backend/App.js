@@ -7,6 +7,9 @@ const bookRoutes = require("./routes/book-routes");
 const bookshelfRoutes = require("./routes/bookshelf-routes");
 const bookcopyRoutes = require("./routes/bookcopy-routes");
 const photoRoutes = require("./routes/photo-routes");
+const pictureRoutes = require("./routes/picture-routes");
+const artworkRoutes = require("./routes/artwork-routes");
+const userseriesRoutes = require("./routes/userseries-routes");
 
 const app = express();
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -33,10 +36,11 @@ app.use(function(req, res, next) {
 });*/
 
 
-
+/*
 const jwt = require("jsonwebtoken");
 const config = { secret: "groupb secret" };
 let myToken;
+
 
 //after user is logged in, users data is returned
 app.get("/", async (req, res) => {
@@ -64,7 +68,6 @@ app.get("/", async (req, res) => {
       return next(new HttpError("Something went wrong"));
     }
   }
-
 })
 
 //when user logs in, token is created
@@ -109,7 +112,7 @@ app.post('/login', async function (req, res, next) {
 app.post('/logout', function (req, res, next) {
   myToken = null;
   res.json({ message: "logged out" });
-})
+})*/
 
 //app uses routes
 app.use("/api/users", userRoutes);
@@ -118,7 +121,9 @@ app.use("/api/book", bookRoutes);
 app.use("/api/bookshelf", bookshelfRoutes);
 app.use("/api/bookcopy", bookcopyRoutes);
 app.use("/api/photo", photoRoutes);
-
+app.use("/api/picture", pictureRoutes);
+app.use("/api/artwork", artworkRoutes);
+app.use("/api/userseries", userseriesRoutes);
 app.use((error, req, res, next) => {
   if (res.headerSent) {
     return next(error);

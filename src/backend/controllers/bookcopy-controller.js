@@ -24,7 +24,8 @@ const getBookCopiesByShelfID = async (req, res, next) => {
     catch (err) {
         throw err;
     }
-}
+};
+
 const createBookCopy = async (req, res, next) => {
     const {
         bookname,
@@ -42,7 +43,7 @@ const createBookCopy = async (req, res, next) => {
     } = req.body;
 
     try {
-        await db.pool.query(
+        const result = await db.pool.query(
             "INSERT INTO bookcopy (bookname, edition, publicationyear, idbook, purchaseprice, purchasedate, `condition`, description, solddate, soldprice, idbookseries, idbookshelf) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
             [
                 bookname,
@@ -60,7 +61,12 @@ const createBookCopy = async (req, res, next) => {
             ]
         );
 
-        res.status(201).json({ message: "Book copy created successfully" });
+        
+        const newId = parseInt(result.insertId); // get the newly created idbookcopy
+    
+        res.status(201).json({ message: "Bookseries created successfully", id: newId });
+
+        // res.status(201).json({ message: "Book copy created successfully" });
     } catch (err) {
         console.log(err);
         const error = new HttpError(
@@ -102,6 +108,7 @@ const createUserBook = async (req, res, next) => {
     INSERT INTO bookcopy 
       (bookname, edition, publicationyear, purchaseprice, purchasedate, \`condition\`, description, solddate, soldprice, idbookshelf)
     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    RETURNING idbookcopy;
   `;
 
     const selectSql = `
@@ -131,6 +138,22 @@ const deleteBookcopy = async (req, res, next) => {
         } else {
             res.json({ message: "Bookcopy with idbookcopy = " + idbookcopy + " was deleted from the database" });
             console.log("Bookcopy with idbookcopy = " + idbookcopy + " was deleted from the database");
+        }
+    }
+    catch (err) {
+        throw err;
+    }
+}
+
+const deleteBookcopyByBookId = async (req, res, next) => {
+    const idbook = req.params.idbook;
+    try {
+        const response = await db.pool.query("DELETE FROM book WHERE idbook = " + idbook);
+        if (response.affectedRows == 0) {
+            res.status(404).json({ message: "Bookcopies not found" });
+        } else {
+            res.json({ message: "Bookcopies with idbook = " + idbook + " were deleted from the database"});
+            console.log("Bookcopies with idbook = " + idbook + " were deleted from the database");
         }
     }
     catch (err) {
@@ -188,3 +211,4 @@ exports.getAllBookCopies = getAllBookCopies;
 exports.getBookCopiesByShelfID = getBookCopiesByShelfID;
 exports.createUserBook = createUserBook;
 exports.createBookCopy = createBookCopy;
+exports.deleteBookcopyByBookId = deleteBookcopyByBookId;

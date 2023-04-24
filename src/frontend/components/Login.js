@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import "../Loginstyle.css";
-
+import picture from "../login_picture.jpg"
 
 const Login = (props) => {
     const { userLogged } = props;
@@ -29,7 +29,8 @@ const Login = (props) => {
             setErrorMessage2("Password can't be empty");
         }
         else {
-            fetch('http://localhost:5000/login', {
+
+            fetch('http://localhost:5000/api/users/login', {
                 method: "POST",
                 headers: {
                     'Content-Type': 'application/json'
@@ -63,25 +64,32 @@ const Login = (props) => {
                 })
                 .catch(error => {
                     console.error(error);
-                });
+                })
         }
     }
-    
-    return (
-        <div className="Forms">
-            <h2>Login</h2>
-            <div className="Container">
-                <form onSubmit={(e) => handleSubmit(e)}>
-                    <input type="text" name="username" value={name} className={invalidName ? "invalid" : "valid"} onChange={(e) => setName(e.target.value)} placeholder="Username..." />
-                    <p data-testid="nameError">{errorMessage}</p>
-                    <input name="password" type="password" value={password} className={invalidPassword ? "invalid" : "valid"} onChange={(e) => setPassword(e.target.value)} placeholder="Password..." />
-                    <p data-testid="passError">{errorMessage2}</p>
-                    <input data-testid="logBtn" type="submit" value="Login" />
-                </form>
-            </div>
 
-            <div className="Container">
-                <p>Don't have an account? <Link to="/register">Register</Link></p>
+    return (
+        
+            <div className="img">
+                <div className="blur">
+                <div className="Forms">
+
+                    <h2>Login</h2>
+                    <div className="Container">
+                        <form onSubmit={(e) => handleSubmit(e)}>
+                            <input type="text" name="username" value={name} className={invalidName ? "invalid" : "valid"} onChange={(e) => setName(e.target.value)} placeholder="Username..." />
+                            <p data-testid="nameError">{errorMessage}</p>
+                            <input name="password" type="password" value={password} className={invalidPassword ? "invalid" : "valid"} onChange={(e) => setPassword(e.target.value)} placeholder="Password..." />
+                            <p data-testid="passError">{errorMessage2}</p>
+                            <input data-testid="logBtn" type="submit" value="Login" />
+                        </form>
+                    </div>
+
+                    <div className="Container">
+                        <p>Forgot password? <Link to="/sendEmail">Reset password</Link></p>
+                        <p>Don't have an account? <Link to="/register">Register</Link></p>
+                    </div>
+                </div>
             </div>
         </div>
     )
