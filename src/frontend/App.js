@@ -24,7 +24,7 @@ const App = () => {
     useEffect(() => {
         const fetchUser = () => {
             fetch('http://localhost:5000/api/users/', {
-                credentials: 'include',
+                //credentials: 'include',
             })
                 .then((res) => res.json())
                 .then((data) => {
