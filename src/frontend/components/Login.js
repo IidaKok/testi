@@ -81,7 +81,7 @@ const Login = (props) => {
                             <p data-testid="nameError">{errorMessage}</p>
                             <input name="password" type="password" value={password} className={invalidPassword ? "invalid" : "valid"} onChange={(e) => setPassword(e.target.value)} placeholder="Password..." />
                             <p data-testid="passError">{errorMessage2}</p>
-                            <input data-testid="logBtn" type="submit" value="Login" />
+                            <input className="btn" data-testid="logBtn" type="submit" value="Login" />
                         </form>
                     </div>
 
