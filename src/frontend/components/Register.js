@@ -51,6 +51,7 @@ const Register = () => {
           }),
           credentials: 'include',
         })
+        
           .then((res) => res.json())
           .then((data) => {
             if (data.message === undefined) {
