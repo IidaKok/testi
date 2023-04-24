@@ -3,7 +3,9 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../App.css';
 
-const Addseries = () => {
+const Addseries = (idbookshelf) => {
+    const [idBookseries, setIdBookseries] = useState();
+
     const [bookseries, setBookseries] = useState({
         bookseries: '',
         publisher: '',
@@ -31,8 +33,39 @@ const Addseries = () => {
             return;
         }
 
+        console.log(bookseries.bookseries, bookseries.publisher, bookseries.description, bookseries.classification);
+        console.log("in handleAdd: idbookseries: " + idBookseries + " idbookshelf: " + idbookshelf);
+
+        const postUserseries = async (idbookser, idbookshel) => {
+            console.log("in postUserseries: " + idbookser + " " + idbookshel);
+            try {
+                const idbookshelf = idbookshel.user.iduser; // Extract the integer value from the JSON object
+                const response = await fetch("http://localhost:5000/api/userseries", {
+                    method: "POST",
+                    headers: {
+                        "Content-type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        idbookseries: idbookser,
+                        idbookshelf: idbookshelf, // Pass the extracted integer value
+                    }),
+                });
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    throw new Error(errorText || "Network response was not ok");
+                }
+
+                const data = await response.json();
+                console.log("Userseries created: ", data);
+
+            } catch (error) {
+                console.error(error);
+                alert(error.message);
+            };
+        };
+
         try {
-            const response = await fetch('http://localhost:5000/api/bookseries/post/', {
+            const response = await fetch("http://localhost:5000/api/bookseries", {
                 method: 'POST',
                 headers: {
                     'Content-type': 'application/json',
@@ -45,8 +78,14 @@ const Addseries = () => {
                 }),
             });
             if (!response.ok) {
-                throw new Error('Network response was not ok');
+                const errorText = await response.text();
+                throw new Error(errorText || "Network response was not ok");
             }
+            const data = await response.json();
+            console.log("Series created: ", data.id);
+            setIdBookseries(data.id);
+            console.log("idbookseries: " + data.id + " idbookshelf: " + idbookshelf);
+            if (data.id != null && idbookshelf != null) postUserseries(data.id, idbookshelf);
             console.log('INSERT:', bookseries);
             setBookseries({
                 bookseries: '',

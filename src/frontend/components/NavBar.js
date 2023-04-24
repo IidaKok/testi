@@ -29,7 +29,7 @@ export const NavBar = (props) => {
         <div className="navbar">
             <Link to="/">Home</Link>
             <Link to="/series">Series</Link>
-            <Link to="/userPage">UserPage</Link>
+            <Link to="/userPage">User Page</Link>
             <Link onClick={() => logOut()}>Log out</Link>
         </div>
     )

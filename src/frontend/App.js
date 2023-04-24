@@ -77,7 +77,7 @@ const App = () => {
                     <Route path="/series/books/book/:idbook" element={<BookInfo user={user} />} />
                     <Route path="/userPage" element={<UserPage user={user} />} />
                     <Route path="/Addbook" element={<Addbook user={user} />} />
-                    <Route path="/Addseries" element={<Addseries />} />
+                    <Route path="/Addseries" element={<Addseries user={user}/>} />
                     <Route path="/update/:idbookshelf" element={<Update user={user} />} />
                     <Route path="/EditPhotos/:idbookshelf" element={<EditPhotos user={user} />} />
                 </Routes>
