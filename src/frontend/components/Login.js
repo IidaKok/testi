@@ -81,13 +81,13 @@ const Login = (props) => {
                             <p data-testid="nameError">{errorMessage}</p>
                             <input name="password" type="password" value={password} className={invalidPassword ? "invalid" : "valid"} onChange={(e) => setPassword(e.target.value)} placeholder="Password..." />
                             <p data-testid="passError">{errorMessage2}</p>
-                            <input data-testid="logBtn" type="submit" value="Login" />
+                            <input className="btn" data-testid="logBtn" type="submit" value="Login" />
                         </form>
                     </div>
 
                     <div className="Container">
-                        <p>Forgot password? <Link to="/sendEmail">Reset password</Link></p>
-                        <p>Don't have an account? <Link to="/register">Register</Link></p>
+                        <Link to="/sendEmail">Forgot password?</Link>
+                        <p>Don't have an account? <Link to="/register">Create account</Link></p>
                     </div>
                 </div>
             </div>

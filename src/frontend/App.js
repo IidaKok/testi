@@ -3,9 +3,9 @@ import { Login } from "./components/Login";
 import { Register } from "./components/Register";
 import { Routes, Route, HashRouter as Router } from "react-router-dom";
 import { Logged } from "./pages/UserHome";
-import { SeriesBrowser} from "./components/Browser";
-import { BookInfo} from "./components/BrowserBookInfo";
-import { SeriesInfo} from "./components/BrowserSeriesInfo";
+import { SeriesBrowser } from "./components/Browser";
+import { BookInfo } from "./components/BrowserBookInfo";
+import { SeriesInfo } from "./components/BrowserSeriesInfo";
 import { NavBar } from "./components/NavBar";
 import { UserPage } from "./components/UserPage";
 import { Addbook } from "./components/Addbook";
@@ -65,8 +65,9 @@ const App = () => {
     return (
         <Router>
             <div className="header">
-                <img src={headerPicture} style={{ width: "100%", filter: "blur(2px)" }} />
-                <h1 className="header-text">Group B Book Archive</h1>
+                <div className="blur">
+                    <h1 className="header-text">Group B Book Archive</h1>
+                </div>
             </div>
             <NavBar user={user} userLogged={setLogged} />
             {authCheckCompleted && (

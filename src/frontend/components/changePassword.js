@@ -39,9 +39,9 @@ export const ChangePassword = () => {
                             {data.message}
                             <Link to="/">Link to login</Link>
                         </p>
-    
+
                     </div>);
-                } 
+                }
             }
             catch (error) {
                 console.error(error);
@@ -73,14 +73,21 @@ export const ChangePassword = () => {
     }
 
     return (
-        <div className="Forms">
-            <div className="Container">
-                <h1>Change password</h1>
-                <input type={type} placeholder="New password..." className={validPassword && buttonPressed ? "invalid" : "valid"} onChange={(e) => setPassword(e.target.value)} />
-                <input type="checkbox" onChange={(e) => showPassword(e.target.checked)} /><label>Show Password</label>
-                {validPassword && buttonPressed ? <Error id="invalidPasswordError" value="Password" text="at least 5 characters, a lowercase letter, an uppercase letter and a number" /> :
-                    message}
-                <button onClick={() => resett()}>Reset</button>
+        <div className="img">
+            <div className="blur">
+                <div className="Forms">
+                    <h2>Change password</h2>
+                    <div className="Container">
+
+                        <input type={type} placeholder="New password..." className={validPassword && buttonPressed ? "invalid" : "valid"} onChange={(e) => setPassword(e.target.value)} />
+                        <input type="checkbox" style={{cursor: "pointer"}} onChange={(e) => showPassword(e.target.checked)} /><label>Show Password</label>
+                        {validPassword && buttonPressed ? <Error id="invalidPasswordError" value="Password" text="at least 5 characters, a lowercase letter, an uppercase letter and a number" /> :
+                            message}
+
+                            <button className="btn" onClick={() => resett()}>Change password</button>
+                        
+                    </div>
+                </div>
             </div>
         </div>
     );

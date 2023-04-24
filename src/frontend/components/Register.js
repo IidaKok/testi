@@ -167,7 +167,7 @@ const Register = () => {
   return (
     <div className="img">
       <div className="blur">
-        <div className="Forms">
+        <div className="Forms" style={{marginTop: "60px"}}>
           <h2>Register</h2>
           <div className="Container">
             <form onSubmit={(e) => handleSubmit(e)}>
@@ -186,12 +186,12 @@ const Register = () => {
               <input data-testid="password2" type={type} value={passwordAgain} className={passMatch ? "invalid" : "valid"} onChange={(e) => setPasswordAgain(e.target.value)} placeholder="Password again..." />
               {passMatch ? <p data-testid="noMatchError">Passwords don't match</p> : ""}
 
-              <input data-testid="checkbox" type="checkbox" onChange={(e) => showPassword(e.target.checked)} /><label>Show Password</label>
+              <input style={{cursor: "pointer"}} data-testid="checkbox" type="checkbox" onChange={(e) => showPassword(e.target.checked)} /><label>Show Password</label>
               <input type="text" value={email} className={validEmail && buttonPressed || errors.invalidEmail ? "invalid" : "valid"} onChange={(e) => setEmail(e.target.value)} placeholder="Email..." />
               {validEmail && buttonPressed ? <Error id="invalidEmailError" value="Email" /> : ""}
               <p data-testid="emailError">{errors.emailError}</p>
 
-              <input data-testid="regBtn" type="submit" value="Register" />
+              <input className="btn" data-testid="regBtn" type="submit" value="Register" />
 
             </form>
           </div>

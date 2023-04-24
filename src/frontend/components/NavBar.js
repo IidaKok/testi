@@ -29,8 +29,8 @@ export const NavBar = (props) => {
         <div className="navbar">
             <Link to="/">Home</Link>
             <Link to="/series">Series</Link>
-            <Link to="/userPage">User Page</Link>
-            <Link onClick={() => logOut()}>Log out</Link>
+            <Link to="/userPage">UserPage</Link>
+            <Link className="logout" onClick={() => logOut()}>Log out</Link>
         </div>
     )
 }
