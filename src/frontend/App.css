@@ -288,8 +288,155 @@ img {
     max-width: 90%;
     box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.3);
 }
-
 /* ^^ Modal dialog CSS ^^ */
+
+.flex-base {
+    display: flex;
+    flex-wrap: wrap;
+}
+.browser-container-table {
+    display: flex;
+    flex-wrap: nowrap;
+    width: 50%;
+}
+.browser-container-button {
+    width: 50%;
+}
+.browser-container-info {
+    width: 100%;
+}
+.flex-base-bookinfo {
+    display: flex;
+    flex-wrap: nowrap;
+}
+.info-box {
+    background-color: #f5f5f5;
+    border-radius: 10px;
+    margin: 30px;
+    margin-bottom: 10px;
+    padding: 30px;
+    padding-right: 50%;
+}
+.pic-box {
+    background-color: #f5f5f5;
+    border-radius: 10px;
+    margin: 30px;
+    margin-bottom: 10px;
+    margin-right: 5px;
+    padding: 30px;
+    display: flex;
+    flex-wrap: wrap;
+    width: 50%;
+}
+.data-box {
+    background-color: #f5f5f5;
+    border-radius: 10px;
+    margin: 30px;
+    margin-bottom: 10px;
+    margin-left: 5px;
+    padding: 30px;
+    width: 50%;
+}
+.pic-box a {
+    text-decoration: none;
+    color: #565656;
+    font-weight: bold;
+    width: 100%;
+}
+.pic-box-pictures {
+    width: 100%;
+    margin-top: 10px;
+}
+.pic-box button {
+    border: none;
+    padding: 3px 6px;
+    background-color: white;
+    cursor: pointer;
+    border: 1px solid rgb(204, 204, 243);
+    color: rgb(139, 139, 234);
+    margin-left: 10px;
+    margin-right: 15px;
+}
+.info-box a,
+.pic-box a {
+    text-decoration: none;
+    color: #565656;
+    font-weight: bold;
+}
+
+.browser-container-button p,
+.browser-container-button button {
+    margin-left: 40px;
+}
+.add-books-btn {
+    width: auto;
+    min-width: 40px;
+    display: inline-block;
+    margin: 3px;
+    padding: 5px 10px;
+    font-size: 16px;
+    font-weight: bold;
+    color: #565656;
+    text-align: center;
+    text-decoration: none;
+    background-color: #bdbdbd;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.3);
+    transition: background-color 0.3s ease;
+}
+
+.browser-table {
+    border-collapse: collapse;
+    border-radius: 10px;
+    overflow: hidden;
+    width: 200%;
+    margin: 150px;
+    margin-top: 20px;
+    margin-bottom: 50px;
+    margin-right: 30px;
+    margin-left: 30px;
+}
+
+.browser-table th,
+.browser-table td {
+    padding: 10px;
+    text-align: left;
+}
+.browser-table th {
+    background-color: #bdbdbd;
+    color: white;
+    outline: 2px solid #bdbdbd;
+    outline-offset: 0px;
+}
+
+.browser-table tr:first-child {
+    box-shadow: 0 4px 3px rgba(0, 0, 0, 0.25);
+}
+
+.browser-table th:first-child,
+.browser-table td:first-child {
+    width: 60%;
+}
+
+.browser-table tr:nth-child(even) {
+    background-color: #f5f5f5;
+}
+.browser-table tr:nth-child(odd) {
+    background-color: #ffffff;
+}
+
+.browser-table a {
+    color: #5C7AEA;
+    text-decoration: none;
+    margin-left: 20px;
+}
+
+.browser-table tr.even-row {
+    background-color: #dadada;
+}
+/* ^^ Browser CSS ^^ */
 
 .navbar {
     background-color: #f5f5f5;
