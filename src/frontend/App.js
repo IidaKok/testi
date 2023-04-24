@@ -63,7 +63,6 @@ const App = () => {
 
     return (
         <Router>
-
             <div className="header">
                 <img src={headerPicture} style={{ width: "100%", filter: "blur(2px)" }} />
                 <h1 className="header-text">Group B Book Archive</h1>
@@ -80,6 +79,7 @@ const App = () => {
                     <Route path="/Addbook" element={<Addbook user={user} />} />
                     <Route path="/Addseries" element={<Addseries />} />
                     <Route path="/update/:idbookshelf" element={<Update user={user} />} />
+                    <Route path="/EditPhotos/:idbookshelf" element={<EditPhotos user={user} />} />
                 </Routes>
             )}
         </Router>
