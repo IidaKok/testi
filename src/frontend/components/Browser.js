@@ -147,6 +147,7 @@ export const SeriesBrowser = (props) => {
                     .catch(error => {
                         console.error(error);
                     });
+                setSeriesToAdd(null);
             }
         };
 
