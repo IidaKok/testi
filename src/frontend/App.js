@@ -65,7 +65,7 @@ const App = () => {
     return (
         <Router>
             <div className="header">
-                <img src={headerPicture} style={{ width: "100%", filter: "blur(2px)" }} />
+               
                 <h1 className="header-text">Group B Book Archive</h1>
             </div>
             <NavBar user={user} userLogged={setLogged} />

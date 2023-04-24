@@ -17,6 +17,23 @@
   margin: auto;
 }
 
+.Container a {
+  color: #373738;
+  text-decoration: none;
+  font-weight: bold;
+  transition: 0.5s;
+}
+
+.Container a:hover {
+  color: #5C7AEA;
+}
+h2 {
+  color: #373738;
+  font-weight: bold;
+  font-size: 30px;
+  margin-bottom: 20px;
+}
+
 input[type=text],
 input[type=password],
 input[type=email] {
@@ -65,6 +82,8 @@ input[type=email]:focus.invalid {
   width: 100%;
   backdrop-filter: blur(2px);
 }
+
+
 
 
 @media screen and (max-width: 700px) {
