@@ -21,7 +21,7 @@ const db = require("./db");
 const cors = require('cors');
 app.use(cors({
   origin: true,
-  //credentials: true
+  credentials: true
 }));
 /*
 app.use(function(req, res, next) {

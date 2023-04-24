@@ -10,7 +10,7 @@ export const NavBar = (props) => {
     const logOut = async () => {
         await fetch('http://localhost:5000/api/users/logout', {
             method: 'POST',
-            //credentials: 'include'
+            credentials: 'include'
         })
             .then(response => {
                 if (response.ok) {

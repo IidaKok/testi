@@ -39,7 +39,7 @@ const Login = (props) => {
                     username: name,
                     password: password
                 }),
-                //credentials: 'include'
+                credentials: 'include'
                 
             })
                 .then(response => {

@@ -49,7 +49,7 @@ const Register = () => {
             password: userToBeInserted.password,
             email: userToBeInserted.email
           }),
-          //credentials: 'include',
+          credentials: 'include',
         })
           .then((res) => res.json())
           .then((data) => {
