@@ -30,7 +30,7 @@ export const NavBar = (props) => {
             <Link to="/">Home</Link>
             <Link to="/series">Series</Link>
             <Link to="/userPage">UserPage</Link>
-            <Link onClick={() => logOut()}>Log out</Link>
+            <Link className="logout" onClick={() => logOut()}>Log out</Link>
         </div>
     )
 }

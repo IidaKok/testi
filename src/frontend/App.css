@@ -451,7 +451,7 @@ img {
     font-size: 16px;
     font-weight: bold;
     text-decoration: none;
-    margin-right: 10px;
+    margin-right: 20px;
 }
 
 .navbar a:first-child {
@@ -462,11 +462,18 @@ img {
     color: #5C7AEA;
 }
 
+.logout {
+    margin-left: auto;
+    margin-right: 20px;
+    padding-right: 10px;
+}
+
 
 /* Header */
 .header {
     text-align: center;
     background-image: url("./header_picture.jpg");
+    background-color: #cccccc;
     color: rgb(90, 88, 88);
     height: 350px;
     background-position: center;
@@ -481,7 +488,7 @@ img {
     transform: translate(-50%, -50%);
     color: white;
     position: absolute;
-    top: 50%;
+    top: 40%;
     left: 50%;
 }
 
@@ -496,7 +503,14 @@ img {
     margin: 50px;
     padding: 40px;
 }
-
+.blur {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    backdrop-filter: blur(2px);
+  }
 
 /* Small screens */
 @media screen and (max-width: 1800px) {

@@ -72,7 +72,7 @@ input[type=email]:focus.invalid {
   background-repeat: no-repeat;
   background-size: cover;
   position: relative;
-  padding: 80px
+  padding: 80px;
 }
 .blur {
   position: absolute;
