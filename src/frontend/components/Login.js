@@ -40,6 +40,7 @@ const Login = (props) => {
                     password: password
                 }),
                 //credentials: 'include'
+                
             })
                 .then(response => {
                     if (response.ok) {
