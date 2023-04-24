@@ -167,7 +167,7 @@ const Register = () => {
   return (
     <div className="img">
       <div className="blur">
-        <div className="Forms">
+        <div className="Forms" style={{marginTop: "60px"}}>
           <h2>Register</h2>
           <div className="Container">
             <form onSubmit={(e) => handleSubmit(e)}>

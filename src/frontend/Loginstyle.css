@@ -103,9 +103,21 @@ input[type=password]:focus.invalid input[type=email]:focus.invalid {
   color: black;
 }
 
+/* Small screens */
+@media screen and (max-width: 1800px) {
+  .header {
+      height: 200px;
+  } 
+  .img {
+    min-height: 80vh;
+  }
+  .Forms {
+    margin-top: 120px;
+  }
+}
+
 @media screen and (max-width: 700px) {
   .Forms {
     width: 80%;
   }
-
 }
