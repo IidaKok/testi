@@ -229,13 +229,14 @@ export const SeriesInfo = (props) => {
                     <NavLink to={'/series/books/book/' + b.idbook}>{b.bookname}</ NavLink>
                 </td>
                 <td>{b.publicationyear}</td>
-                {ownSer &&
+                {ownSer ?
                     <td>
                         {bookToDelete === b.idbook ?
                             <button className='delete' onClick={() => deleteBook(b.idbook)}>Confirm?</button> :
                             <button className='delete' onClick={() => setBookToDelete(b.idbook)}>Delete</button>
                         }
-                    </td>
+                    </td> :
+                    <td></td>
                 }
             </tr>
         ));
