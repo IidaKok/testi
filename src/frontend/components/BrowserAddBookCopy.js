@@ -4,9 +4,9 @@ import "../App.css";
 export const AddBookModal = ({ closeModal, insertBook, id }) => {
     const [edition, setEdition] = useState();
     const [purchaseprice, setPurchaseprice] = useState();
-    const [purchasedate, setPurchasedate] = useState();
+    const [purchasedate, setPurchasedate] = useState(null);
     const [condition, setCondition] = useState();
-    const [solddate, setSolddate] = useState();
+    const [solddate, setSolddate] = useState(null);
     const [soldprice, setSoldprice] = useState();
 
     const handleAdd = (event) => {
