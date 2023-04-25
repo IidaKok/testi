@@ -69,8 +69,8 @@ export const BookInfo = (props) => {
             let response = await fetch("http://localhost:5000/api/artwork");
             let allArtwork = await response.json();
             let findArtwork = allArtwork.filter((a) => a.idbook == idbook);
-            let f = findArtwork.find((a) => a.pagenumber == 1);
-            let b = findArtwork.find((a) => a.pagenumber == 2);
+            let f = findArtwork.find((a) => a.pagenumber == 0);
+            let b = findArtwork.find((a) => a.pagenumber == 99999);
             setFront(f);
             setBack(b);
         };
@@ -138,7 +138,7 @@ export const BookInfo = (props) => {
                     body: JSON.stringify({
                         photoname: fCoverImage.filename,
                         idbookcopy: idBCopy,
-                        pagenumber: 1,
+                        pagenumber: 0,
                     }),
                 });
                 console.log("INSERT FRONT PHOTO:", r);
@@ -152,7 +152,7 @@ export const BookInfo = (props) => {
                     body: JSON.stringify({
                         photoname: bCoverImage.filename,
                         idbookcopy: idBCopy,
-                        pagenumber: 2,
+                        pagenumber: 99999,
                     }),
                 });
                 console.log("INSERT BACK PHOTO:", r);
@@ -206,8 +206,8 @@ export const BookInfo = (props) => {
         setOpenEdit(false)
     }
     const openPictureModal = (cover) => {
-        if (cover == 1) setCoverNro(1);
-        if (cover == 2) setCoverNro(2);
+        if (cover == 0) setCoverNro(0);
+        if (cover == 99999) setCoverNro(99999);
         setAddPicture(true);
     }
     const closePictureModal = () => {
@@ -297,8 +297,8 @@ export const BookInfo = (props) => {
                 </div>
                 {dataLoaded && hasSeriesInBookShelf &&
                     <>
-                        {fCoverImage ? <p><button onClick={openEditPicModal}>Change the cover picture</button></p> : <p><button onClick={() => { openPictureModal(1) }}>Add a cover picture</button></p>}
-                        {bCoverImage ? <p><button onClick={openEditPicModal}>Change the back cover picture</button></p> : <p><button onClick={() => { openPictureModal(2) }}>Add a back cover picture</button></p>}
+                        {fCoverImage ? <p><button onClick={openEditPicModal}>Change the cover picture</button></p> : <p><button onClick={() => { openPictureModal(0) }}>Add a cover picture</button></p>}
+                        {bCoverImage ? <p><button onClick={openEditPicModal}>Change the back cover picture</button></p> : <p><button onClick={() => { openPictureModal(99999) }}>Add a back cover picture</button></p>}
                         {addPicture && <BrowserAddPic closePictureModal={closePictureModal} bookid={idbook} setImageUpdate={updateImage} cover={coverNro} />}
                         {editPicture && <BrowserEditPic closeEditPicModal={closeEditPicModal} picToEdit={fCoverImage} setImageUpdate={updateImage} />}
                     </>
