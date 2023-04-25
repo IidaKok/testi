@@ -9,8 +9,36 @@ export const AddBookModal = ({ closeModal, insertBook, id }) => {
     const [solddate, setSolddate] = useState(null);
     const [soldprice, setSoldprice] = useState();
 
+    function isValidDate(dateString) {
+
+        const pattern = /^\d{4}-\d{2}-\d{2}$/;
+        if (!dateString || !pattern.test(dateString)) {
+            return false;
+        };
+
+        const date = new Date(dateString);
+        if (isNaN(date.getTime())) {
+            return false;
+        };
+
+        return true;
+    }
+
     const handleAdd = (event) => {
         event.preventDefault();
+
+        if (solddate && !isValidDate(solddate)) {
+            alert("Invalid sold date format. Please use the format YYYY-MM-DD.");
+            return;
+        };
+        if (purchasedate && !isValidDate(purchasedate)) {
+            alert("Invalid purchase date format. Please use the format YYYY-MM-DD.");
+            return;
+        };
+
+        if (!solddate) setSolddate(null);
+        if (!purchasedate) setPurchasedate(null);
+
         const newCopy = {
             id: id,
             edition: parseInt(edition),
