@@ -79,8 +79,8 @@ const EditPhotos = () => {
         }
 
         const parsedPageNumber = parseInt(newPageNumber, 10);
-        if (isNaN(parsedPageNumber) || parsedPageNumber < 1 || parsedPageNumber > 10000) {
-            errors.pagenumber = "Page number should be an integer between 1 and 10000";
+        if (isNaN(parsedPageNumber) || parsedPageNumber < 0 || parsedPageNumber > 99999) {
+            errors.pagenumber = "Page number should be an integer between 0 and 99999";
         }
 
         if (Object.keys(errors).length > 0) {

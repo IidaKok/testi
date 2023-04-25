@@ -11,6 +11,6 @@
     "\\src\\frontend\\pages",
     "\\src\\tests"
   ],
-  "SelectedNode": "\\src\\frontend\\components\\EditPhotos.js",
+  "SelectedNode": "\\src\\backend\\db.js",
   "PreviewInSolutionExplorer": false
 }
