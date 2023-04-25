@@ -467,10 +467,19 @@ img {
     color: #5C7AEA;
 }
 
+.navbar p {
+    margin-left: auto;
+    margin-right: 2px;
+    margin-top: 2px;
+    margin-bottom: 2px;
+    padding-right: 10px;
+    font-size: 13px;
+}
+
 .logout {
     margin-left: auto;
     margin-right: 20px;
-    padding-right: 10px;
+    padding: 4px;
 }
 
 

@@ -68,25 +68,27 @@ const Login = (props) => {
     }
 
     return (
-        
-            <div className="img">
-                <div className="blur">
-                <div className="Forms">
 
-                    <h2>Login</h2>
-                    <div className="Container">
-                        <form onSubmit={(e) => handleSubmit(e)}>
-                            <input type="text" name="username" value={name} className={invalidName ? "invalid" : "valid"} onChange={(e) => setName(e.target.value)} placeholder="Username..." />
-                            <p data-testid="nameError">{errorMessage}</p>
-                            <input name="password" type="password" value={password} className={invalidPassword ? "invalid" : "valid"} onChange={(e) => setPassword(e.target.value)} placeholder="Password..." />
-                            <p data-testid="passError">{errorMessage2}</p>
-                            <input className="btn" data-testid="logBtn" type="submit" value="Login" />
-                        </form>
-                    </div>
+        <div className="img">
+            <div className="blur">
+                <div className="animate__animated animate__fadeIn animate__slow" style={{ animationDuration: "1s" }}>
+                    <div className="Forms">
 
-                    <div className="Container">
-                        <Link to="/sendEmail">Forgot password?</Link>
-                        <p>Don't have an account? <Link to="/register">Create account</Link></p>
+                        <h2>Login</h2>
+                        <div className="Container">
+                            <form onSubmit={(e) => handleSubmit(e)}>
+                                <input type="text" name="username" value={name} className={invalidName ? "invalid" : "valid"} onChange={(e) => setName(e.target.value)} placeholder="Username..." />
+                                <p data-testid="nameError">{errorMessage}</p>
+                                <input name="password" type="password" value={password} className={invalidPassword ? "invalid" : "valid"} onChange={(e) => setPassword(e.target.value)} placeholder="Password..." />
+                                <p data-testid="passError">{errorMessage2}</p>
+                                <input className="btn" data-testid="logBtn" type="submit" value="Login" />
+                            </form>
+                        </div>
+
+                        <div className="Container">
+                            <Link to="/sendEmail">Forgot password?</Link>
+                            <p>Don't have an account? <Link to="/register">Create account</Link></p>
+                        </div>
                     </div>
                 </div>
             </div>

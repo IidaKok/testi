@@ -23,13 +23,16 @@ const Logged = (props) => {
     }, [user.iduser]);
 
     return (
-        <div className="div">
-            <h1>Welcome</h1>
-            <div className="home-text">
-                {userHomeInfo.map((text, index) => (<p key={index}>{text}</p>))}
+        <div className="animate__animated animate__fadeIn animate__slow">
+            <div className="div">
+                <h1>Welcome</h1>
+                <div className="home-text">
+                    {userHomeInfo.map((text, index) => (<p key={index}>{text}</p>))}
 
+                </div>
             </div>
         </div>
+
     )
 }
 
