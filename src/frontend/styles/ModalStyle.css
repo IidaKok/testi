@@ -58,3 +58,9 @@ font-size: 10px;
 color: #ccc;
 margin-top: 10px;
 }
+
+.modal-header {
+  display: flex;
+  justify-content: right;
+  padding: 1px;
+}

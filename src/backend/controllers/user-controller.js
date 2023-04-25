@@ -171,9 +171,9 @@ const transporter = nodemailer.createTransport({
       await transporter.sendMail({
         from: "groupb1231@outlook.com",
         to: recipientEmail,
-        subject: "Reset ypur password",
+        subject: "Change your password",
         html: `<p>Dear user,</p><p>Please click <a href="https://iidakok.github.io/groupb-project/#/changePassword/${token}">here</a> to change your password.</p><p>If you didn't request a password change link, please ignore this email.</p>`,
-       // html: `<p>Dear user,</p><p>Please click <a href="http://localhost:3000/#/changePassword/${token}">here</a> to change your password.</p><p>If you didn't request a password change link, please ignore this email.</p>`,
+        //html: `<p>Dear user,</p><p>Please click <a href="http://localhost:3000/#/changePassword/${token}">here</a> to change your password.</p><p>If you didn't request a password change link, please ignore this email.</p>`,
       });
   
       console.log("Email sent successfully");
