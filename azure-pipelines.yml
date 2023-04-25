@@ -24,7 +24,7 @@ steps:
     PathtoPublish: build
 
 - script: |
-    git clone https://github.com/IidaKok/testi
+    git clone https://github.com/iidakok/testi
     cd testi
     git checkout gh-pages
     cp -R ../$(Build.ArtifactStagingDirectory)/* ./
