@@ -142,35 +142,37 @@ const EditPhotos = () => {
     }
 
     return (
-        <div className="editphotos">
-            <input id="user-input" size="30" type="text" placeholder="Image-URL" onChange={handleChange} name="photoname" maxLength={255} value={newPhotoName} />
-            <input id="user-input" size="30" type="number" placeholder="Page number" onChange={handleChange} name="pagenumber" onKeyPress={(event) => {
-                if (!/[0-9]/.test(event.key)) {
-                    event.preventDefault();
-                }
-            }} value={newPageNumber} />
-            <button className="photoAddBtn" onClick={handleAdd}>Add a new photo to your book</button>
-            <div className="photo-grid">
-                {photos.map((photo) => (
-                    <div className="photo" key={photo.idphoto}>
-                        <div className="photo-wrapper">
-                            <span className="pagenumber">{`Page ${photo.pagenumber}`}</span>
-                            <img src={photo.photoname} alt={`Page ${photo.pagenumber}`} />
+        <div className="animate__animated animate__fadeIn animate__slow">
+            <div className="editphotos">
+                <input id="user-input" size="30" type="text" placeholder="Image-URL" onChange={handleChange} name="photoname" maxLength={255} value={newPhotoName} />
+                <input id="user-input" size="30" type="number" placeholder="Page number" onChange={handleChange} name="pagenumber" onKeyPress={(event) => {
+                    if (!/[0-9]/.test(event.key)) {
+                        event.preventDefault();
+                    }
+                }} value={newPageNumber} />
+                <button className="photoAddBtn" onClick={handleAdd}>Add a new photo to your book</button>
+                <div className="photo-grid">
+                    {photos.map((photo) => (
+                        <div className="photo" key={photo.idphoto}>
+                            <div className="photo-wrapper">
+                                <span className="pagenumber">{`Page ${photo.pagenumber}`}</span>
+                                <img src={photo.photoname} alt={`Page ${photo.pagenumber}`} />
+                            </div>
+                            <input id="user-input" size="30" type="text" placeholder="Image-URL" onChange={handleChange} name="photoname" maxLength={255} />
+                            <input id="user-input" size="30" type="number" placeholder="Page number" onChange={handleChange} name="pagenumber" onKeyPress={(event) => {
+                                if (!/[0-9]/.test(event.key)) {
+                                    event.preventDefault();
+                                }
+                            }} />
+                            <button className="photoAddBtn" onClick={(e) => handleUpdate(e, photo)}>Update</button>
+                            <p></p>
+                            <button className="photoDeleteBtn" onClick={() => handleDelete(photo.idphoto)}>Delete Photo</button>
+                            <p></p>
                         </div>
-                        <input id="user-input" size="30" type="text" placeholder="Image-URL" onChange={handleChange} name="photoname" maxLength={255} />
-                        <input id="user-input" size="30" type="number" placeholder="Page number" onChange={handleChange} name="pagenumber" onKeyPress={(event) => {
-                            if (!/[0-9]/.test(event.key)) {
-                                event.preventDefault();
-                            }
-                        }} />
-                        <button className="photoAddBtn" onClick={(e) => handleUpdate(e, photo)}>Update</button>
-                        <p></p>
-                        <button className="photoDeleteBtn" onClick={() => handleDelete(photo.idphoto)}>Delete Photo</button>
-                        <p></p>
-                    </div>
-                ))}
+                    ))}
+                </div>
+                <button className="formCancelBtn" onClick={handleCancel}>Cancel</button>
             </div>
-            <button className="formCancelBtn" onClick={handleCancel}>Cancel</button>
         </div>
     );
 }

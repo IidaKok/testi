@@ -109,46 +109,48 @@ const Addseries = (idbookshelf) => {
     };
 
     return (
-        <div className='add-bookseries-form'>
-            <h1>Add New Series</h1>
-            <input
-                id='user-input'
-                type='text'
-                placeholder='Bookseries'
-                onChange={handleChange}
-                name='bookseries'
-                value={bookseries.bookseries}
-            />
-            <input
-                id='user-input'
-                type='text'
-                placeholder='Publisher'
-                onChange={handleChange}
-                name='publisher'
-                value={bookseries.publisher}
-            />
-            <input
-                id='user-input'
-                type='text'
-                placeholder='Description'
-                onChange={handleChange}
-                name='description'
-                value={bookseries.description}
-            />
-            <input
-                id='user-input'
-                type='text'
-                placeholder='Classification'
-                onChange={handleChange}
-                name='classification'
-                value={bookseries.classification}
-            />
-            <button className='formAddBtn' onClick={handleClick}>
-                Add
-            </button>
-            <button className='formCancelBtn' onClick={handleCancel}>
-                Cancel
-            </button>
+        <div className="animate__animated animate__fadeIn animate__slow">
+            <div className='add-bookseries-form'>
+                <h1>Add New Series</h1>
+                <input
+                    id='user-input'
+                    type='text'
+                    placeholder='Bookseries'
+                    onChange={handleChange}
+                    name='bookseries'
+                    value={bookseries.bookseries}
+                />
+                <input
+                    id='user-input'
+                    type='text'
+                    placeholder='Publisher'
+                    onChange={handleChange}
+                    name='publisher'
+                    value={bookseries.publisher}
+                />
+                <input
+                    id='user-input'
+                    type='text'
+                    placeholder='Description'
+                    onChange={handleChange}
+                    name='description'
+                    value={bookseries.description}
+                />
+                <input
+                    id='user-input'
+                    type='text'
+                    placeholder='Classification'
+                    onChange={handleChange}
+                    name='classification'
+                    value={bookseries.classification}
+                />
+                <button className='formAddBtn' onClick={handleClick}>
+                    Add
+                </button>
+                <button className='formCancelBtn' onClick={handleCancel}>
+                    Cancel
+                </button>
+            </div>
         </div>
     );
 };
