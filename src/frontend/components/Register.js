@@ -1,4 +1,4 @@
-import React, { useState, useEffect, Component } from "react";
+import React, { useState, useEffect} from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "../styles/Loginstyle.css";
 import { OverlayTrigger, Tooltip } from "react-bootstrap";
@@ -10,7 +10,6 @@ const Register = () => {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [errMsg, setErrMsg] = useState(false);
-  const [regSuccess, setRegSuccess] = useState(false);
   const [userToBeInserted, setuserToBeInserted] = useState(null);
   let navigate = useNavigate();
 
@@ -193,6 +192,7 @@ const Register = () => {
     }
     else setType("Password");
   }
+  
   return (
     <div className="img">
       <div className="blur">
