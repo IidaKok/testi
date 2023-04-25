@@ -24,6 +24,8 @@ steps:
     PathtoPublish: build
 
 - script: |
+    git config --global user.email iida.kokkonen@edu.savonia.fi
+    git config --global user.name iidakok
     git clone https://github.com/iidakok/testi
     cd testi
     git checkout gh-pages
