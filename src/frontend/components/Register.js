@@ -196,6 +196,7 @@ const Register = () => {
   return (
     <div className="img">
       <div className="blur">
+      <div className="animate__animated animate__fadeIn animate__slow" style={{ animationDuration: "1s" }}>
         <div className="Forms" style={{marginTop: "60px"}}>
           <h2>Register</h2>
           <div className="Container">
@@ -232,6 +233,7 @@ const Register = () => {
           </div>
 
         </div>
+      </div>
       </div>
     </div>
   )

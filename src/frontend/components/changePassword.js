@@ -14,8 +14,6 @@ export const ChangePassword = () => {
     const path = location.pathname;
     const tokenfromUrl = path.substring(path.lastIndexOf("/") + 1);
 
-
-    //setMessage(<Link to="/">Link to login</Link>);
     const resett = async () => {
         setButtonPressed(true);
         if (!validPassword) {
@@ -49,7 +47,6 @@ export const ChangePassword = () => {
         }
     };
 
-
     //password validation
     useEffect(() => {
         const lowerCase = /[a-z]/g;
@@ -75,17 +72,19 @@ export const ChangePassword = () => {
     return (
         <div className="img">
             <div className="blur">
-                <div className="Forms">
-                    <h2>Change password</h2>
-                    <div className="Container">
+                <div className="animate__animated animate__fadeIn animate__slow" style={{ animationDuration: "1s" }}>
+                    <div className="Forms">
+                        <h2>Change password</h2>
+                        <div className="Container">
 
-                        <input type={type} placeholder="New password..." className={validPassword && buttonPressed ? "invalid" : "valid"} onChange={(e) => setPassword(e.target.value)} />
-                        <input type="checkbox" style={{cursor: "pointer"}} onChange={(e) => showPassword(e.target.checked)} /><label>Show Password</label>
-                        {validPassword && buttonPressed ? <Error id="invalidPasswordError" value="Password" text="at least 5 characters, a lowercase letter, an uppercase letter and a number" /> :
-                            message}
-
+                            <input type={type} placeholder="New password..." className={validPassword && buttonPressed ? "invalid" : "valid"} onChange={(e) => setPassword(e.target.value)} />
+                            <input type="checkbox" style={{ cursor: "pointer" }} onChange={(e) => showPassword(e.target.checked)} /><label>Show Password</label>
+                            {validPassword && buttonPressed ? <Error id="invalidPasswordError" value="Password" text="at least 5 characters, a lowercase letter, an uppercase letter and a number" /> :
+                                message}
+                            <br />
                             <button className="btn" onClick={() => resett()}>Change password</button>
-                        
+
+                        </div>
                     </div>
                 </div>
             </div>

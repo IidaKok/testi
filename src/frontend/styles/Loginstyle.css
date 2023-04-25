@@ -71,7 +71,6 @@ input[type=password]:focus.invalid input[type=email]:focus.invalid {
   background-size: cover;
   position: relative;
   padding: 80px;
-  font-family: Arial, Helvetica, sans-serif;
 }
 
 .blur {
