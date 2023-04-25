@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "../App.css";
+import "../styles/Loginstyle.css";
 import { userHomeInfo } from "../data/data";
 
 const Logged = (props) => {
@@ -22,12 +23,11 @@ const Logged = (props) => {
     }, [user.iduser]);
 
     return (
-        <div>
-            <div className="div">
-                <h1>Welcome, {user.username}</h1>
+        <div className="div">
+            <h1>Welcome</h1>
+            <div className="home-text">
+                {userHomeInfo.map((text, index) => (<p key={index}>{text}</p>))}
 
-                <p>{userHomeInfo}</p>
-                
             </div>
         </div>
     )

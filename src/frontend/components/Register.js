@@ -1,9 +1,9 @@
 import React, { useState, useEffect, Component } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import "../Loginstyle.css";
+import "../styles/Loginstyle.css";
 import { OverlayTrigger, Tooltip } from "react-bootstrap";
 import { Error } from "./InvalidInput";
-import "../Loginstyle.css";
+import { Succsess } from "./SuccsessModal";
 
 
 const Register = () => {
@@ -18,6 +18,10 @@ const Register = () => {
   const [passwordAgain, setPasswordAgain] = useState("");
 
   const [type, setType] = useState("password");
+
+  const [timer, setTimer] = useState(null);
+  const [timerRunning, setTimerRunning] = useState(false);
+  const [countdown, setCountdown] = useState(5);
 
 
   const [validName, setValidName] = useState(false);
@@ -57,11 +61,20 @@ const Register = () => {
 
               console.log("INSERT:", data);
               setuserToBeInserted(null);
-              setRegSuccess(true);
               setUsername("");
               setPassword("");
               setPasswordAgain("");
               setEmail("");
+
+
+              setTimerRunning(true);
+              setTimer(setTimeout(() => {
+                setTimerRunning(false);
+                setTimer(null);
+                navigate("/");
+              }, countdown * 1000));
+             // setRegSuccess(true);
+
               return;
             }
             setErrMsg(true);
@@ -88,9 +101,25 @@ const Register = () => {
     if (userToBeInserted != null) insertUser();
   }, [userToBeInserted]);
 
-  /* if (regSuccess) {
-     navigate("/");
-   }*/
+ // Update the countdown timer every second while the timer is running
+ useEffect(() => {
+  if (timerRunning && countdown > 0) {
+    const interval = setInterval(() => {
+      setCountdown(countdown - 1);
+    }, 1000);
+    return () => clearInterval(interval);
+  }
+}, [timerRunning, countdown]);
+
+
+   // Clear the timer when the component unmounts
+  useEffect(() => {
+    return () => {
+      if (timer) {
+        clearTimeout(timer);
+      }
+    }
+  }, [timer]);
 
   //password validation
   useEffect(() => {
@@ -196,6 +225,7 @@ const Register = () => {
             </form>
           </div>
 
+          {timerRunning && <Succsess countdown={countdown}/>}
 
           <div className="Container">
             <p>Already have an account? <Link to="/">Login</Link></p>

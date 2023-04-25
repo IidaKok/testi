@@ -41,7 +41,7 @@ const createUser = async (req, res, next) => {
         //sends the user's information to the database
         const response = db.pool.query("INSERT INTO user (username, password, email) VALUES ('" + username + "','" + password + "','" + email + "')");
 
-       // res.send(response);
+        setTimeout(async () => {
        try {
         const result1 = await db.pool.query("select * from user where username = '" + username + "'");
         const user = result1.find(u => {
@@ -49,7 +49,8 @@ const createUser = async (req, res, next) => {
         });
 
         if (!user) {
-            return next(new HttpError("Password is incorrect. Try again", 404));
+          console.log("username: ", username);
+            return next(new HttpError("Something went wrong", 404));
         }
 
         console.log(user.iduser);
@@ -62,11 +63,13 @@ const createUser = async (req, res, next) => {
         console.error(error);
         res.status(500).send('Internal server error');
       }
+    }, 1000);
     }
     catch (err) {
         throw err;
     }
 }
+
 //gets all users from the database
 const getAllUsers = async (req, res, next) => {
     try {

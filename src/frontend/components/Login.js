@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import "../Loginstyle.css";
-import picture from "../login_picture.jpg"
+import "../styles/Loginstyle.css";
 
 const Login = (props) => {
     const { userLogged } = props;

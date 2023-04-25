@@ -64,7 +64,7 @@ input[type=password]:focus.invalid input[type=email]:focus.invalid {
 
 .img {
   min-height: 100vh;
-  background-image: url("./login_picture.jpg");
+  background-image: url("../login_picture.jpg");
   background-color: #635d5d;
   background-position: center;
   background-repeat: no-repeat;
