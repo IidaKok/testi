@@ -50,7 +50,8 @@ export const BrowserAddBook = ({ closeAddModal, seriesid }) => {
       
 
     return (
-        <div className="modal-overlay">
+        <div className='animate__animated animate__fadeIn'>
+            <div className="modal-overlay">
             <div className="modal-content">
                 <form>
                     <label>
@@ -77,6 +78,7 @@ export const BrowserAddBook = ({ closeAddModal, seriesid }) => {
                     <button className='add-books-btn' onClick={() => closeAddModal()}>Cancel</button>
                 </form>
             </div>
+        </div>
         </div>
     );
 };

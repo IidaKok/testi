@@ -52,32 +52,34 @@ export const BrowserEditBook = ({ closeEditModal, bookToEdit }) => {
 
 
     return (
-        <div className="modal-overlay">
-            <div className="modal-content">
-                <form>
-                    <label>
-                        Name:
-                        <input type="text" value={bookname} onChange={(e) => setBookName(e.target.value)} />
-                    </label>
-                    <label>
-                        Publication Year:
-                        <input type="number" min="1901" max="2155" value={publicationyear} onChange={(e) => setPublicationYear(e.target.value)} />
-                    </label>
-                    <label>
-                        Description:
-                        <input type="text" value={description} onChange={(e) => setDescription(e.target.value)} />
-                    </label>
-                    <label>
-                        Series number:
-                        <input type="text" value={seriesnumber} onChange={(e) => setSeriesNumber(e.target.value)} />
-                    </label>
-                    <label>
-                        Writer:
-                        <input type="text" value={writer} onChange={(e) => setWriter(e.target.value)}></input>
-                    </label>
-                    <button className='add-books-btn' onClick={(e) => handleEdit(e)}>Edit</button>
-                    <button className='add-books-btn' onClick={() => closeEditModal()}>Cancel</button>
-                </form>
+        <div className="animate__animated animate__fadeIn">
+            <div className="modal-overlay">
+                <div className="modal-content">
+                    <form>
+                        <label>
+                            Name:
+                            <input type="text" value={bookname} onChange={(e) => setBookName(e.target.value)} />
+                        </label>
+                        <label>
+                            Publication Year:
+                            <input type="number" min="1901" max="2155" value={publicationyear} onChange={(e) => setPublicationYear(e.target.value)} />
+                        </label>
+                        <label>
+                            Description:
+                            <input type="text" value={description} onChange={(e) => setDescription(e.target.value)} />
+                        </label>
+                        <label>
+                            Series number:
+                            <input type="text" value={seriesnumber} onChange={(e) => setSeriesNumber(e.target.value)} />
+                        </label>
+                        <label>
+                            Writer:
+                            <input type="text" value={writer} onChange={(e) => setWriter(e.target.value)}></input>
+                        </label>
+                        <button className='add-books-btn' onClick={(e) => handleEdit(e)}>Edit</button>
+                        <button className='add-books-btn' onClick={() => closeEditModal()}>Cancel</button>
+                    </form>
+                </div>
             </div>
         </div>
     );

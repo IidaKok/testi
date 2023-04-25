@@ -47,28 +47,30 @@ export const BrowserEditSeries = ({ closeEditModal, seriesToEdit }) => {
 
 
     return (
-        <div className="modal-overlay">
-            <div className="modal-content">
-                <form>
-                    <label>
-                        Series name:
-                        <input type="text" value={bookseries} onChange={(e) => setBookSeries(e.target.value)} />
-                    </label>
-                    <label>
-                        Publisher:
-                        <input type="text" value={publisher} onChange={(e) => setPublisher(e.target.value)} />
-                    </label>
-                    <label>
-                        Description:
-                        <input type="text" value={description} onChange={(e) => setDescription(e.target.value)} />
-                    </label>
-                    <label>
-                        Classification:
-                        <input type="text" value={classification} onChange={(e) => setClassification(e.target.value)} />
-                    </label>
-                    <button className='add-books-btn' onClick={(e) => handleEdit(e)}>Edit</button>
-                    <button className='add-books-btn' onClick={() => closeEditModal()}>Cancel</button>
-                </form>
+        <div className="animate__animated animate__fadeIn">
+            <div className="modal-overlay">
+                <div className="modal-content">
+                    <form>
+                        <label>
+                            Series name:
+                            <input type="text" value={bookseries} onChange={(e) => setBookSeries(e.target.value)} />
+                        </label>
+                        <label>
+                            Publisher:
+                            <input type="text" value={publisher} onChange={(e) => setPublisher(e.target.value)} />
+                        </label>
+                        <label>
+                            Description:
+                            <input type="text" value={description} onChange={(e) => setDescription(e.target.value)} />
+                        </label>
+                        <label>
+                            Classification:
+                            <input type="text" value={classification} onChange={(e) => setClassification(e.target.value)} />
+                        </label>
+                        <button className='add-books-btn' onClick={(e) => handleEdit(e)}>Edit</button>
+                        <button className='add-books-btn' onClick={() => closeEditModal()}>Cancel</button>
+                    </form>
+                </div>
             </div>
         </div>
     );

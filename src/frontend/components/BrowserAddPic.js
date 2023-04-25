@@ -24,7 +24,7 @@ export const BrowserAddPic = ({ closePictureModal, bookid, setImageUpdate, cover
         if (artist == "") setArtist(null);
         if (style == "") setStyle(null);
         if (picDescription == "") setPicDescription(null);
-        if (filename == "") setFilename(null); 
+        if (filename == "") setFilename(null);
 
         try {
             const responsePic = await fetch("http://localhost:5000/api/picture", {
@@ -88,36 +88,38 @@ export const BrowserAddPic = ({ closePictureModal, bookid, setImageUpdate, cover
 
 
     return (
-        <div className="modal-overlay">
-            <div className="modal-content">
-                <form>
-                    <label>
-                        Name:
-                        <input type="text" onChange={(e) => setPicturename(e.target.value)}></input>
-                    </label>
-                    <label>
-                        Publication year:
-                        <input type="text" onChange={(e) => setPicPublicationyear(e.target.value)}></input>
-                    </label>
-                    <label>
-                        Artist:
-                        <input type="text" onChange={(e) => setArtist(e.target.value)}></input>
-                    </label>
-                    <label>
-                        Style:
-                        <input type="text" onChange={(e) => setStyle(e.target.value)}></input>
-                    </label>
-                    <label>
-                        description:
-                        <input type="text" onChange={(e) => setPicDescription(e.target.value)}></input>
-                    </label>
-                    <label>
-                        Link:
-                        <input type="text" onChange={(e) => setFilename(e.target.value)}></input>
-                    </label>
-                    <button className='add-books-btn' onClick={(e) => handleAdd(e)}>Add</button>
-                    <button className='add-books-btn' onClick={() => closePictureModal()}>Cancel</button>
-                </form>
+        <div className='animate__animated animate__fadeIn'>
+            <div className="modal-overlay">
+                <div className="modal-content">
+                    <form>
+                        <label>
+                            Name:
+                            <input type="text" onChange={(e) => setPicturename(e.target.value)}></input>
+                        </label>
+                        <label>
+                            Publication year:
+                            <input type="text" onChange={(e) => setPicPublicationyear(e.target.value)}></input>
+                        </label>
+                        <label>
+                            Artist:
+                            <input type="text" onChange={(e) => setArtist(e.target.value)}></input>
+                        </label>
+                        <label>
+                            Style:
+                            <input type="text" onChange={(e) => setStyle(e.target.value)}></input>
+                        </label>
+                        <label>
+                            description:
+                            <input type="text" onChange={(e) => setPicDescription(e.target.value)}></input>
+                        </label>
+                        <label>
+                            Link:
+                            <input type="text" onChange={(e) => setFilename(e.target.value)}></input>
+                        </label>
+                        <button className='add-books-btn' onClick={(e) => handleAdd(e)}>Add</button>
+                        <button className='add-books-btn' onClick={() => closePictureModal()}>Cancel</button>
+                    </form>
+                </div>
             </div>
         </div>
     );

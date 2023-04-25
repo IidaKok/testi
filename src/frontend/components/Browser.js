@@ -235,6 +235,7 @@ export const SeriesBrowser = (props) => {
 
 
     return (
+        <div className='animate__animated animate__fadeIn animate__slow'>
         <div className='flex-base'>
             <div className='browser-container-table'>
                 <table className='browser-table'>
@@ -288,6 +289,7 @@ export const SeriesBrowser = (props) => {
                 {modalOpen && <BrowserAddSeries closeAddModal={closeAddModal} idbookshelf={bookShelfId} />}
                 {openEdit && <BrowserEditSeries closeEditModal={closeEditModal} seriesToEdit={seriesToEdit} />}
             </div>
+        </div>
         </div>
     )
 }
