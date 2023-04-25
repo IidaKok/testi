@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useLocation, Link } from "react-router-dom";
 import "../styles/Loginstyle.css";
 import { Error } from "./InvalidInput";
+import { PasswordSuccess } from "./SuccsessModal";
 
 
 export const ChangePassword = () => {
@@ -13,6 +14,7 @@ export const ChangePassword = () => {
     let location = useLocation();
     const path = location.pathname;
     const tokenfromUrl = path.substring(path.lastIndexOf("/") + 1);
+    const [modalOpen, setModalOpen] = useState(false);
 
     const resett = async () => {
         setButtonPressed(true);
@@ -32,13 +34,7 @@ export const ChangePassword = () => {
                 }
                 else {
                     const data = await response.json();
-                    setMessage(<div>
-                        <p>
-                            {data.message}
-                            <Link to="/">Link to login</Link>
-                        </p>
-
-                    </div>);
+                    setModalOpen(true);
                 }
             }
             catch (error) {
@@ -80,7 +76,8 @@ export const ChangePassword = () => {
                             <input type={type} placeholder="New password..." className={validPassword && buttonPressed ? "invalid" : "valid"} onChange={(e) => setPassword(e.target.value)} />
                             <input type="checkbox" style={{ cursor: "pointer" }} onChange={(e) => showPassword(e.target.checked)} /><label>Show Password</label>
                             {validPassword && buttonPressed ? <Error id="invalidPasswordError" value="Password" text="at least 5 characters, a lowercase letter, an uppercase letter and a number" /> :
-                                message}
+                                null}
+                                {modalOpen && <PasswordSuccess setModalOpen={setModalOpen}/>}
                             <br />
                             <button className="btn" onClick={() => resett()}>Change password</button>
 

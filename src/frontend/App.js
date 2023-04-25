@@ -14,7 +14,6 @@ import { Update } from "./components/Update";
 import { EditPhotos } from "./components/EditPhotos";
 import { Email } from "./components/sendEmail";
 import { ChangePassword } from "./components/changePassword";
-import headerPicture from "./header_picture.jpg";
 import "./App.css";
 
 const App = () => {

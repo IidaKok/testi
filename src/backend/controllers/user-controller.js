@@ -161,7 +161,7 @@ const transporter = nodemailer.createTransport({
     port: 587,
     secure: false,
     auth: {
-      user: "groupb1231@outlook.com",
+      user: "bookarchive2023@outlook.com",
       pass: "KissaKoira58",
     },
   });
@@ -169,7 +169,7 @@ const transporter = nodemailer.createTransport({
   const sendEmail = async (recipientEmail) => {
     try {
       await transporter.sendMail({
-        from: "groupb1231@outlook.com",
+        from: "bookarchive2023@outlook.com",
         to: recipientEmail,
         subject: "Change your password",
         html: `<p>Dear user,</p><p>Please click <a href="https://iidakok.github.io/groupb-project/#/changePassword/${token}">here</a> to change your password.</p><p>If you didn't request a password change link, please ignore this email.</p>`,
@@ -230,7 +230,7 @@ const transporter = nodemailer.createTransport({
   }
 
 
-  //login
+//login
   
 //after user is logged in, users data is returned
 const islogged =  async (req, res) => {
