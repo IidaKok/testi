@@ -2,30 +2,26 @@ trigger:
 - main
 
 pool:
-  vmImage: 'ubuntu-latest'
+  name: Azure Pipelines
+  demands: npm
 
 steps:
-- task: NodeTool@0
+- task: Npm@1
+  displayName: 'npm install'
   inputs:
-    versionSpec: '14.x'
-  displayName: 'Install Node.js'
+    verbose: false
 
-- script: |
-    npm install
-    npm run build
-  displayName: 'Build project'
-
-- task: CopyFiles@2
+- task: Npm@1
+  displayName: 'npm build'
   inputs:
-    Contents: 'build/**'
-    TargetFolder: '$(Build.ArtifactStagingDirectory)'
-  displayName: 'Copy files'
+    command: custom
+    verbose: false
+    customCommand: 'run build'
 
 - task: PublishBuildArtifacts@1
+  displayName: 'Publish Artifact: drop'
   inputs:
-    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-    ArtifactName: 'drop'
-  displayName: 'Publish artifacts'
+    PathtoPublish: build
 
 - script: |
     git clone https://github.com/IidaKok/testi
