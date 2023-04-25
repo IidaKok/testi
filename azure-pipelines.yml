@@ -1,0 +1,38 @@
+trigger:
+- main
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+steps:
+- task: NodeTool@0
+  inputs:
+    versionSpec: '14.x'
+  displayName: 'Install Node.js'
+
+- script: |
+    npm install
+    npm run build
+  displayName: 'Build project'
+
+- task: CopyFiles@2
+  inputs:
+    Contents: 'build/**'
+    TargetFolder: '$(Build.ArtifactStagingDirectory)'
+  displayName: 'Copy files'
+
+- task: PublishBuildArtifacts@1
+  inputs:
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+    ArtifactName: 'drop'
+  displayName: 'Publish artifacts'
+
+- script: |
+    git clone https://github.com/your-username/your-repo.git
+    cd your-repo
+    git checkout gh-pages
+    cp -R ../$(Build.ArtifactStagingDirectory)/* ./
+    git add .
+    git commit -m 'Update gh-pages'
+    git push origin gh-pages
+  displayName: 'Deploy to gh-pages'
