@@ -27,7 +27,7 @@ steps:
     git config --global user.email iida.kokkonen@edu.savonia.fi
     git config --global user.name iidakok
     git clone https://github.com/iidakok/testi
-    cd testi
+    cd build
     git checkout gh-pages
     cp -R ../$(Build.ArtifactStagingDirectory)/* ./
     git add .
