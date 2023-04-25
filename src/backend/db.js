@@ -7,7 +7,7 @@ const pool =
     host: "127.0.0.1", 
     port: 3307,
     user: "root", 
-    password: "Ruutti",
+    password: "ruutti",
     database: "mydb"
   });
  

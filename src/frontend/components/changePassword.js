@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useLocation, Link } from "react-router-dom";
-import "../Loginstyle.css";
+import "../styles/Loginstyle.css";
 import { Error } from "./InvalidInput";
 
 

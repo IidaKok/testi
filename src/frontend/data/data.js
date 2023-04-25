@@ -1,14 +1,6 @@
 export const userHomeInfo = [
-    "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean at odio ut ligula porta gravida. ",
-    "Quisque eget mattis velit. Nam sed odio ut est volutpat dignissim vel a ex. Donec non sem ac urna pellentesque",
-    " condimentum. Mauris ut varius sapien, ut pharetra diam. Aliquam accumsan vehicula nunc, quis scelerisque lacus ",
-    "hendrerit nec. Aliquam ac hendrerit diam. Nam nunc elit, semper eget maximus sit amet, ullamcorper sit amet augue. ",
-    "Curabitur hendrerit orci nec pulvinar porta. Mauris placerat risus ut ultricies sodales. Integer scelerisque, justo",
-    " ac varius pellentesque, est odio rhoncus dui, ut dictum augue diam id lorem. Nam eu libero molestie, feugiat nunc quis,",
-    " placerat purus. Sed auctor magna id cursus euismod. Aliquam lacus lorem, volutpat non urna ac, dapibus dignissim orci. ",
-    "Interdum et malesuada fames ac ante ipsum primis in faucibus. Cras dictum dictum augue a euismod. Ut venenatis rutrum purus, ",
-    "id cursus nibh facilisis eget. Maecenas a imperdiet enim, eget vehicula massa. Integer turpis ante, pharetra in pulvinar ac, ",
-    "lacinia eu mi. Sed bibendum ut arcu sed semper. Vestibulum eros lacus, hendrerit nec placerat non, vulputate nec tellus.",
-    " Nam pretium nibh magna, id malesuada nisl consequat ut. Morbi at consequat ipsum. Ut placerat vitae nibh ac tempus.",
-    " Vestibulum ac urna ultricies, congue neque at, convallis erat."
+    "Welcome to our book archive website, where you can easily create and manage your own series and books. With our user-friendly interface, you can store important information about your favorite series and books, including names, serial numbers, author information, and more.",
+    "Our website also allows you to select series from our ready-made library and easily add them to your own bookshelf. You can even choose multiple copies of the same book for your own series, just like how you may have purchased them in real life.",
+    "For each book in your own series, you can save and view a variety of information such as its condition class, cover and back cover images, additional photos of the pages, purchase price and time, introductory text, year of publication, and edition.",
+    "Our website is the perfect tool for managing your personal library and keeping track of all your favorite books and series. So, start creating your own bookshelf today and discover new series and books to add to your collection!",
 ]
