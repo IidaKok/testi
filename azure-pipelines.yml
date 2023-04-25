@@ -28,7 +28,7 @@ steps:
   displayName: 'Publish artifacts'
 
 - script: |
-    git clone https://github.com/your-username/your-repo.git
+    git clone https://github.com/IidaKok/testi
     cd your-repo
     git checkout gh-pages
     cp -R ../$(Build.ArtifactStagingDirectory)/* ./
