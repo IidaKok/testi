@@ -25,7 +25,7 @@ steps:
 
 - script: |
     git clone https://github.com/IidaKok/testi
-    cd your-repo
+    cd testi
     git checkout gh-pages
     cp -R ../$(Build.ArtifactStagingDirectory)/* ./
     git add .
